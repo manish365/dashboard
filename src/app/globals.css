@@ -1,26 +1,123 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Croma brand colors */
+    --navbar-carousel-color: #353535;
+    --text-color: #ffffff;
+    --croma-wall: #191919;
+    --old-price: #9a9a9a;
+    --foot-color: #1d1d1d;
+    --hyperlink: #12DAA8;
+    --circle: #808080;
+    --input-color: #333;
+    --neon-green: #00e9bf;
+    --text-color-black: #121212;
+    --croma-wall-white: #ffffff;
+
+    /* AG Grid theme */
+    --ag-foreground-color: #e2e8f0;
+    --ag-background-color: var(--croma-wall);
+    --ag-header-foreground-color: var(--old-price);
+    --ag-header-background-color: var(--navbar-carousel-color);
+    --ag-odd-row-background-color: #1a1a1a;
+    --ag-row-hover-color: rgba(0, 233, 191, 0.06);
+    --ag-selected-row-background-color: rgba(0, 233, 191, 0.12);
+    --ag-range-selection-border-color: var(--neon-green);
+    --ag-border-color: rgba(255, 255, 255, 0.08);
+    --ag-row-border-color: rgba(255, 255, 255, 0.05);
+    --ag-input-focus-border-color: var(--neon-green);
+    --ag-checkbox-checked-color: var(--neon-green);
+    --ag-cell-horizontal-padding: 12px;
+    --ag-grid-size: 6px;
+    --ag-font-size: 13px;
+    --ag-font-family: 'Inter', system-ui, sans-serif;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--text-color-black);
+    color: var(--text-color);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.3);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.5);
+  }
+}
+
+/* AG Grid overrides */
+.ag-theme-alpine-dark {
+  --ag-background-color: var(--croma-wall);
+  --ag-header-background-color: var(--navbar-carousel-color);
+  --ag-odd-row-background-color: #1a1a1a;
+  --ag-header-foreground-color: var(--old-price);
+  --ag-foreground-color: var(--text-color);
+  --ag-row-hover-color: rgba(0, 233, 191, 0.06);
+  --ag-selected-row-background-color: rgba(0, 233, 191, 0.12);
+  --ag-border-color: rgba(255, 255, 255, 0.08);
+  --ag-row-border-color: rgba(255, 255, 255, 0.05);
+}
+
+.ag-theme-alpine-dark .ag-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ag-theme-alpine-dark .ag-header-cell {
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ag-theme-alpine-dark .ag-cell {
+  display: flex;
+  align-items: center;
+}
+
+.ag-theme-alpine-dark .ag-cell-edit-wrapper {
+  padding: 0;
+}
+
+.ag-theme-alpine-dark input[class^='ag-'] {
+  background: var(--input-color);
+  border: 1px solid var(--neon-green);
+  color: var(--text-color);
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.ag-theme-alpine-dark .ag-paging-panel {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--old-price);
+}
+
+/* Upload zone animations */
+@keyframes pulse-border {
+  0%, 100% { border-color: rgba(0, 233, 191, 0.3); }
+  50% { border-color: rgba(0, 233, 191, 0.7); }
+}
+
+.upload-zone-active {
+  animation: pulse-border 1.5s ease-in-out infinite;
 }

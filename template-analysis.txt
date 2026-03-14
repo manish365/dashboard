@@ -1,0 +1,286 @@
+
+============================================================
+FILE: CSAT- Jan 2026 A.xlsx
+============================================================
+
+  Sheet: "Sheet1"
+  Total rows: 581
+  Row 0: [Store Code | CSAT]
+  Row 1: [A041 | 0.6470588235294118]
+  Row 2: [A092 | 0.6666666666666666]
+  Row 3: [A039 | 0.7272727272727273]
+  Row 4: [A004 | 0.6176470588235294]
+
+============================================================
+FILE: January'26- Volume Budgets_V5 A.xlsx
+============================================================
+
+  Sheet: "SE Targets"
+  Total rows: 6897
+  Row 0: [Staff details |  |  |  | Individual Volume threshold of | Volume targets (including OL) |  |  |  |  |  |  |  | OL volume targets |  |  | ]
+  Row 1: [ |  |  |  |  | Home Appliances + Kitchen Appl |  |  | Communication |  | Computer peripherals |  | Entertainment |  |  |  | ]
+  Row 2: [Store Code | Store Name | Sales executive EMP ID | Sales executive Name | Primary Group | Air Conditioners | Washing Machines | Refrigerators | iPhones | Smart Phones (OS Based) | Macbook | Windows PC | TV LCD | Air Conditioners | Washing Machines | Refrigerators | TV LCD]
+  Row 3: [A476 | Madanapalle | 33488 | Srinivasulu P | Communication | 0 | 0 | 0 | 9 | 38 | 0 | 0 | 0 | 0 | 0 | 0 | 0]
+  Row 4: [A476 | Madanapalle | 60522 | jagadesh V | Communication | 0 | 0 | 0 | 6 | 32 | 0 | 0 | 0 | 0 | 0 | 0 | 0]
+
+  Sheet: "DM Details"
+  Total rows: 2189
+  Row 0: [Store Code | Store Name | Group | DM EMP ID | DM Name]
+  Row 1: [A476 | Madanapalle | Home Appliances & Kitchen Appl | 33104 | Sali Santhosh kumar]
+  Row 2: [A476 | Madanapalle | Communication | 13339 | B.Murali Naik]
+  Row 3: [A476 | Madanapalle | Computers Peripherals | 13339 | B.Murali Naik]
+  Row 4: [A476 | Madanapalle | Home Entertainment | 33104 | Sali Santhosh kumar]
+
+============================================================
+FILE: Main List_Jan - TCS A (1).xlsb
+============================================================
+
+  Sheet: "Kitchen Appliances"
+  Total rows: 6164
+  Row 0: [ |  | 1 Point=1 Rs. |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 1: [ |  | Beat the Kitchen Appliances Gr |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 2: [ |  | Main Product - Incentive Bucke |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 3: [ |  | S.N. | Category | Incentive Bucket |  | Incentive Per Unit (role) |  |  |  |  | Sales Executives Incentives (I |  |  |  |  |  | DM Incentives (INR) |  |  |  |  |  | SM Incentives (INR) |  |  |  | ]
+  Row 4: [ |  |  |  |  | Brand | Sales Executives | DM | SM |  |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di]
+
+  Sheet: "Home Appliances"
+  Total rows: 219
+  Row 0: [ |  | 1 Point=1 Rs. |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 1: [ |  | Achive the Home Appliances Gro |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 2: [ |  | Main Product - Incentive Bucke |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 3: [ | Sr No | Category | Incentive Bucket | Brand |  | Incentive Per Unit (role) |  |  |  |  | Sales Executives Incentives (I |  |  |  |  |  | DM Incentives (INR) |  |  |  |  |  | SM Incentives (INR) |  |  |  |  | ]
+  Row 4: [ |  |  |  |  |  | Sales Executives | DM | SM |  |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di | ]
+
+  Sheet: "Entertainment"
+  Total rows: 148
+  Row 0: [ |  | 1 Point=1 Rs. |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 1: [ |  | Beat the Entertainment Group B |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 2: [ |  | Main Product - Incentive Bucke |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 3: [ |  | S.N. | Category | Incentive Bucket | Brands | Incentive Per Unit (role) |  |  |  |  | Sales Executives Incentives (I |  |  |  |  |  | DM Incentives (INR) |  |  |  |  |  | SM Incentives (INR) |  |  |  | ]
+  Row 4: [ |  |  |  |  |  | Sales Executives | DM | SM |  |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di]
+
+  Sheet: "Computers Peripherals"
+  Total rows: 1048576
+  Row 0: [ |  | 1 Point=1 Rs. |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 1: [ |  | Beat the Computers Peripherals |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 2: [ |  | Main Product - Incentive Bucke |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 3: [ |  | S.N. | Category | Incentive Bucket | Incentive Per Unit (role) |  |  |  |  | Sales Executives Incentives (I |  |  |  |  |  | DM Incentives (INR) |  |  |  |  |  | SM Incentives (INR) |  |  |  | ]
+  Row 4: [ |  |  |  |  | Sales Executives | DM | SM |  |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di]
+
+  Sheet: "Communication"
+  Total rows: 1048104
+  Row 0: [ | 1 Point=1 Rs. |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 1: [ | Main Product - Incentive Bucke |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 2: [ | S.N. | Category | Incentive Bucket |  | Incentive Per Unit (role) |  |  |  |  | Sales Executives Incentives (I |  |  |  |  |  | DM Incentives (INR) |  |  |  |  |  | SM Incentives (INR) |  |  |  |  | ]
+  Row 3: [ |  |  |  |  | Sales Executives | DM | SM |  |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di | ]
+  Row 4: [ | 1 | iPhones | Iphone 13 series & 14 |  | 43 | 14 | 14 |  |  | 64.5 | 51.6 | 43 | 25.8 | 0 |  | 21 | 16.8 | 14 | 8.4 | 0 |  | 21 | 16.8 | 14 | 8.4 | 0 | ]
+
+  Sheet: "Own Label"
+  Total rows: 540
+  Row 0: [ | 1 Point=1 Rs. |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 1: [ | Beat the Own Label Budget and  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 2: [ | Main Product - Incentive Bucke |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 3: [ | SR. No | Category 1 | Category | Incentive bucket | Incentive Per Unit (role) |  |  |  |  | Sales Executives Incentives (I |  |  |  |  |  | DM Incentives (INR) |  |  |  |  |  | SM Incentives (INR) |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 4: [ |  |  |  |  | Sales Executives | DM | SM | KYBM |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  |  |  |  |  |  |  |  | ]
+
+  Sheet: "Accessories"
+  Total rows: 416
+  Row 0: [ | 1 Point=1 Rs. |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 1: [ | Beat the Accessories Budget an |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 2: [ | Accessory - Incentive Buckets  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 3: [ | S.No | Group | Category | Incentive Bucket | Inclusion brand | Exclusion Brand | Incentive Per Unit (role) |  |  |  |  | Sales Executives Incentives (I |  |  |  |  |  | DM Incentives (INR) |  |  |  |  |  | SM Incentives (INR) |  |  |  |  |  |  |  |  |  |  |  |  |  | ]
+  Row 4: [ |  |  |  |  |  |  | Sales Executives | DM | SM |  |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  | At MOP
+(No Discount) | Slab 1
+(0-50% of max coupon Di | Slab 2
+(50-75% of max coupon D | Slab 3
+(75-100% of max coupon  | Slab 4
+(>100% of max coupon Di |  | Merchandise Category | Class Description(short) | Class Description | Class Code | Category Description |  |  |  | ]
+
+  Sheet: "Services"
+  Total rows: 78
+  Row 0: [In Warranty |  |  |  |  |  | ]
+  Row 1: [ |  |  |  |  |  | ]
+  Row 2: [1. Sales Executives and Depart |  |  |  |  |  | ]
+  Row 3: [All ZipCare In-Warranty Plans, | Group Value Target Achievement | Sales Executive | Department Managers | Store Managers/MO
+(Below per u |  | ]
+  Row 4: [EW ZIP Care,  ZipCare Maintain | 0 to 85% | 0.013 | 0.004 | 0.003 |  | ]
+
+  Sheet: "Classes"
+  Total rows: 115
+  Row 0: [Merc Catg | Class | Class Des | Class Code | Catg Desp | Grp Code | Group Description]
+  Row 1: [173 | CMP-XZ-010 | Magazines | 42 | Books | 17 | Communication]
+  Row 2: [183 | COM-CC-010 | Calculators | 45 | Calculators | 17 | Communication]
+  Row 3: [184 | COM-CC-020 | Electronic Reference | 45 | Calculators | 17 | Communication]
+  Row 4: [185 | COM-CC-050 | PDA Accessories | 45 | Calculators | 17 | Communication]
+
+  Sheet: "DM"
+  Total rows: 15
+  Row 0: [DM - Sales Incentives |  |  |  | ]
+  Row 1: [Scheme | Slab 1 | Slab 2 | Slab 3 | ]
+  Row 2: [ | Target - 80% | Target - 90% | Target - 100% | ]
+  Row 3: [Group Budget | Rs. 2000/- or 0.02% of Actual  | Rs. 2500/- or 0.025% of Actual | Rs. 3000/- or 0.03% of Actual  | ]
+  Row 4: [ | Maximum Pay-Out/Cap - Rs. 8,00 | Maximum Pay-Out/Cap - Rs. 9,00 | Maximum Pay-Out/Cap - Rs. 10,0 | ]
+
+============================================================
+FILE: Main_Template Transformed Jan'26 - Vol 2 (1) A.xlsb
+============================================================
+
+  Sheet: "Sheet1"
+  Total rows: 3160
+  Row 0: [ | ValidFrom | ValidTo | IncentiveType | GroupID | GroupName | CategoryDescription_IncentiveB | Incusion_CategoryID | Inclusion_CategoryName | Exclusion_CategoryID | Exclusion_CategoryName | Inclusion_ClassID | Inclusion_ClassName | Exclusion_ClassID | Exclusion_ClassName | Inclusion_BrandID | Inclusion_BrandName | Exclusion_BrandID | Exclusion_BrandName | Inclusion_Article | Exclusion_Article | Inclusion_ArticleDesc | Exclusion_ArticleDesc | PriceLower | PriceUpper | JobRole | AchieveAmountPerQuantity | ]
+  Row 1: [ | 46023 | 46053 | Group_Main | 06 | Kitchen Appliances | Refrigerator Direct Cool <300L | 003 | Refrigerators | NA | NA | 0005 | Refrigerator Direct Cool <300L | NA | NA | ALL | ALL | 998 | Liebherr | ALL | NA | ALL | NA | 0 | 0 | SE | 26 | ]
+  Row 2: [ | 46023 | 46053 | Group_Main | 06 | Kitchen Appliances | Refrigerator Direct Cool <300L | 003 | Refrigerators | NA | NA | 0005 | Refrigerator Direct Cool <300L | NA | NA | ALL | ALL | 998 | Liebherr | ALL | NA | ALL | NA | 0 | 0 | DM | 9 | ]
+  Row 3: [ | 46023 | 46053 | Group_Main | 06 | Kitchen Appliances | Refrigerator Direct Cool <300L | 003 | Refrigerators | NA | NA | 0005 | Refrigerator Direct Cool <300L | NA | NA | ALL | ALL | 998 | Liebherr | ALL | NA | ALL | NA | 0 | 0 | SM | 9 | ]
+  Row 4: [ | 46023 | 46053 | Group_Main | 06 | Kitchen Appliances | Refrigerator Direct Cool <300L | 003 | Refrigerators | NA | NA | 0005 | Refrigerator Direct Cool <300L | NA | NA | ALL | ALL | 407 | Whirlpool | ALL | NA | ALL | NA | 0 | 0 | SE | 26 | ]
+
+============================================================
+FILE: SM MO Mapping_Jan A.xlsx
+============================================================
+
+  Sheet: "SM"
+  Total rows: 566
+  Row 0: [Store Key | Store Name | SM1 EC | SM1 Name]
+  Row 1: [A012 | Faridabad-Crown Mall | 6900 | Raman Kumar]
+  Row 2: [A020 | Delhi-Rohini | 2596 | Sanjay .]
+  Row 3: [A022 | Ghazibad-Pacific Mall | 3185 | Mohd Shahjad]
+  Row 4: [A023 | Greater Noida-Ansal Plaza Mall | 63710 | Rana Paul]
+
+  Sheet: "MO"
+  Total rows: 47
+  Row 0: [Store Key | Store Name | MO EC | MO Name]
+  Row 1: [A012 | Faridabad-Crown Mall | 32111 | Prakash Kumar]
+  Row 2: [A024 | Ghazibad-Aditya Mall | 24470 | Prashant Singh]
+  Row 3: [A042 | Delhi-Saket | 31280 | Rahul Gupta]
+  Row 4: [A044 | Delhi-Rajouri | 8537 | Santosh Kumar]
+
+============================================================
+FILE: VAS SKU List for incentive - Feb'26.xlsx
+============================================================
+
+  Sheet: "EDW_Load (7)"
+  Total rows: 8655
+  Row 0: [SKU | Service_Classification | Service_Product_Classification | Eligible_For_Incentive_Payout | Special Addition | Categ | Year | Lenovo Descripto | Brand]
+  Row 1: [191409 | InWarranty | OSG EW | N | N | Phones Fixed | 2 Year | 2Yr OnGo EW- Fixed Phones 5K-1 | 2Yr OnGo EW- Fixed Phones 5K-1]
+  Row 2: [191406 | InWarranty | OSG EW | N | N | Phones Fixed | 1 Year | 1Yr OnGo EW- Fixed Phones 5K-1 | 1Yr OnGo EW- Fixed Phones 5K-1]
+  Row 3: [191408 | InWarranty | OSG EW | N | N | Phones Fixed | 2 Year | 2Yr OnGo EW- Fixed Phones 2500 | 2Yr OnGo EW- Fixed Phones 2500]
+  Row 4: [191405 | InWarranty | OSG EW | N | N | Phones Fixed | 1 Year | 1Yr OnGo EW- Fixed Phones 2500 | 1Yr OnGo EW- Fixed Phones 2500]
+
+============================================================
+FILE: Volume budget mapped - Jan Output-Final V1 A.xlsx
+============================================================
+
+  Sheet: "Summary"
+  Total rows: 5
+  Row 0: [Error msg. | Count of Error Msg]
+  Row 1: [SM Name & EMP Missing | 1796]
+  Row 2: [DM Name & EMP Missing | 562]
+  Row 3: [DM & SM Name & EMP Missing | 88]
+  Row 4: [Grand Total | 2446]
+
+  Sheet: "Data"
+  Total rows: 82729
+  Row 0: [Store Code | Store Name | Sales executive EMP ID | Sales executive Name | Primary Group | DM EMP ID | DM Name | SM Employee ID | SM Employee Name | Primary Flag | Group ID | GroupDesc | Category ID | Category | Brand | Target Qty | Error Msg | storecode_group | GroupDesc |  |  |  | ]
+  Row 1: [A476 | Madanapalle | 33488 | Srinivasulu P | Communication | 33104 | Sali Santhosh kumar | 65145 | Uttaradi Subbachari | N | 05 | Home Appliances | 001 | Air Conditioners | All | 0 |  | A476_Home Appliances & Kitchen | Home Appliances & Kitchen Appl | A476Home Appliances & Kitchen  | 33104 |  | ]
+  Row 2: [A476 | Madanapalle | 60522 | jagadesh V | Communication | 33104 | Sali Santhosh kumar | 65145 | Uttaradi Subbachari | N | 05 | Home Appliances | 001 | Air Conditioners | All | 0 |  | A476_Home Appliances & Kitchen | Home Appliances & Kitchen Appl | A476Home Appliances & Kitchen  | 33104 |  | ]
+  Row 3: [A476 | Madanapalle | 62716 | Murali D | Communication | 33104 | Sali Santhosh kumar | 65145 | Uttaradi Subbachari | N | 05 | Home Appliances | 001 | Air Conditioners | All | 0 |  | A476_Home Appliances & Kitchen | Home Appliances & Kitchen Appl | A476Home Appliances & Kitchen  | 33104 |  | ]
+  Row 4: [A476 | Madanapalle | 33206 | Sandeep M | Computers Peripherals | 33104 | Sali Santhosh kumar | 65145 | Uttaradi Subbachari | N | 05 | Home Appliances | 001 | Air Conditioners | All | 0 |  | A476_Home Appliances & Kitchen | Home Appliances & Kitchen Appl | A476Home Appliances & Kitchen  | 33104 |  | ]
