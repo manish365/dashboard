@@ -2,7 +2,7 @@
 
 @layer base {
   :root {
-    /* Croma brand colors */
+    /* Croma brand colors - DARK (Default) */
     --navbar-carousel-color: #353535;
     --text-color: #ffffff;
     --croma-wall: #191919;
@@ -14,8 +14,14 @@
     --neon-green: #00e9bf;
     --text-color-black: #121212;
     --croma-wall-white: #ffffff;
+    --header-border: rgba(255, 255, 255, 0.1);
+    --toolbar-bg: rgba(0, 0, 0, 0.2);
+    --input-bg: rgba(255, 255, 255, 0.05);
+    --input-border: rgba(255, 255, 255, 0.1);
+    --card-bg: var(--croma-wall);
+    --border-color: rgba(255, 255, 255, 0.1);
 
-    /* AG Grid theme */
+    /* AG Grid theme variables */
     --ag-foreground-color: #e2e8f0;
     --ag-background-color: var(--croma-wall);
     --ag-header-foreground-color: var(--old-price);
@@ -33,6 +39,40 @@
     --ag-font-size: 13px;
     --ag-font-family: 'Inter', system-ui, sans-serif;
   }
+
+  body.light-theme {
+    /* Croma brand colors - LIGHT (Premium White) */
+    --navbar-carousel-color: #ffffff;
+    --text-color: #1a1a1a;
+    --croma-wall: #f8f9fa;
+    --old-price: #57606a;
+    --foot-color: #ffffff;
+    --hyperlink: #0bb893;
+    --circle: #8b949e;
+    --input-color: #ffffff;
+    --text-color-black: #ffffff;
+    --croma-wall-white: #1a1a1a;
+    --header-border: rgba(0, 0, 0, 0.08);
+    --toolbar-bg: #f6f8fa;
+    --input-bg: #ffffff;
+    --input-border: #d0d7de;
+    --card-bg: #ffffff;
+    --border-color: #d0d7de;
+
+    /* AG Grid theme overrides for Light */
+    --ag-foreground-color: #1a1a1a;
+    --ag-background-color: #ffffff;
+    --ag-header-foreground-color: #57606a;
+    --ag-header-background-color: #f6f8fa;
+    --ag-odd-row-background-color: #fafbfc;
+    --ag-row-hover-color: rgba(0, 233, 191, 0.1);
+    --ag-selected-row-background-color: rgba(0, 233, 191, 0.2);
+    --ag-border-color: #d0d7de;
+    --ag-row-border-color: #ebeff2;
+    --ag-input-background-color: #ffffff;
+    --ag-input-value-color: #1a1a1a;
+    --ag-input-focus-border-color: #0bb893;
+  }
 }
 
 @layer base {
@@ -47,6 +87,7 @@
     color: var(--text-color);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   /* Custom scrollbar */
@@ -80,7 +121,7 @@
 }
 
 .ag-theme-alpine-dark .ag-header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--header-border);
 }
 
 .ag-theme-alpine-dark .ag-header-cell {
@@ -99,12 +140,36 @@
   padding: 0;
 }
 
-.ag-theme-alpine-dark input[class^='ag-'] {
-  background: var(--input-color);
-  border: 1px solid var(--neon-green);
-  color: var(--text-color);
-  border-radius: 4px;
-  padding: 4px 8px;
+/* EXTREME SPECIFICITY: Target all AG Grid input types for theme consistency */
+.ag-theme-alpine-dark .ag-input-field-input,
+.ag-theme-alpine .ag-input-field-input,
+.ag-theme-alpine-dark .ag-cell-editor input,
+.ag-theme-alpine .ag-cell-editor input,
+.ag-theme-alpine-dark .ag-rich-select-value,
+.ag-theme-alpine .ag-rich-select-value,
+.ag-theme-alpine-dark input[class^='ag-'],
+.ag-theme-alpine input[class^='ag-'],
+.ag-theme-alpine .ag-cell-edit-wrapper input,
+.ag-theme-alpine-dark .ag-cell-edit-wrapper input {
+  background-color: var(--ag-input-background-color) !important;
+  color: var(--ag-input-value-color) !important;
+  border: 1px solid var(--ag-input-focus-border-color) !important;
+  border-radius: 4px !important;
+  padding: 4px 8px !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(0, 233, 191, 0.1) !important;
+  appearance: none !important;
+}
+
+.ag-theme-alpine-dark .ag-cell-edit-wrapper,
+.ag-theme-alpine .ag-cell-edit-wrapper,
+.ag-theme-alpine .ag-popup-editor,
+.ag-theme-alpine-dark .ag-popup-editor {
+  background-color: var(--ag-input-background-color) !important;
+  color: var(--ag-input-value-color) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+  border-radius: 4px !important;
+  border: 1px solid var(--ag-input-focus-border-color) !important;
 }
 
 .ag-theme-alpine-dark .ag-paging-panel {
@@ -112,12 +177,29 @@
   color: var(--old-price);
 }
 
-/* Upload zone animations */
-@keyframes pulse-border {
-  0%, 100% { border-color: rgba(0, 233, 191, 0.3); }
-  50% { border-color: rgba(0, 233, 191, 0.7); }
+/* Excel Mode Grid Styles */
+.excel-mode-grid .ag-cell {
+  border-right: 1px solid var(--ag-row-border-color) !important;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 11px;
 }
 
-.upload-zone-active {
-  animation: pulse-border 1.5s ease-in-out infinite;
+.excel-mode-grid .ag-row {
+  border-bottom: 1px solid var(--ag-row-border-color) !important;
+}
+
+.excel-mode-grid .ag-header-cell {
+  border-right: 1px solid var(--ag-border-color) !important;
+  background-color: var(--ag-header-background-color);
+}
+
+.excel-mode-grid .ag-cell-focus {
+  border: 1px solid var(--neon-green) !important;
+  background-color: rgba(0, 233, 191, 0.05) !important;
+  box-shadow: inset 0 0 2px var(--neon-green);
+  z-index: 10;
+}
+
+.excel-mode-grid .ag-header-cell-label {
+  justify-content: center;
 }

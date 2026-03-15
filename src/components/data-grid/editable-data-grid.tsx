@@ -2,6 +2,7 @@
 
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
+import { useAppStore } from '@/stores/app-store';
 import { AllCommunityModule, ModuleRegistry, ColDef, GridApi, CellValueChangedEvent } from 'ag-grid-community';
 import {
   Search,
@@ -11,6 +12,7 @@ import {
   FileSpreadsheet,
   Edit3,
   RotateCcw,
+  Loader2,
 } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -30,6 +32,7 @@ interface EditableDataGridProps {
   showBulkEdit?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   defaultNewRow?: Record<string, any>;
+  leftContent?: React.ReactNode;
 }
 
 export default function EditableDataGrid({
@@ -43,7 +46,9 @@ export default function EditableDataGrid({
   showExport = true,
   showBulkEdit = true,
   defaultNewRow = {},
+  leftContent,
 }: EditableDataGridProps) {
+  const { state } = useAppStore();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const gridRef = useRef<AgGridReact<any>>(null);
   const [searchText, setSearchText] = useState('');
@@ -53,6 +58,13 @@ export default function EditableDataGrid({
   const [bulkEditValue, setBulkEditValue] = useState('');
   const [showBulkEditPanel, setShowBulkEditPanel] = useState(false);
 
+  // Excel-like selection aggregates
+  const [aggregates, setAggregates] = useState({ sum: 0, avg: 0, count: 0 });
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<string | null>(null);
+  const [lastApiCallTime, setLastApiCallTime] = useState<string | null>(null);
+
   const defaultColDef = useMemo<ColDef>(
     () => ({
       sortable: true,
@@ -61,6 +73,8 @@ export default function EditableDataGrid({
       editable: editable,
       flex: 1,
       minWidth: 120,
+      // Enhanced styling for cell focus
+      cellStyle: { borderRight: '1px solid rgba(255,255,255,0.05)' },
     }),
     [editable]
   );
@@ -71,8 +85,8 @@ export default function EditableDataGrid({
       cols.push({
         headerCheckboxSelection: true,
         checkboxSelection: true,
-        width: 50,
-        maxWidth: 50,
+        width: 40,
+        maxWidth: 40,
         sortable: false,
         filter: false,
         editable: false,
@@ -86,23 +100,105 @@ export default function EditableDataGrid({
 
   const onCellValueChanged = useCallback(
     (event: CellValueChangedEvent) => {
-      if (onDataChange && gridRef.current?.api) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const allData: any[] = [];
-        gridRef.current.api.forEachNode((node) => {
-          if (node.data) allData.push(node.data);
-        });
+      if (!gridRef.current?.api) return;
+
+      // 1. Capture the latest data immediately
+      const allData: any[] = [];
+      gridRef.current.api.forEachNode((node) => {
+        if (node.data) allData.push({ ...node.data }); // Deep copy to avoid reference issues
+      });
+
+      // 2. Notify parent immediately
+      if (onDataChange) {
         onDataChange(allData);
       }
+
+      // 3. Debounce the "Remote API" sync
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+
+      setIsUpdating(true);
+      setSaveStatus('QUEUEING SYNC...');
+
+      debounceRef.current = setTimeout(async () => {
+        try {
+          const timestamp = new Date().toLocaleTimeString();
+          setLastApiCallTime(timestamp);
+          setSaveStatus(`SYNCING TO API [${timestamp}]...`);
+
+          console.group(`🌐 [MOCK API CALL] @ ${timestamp}`);
+          console.log('Target Row:', event.data.id);
+          console.log('Field:', event.column.getColId());
+          console.log('Update:', `${event.oldValue} -> ${event.newValue}`);
+          console.groupEnd();
+
+          // Network simulation
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
+          setSaveStatus('DATABASE SYNCED SUCCESSFULLY!');
+          setTimeout(() => setSaveStatus(null), 3000);
+        } catch (error) {
+          console.error('❌ MOCK API ERROR:', error);
+          setSaveStatus('SYNC FAILED!');
+        } finally {
+          setIsUpdating(false);
+          debounceRef.current = null;
+        }
+      }, 1000);
     },
     [onDataChange]
   );
+
+  const onCellEditingStarted = useCallback((event: any) => {
+    console.log('✏️ Editing Started:', event.column.getColId(), 'on row', event.data.id);
+  }, []);
+
+  const onCellEditingStopped = useCallback(() => {
+    if (gridRef.current?.api) {
+      console.log('💾 Cell Editing Stopped - Finalizing persistence');
+      const allData: any[] = [];
+      gridRef.current.api.forEachNode((node) => {
+        if (node.data) allData.push({ ...node.data });
+      });
+      if (onDataChange) onDataChange(allData);
+    }
+  }, [onDataChange]);
 
   const onSelectionChanged = useCallback(() => {
     if (gridRef.current?.api) {
       const selected = gridRef.current.api.getSelectedRows();
       setSelectedRows(selected);
+
+      // Calculate aggregates for numeric columns
+      const numericFields = columnDefs
+        .filter(c => c.cellDataType === 'number' || (c.field && !isNaN(Number(selected[0]?.[c.field]))))
+        .map(c => c.field)
+        .filter(Boolean) as string[];
+
+      if (selected.length > 0 && numericFields.length > 0) {
+        let totalSum = 0;
+        let numericCount = 0;
+        selected.forEach(row => {
+          numericFields.forEach(field => {
+            const val = Number(row[field]);
+            if (!isNaN(val)) {
+              totalSum += val;
+              numericCount++;
+            }
+          });
+        });
+        setAggregates({
+          sum: totalSum,
+          avg: numericCount > 0 ? totalSum / numericCount : 0,
+          count: selected.length
+        });
+      } else {
+        setAggregates({ sum: 0, avg: 0, count: selected.length });
+      }
     }
+  }, [columnDefs]);
+
+  const onCellFocused = useCallback((event: any) => {
+    // Keep focus logic if we want to retain cell-level selection effects but remove activeCell state
   }, []);
 
   const handleAddRow = useCallback(() => {
@@ -186,114 +282,148 @@ export default function EditableDataGrid({
   const editableFields = columnDefs.filter((c) => c.field && c.field !== 'id').map((c) => c.field!);
 
   return (
-    <div className="flex flex-col gap-3">
-      {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-col gap-1.5 rounded-xl p-2 border"
+      style={{ background: 'var(--toolbar-bg)', borderColor: 'var(--border-color)' }}>
+      {/* 1. Header Toolbar */}
+      <div className="flex flex-wrap items-center gap-2 px-1">
+        {leftContent && (
+          <div className="flex items-center gap-1.5 shrink-0">
+            {leftContent}
+          </div>
+        )}
+
         {/* Search */}
-        <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+        <div className="relative flex-1 min-w-[150px]">
+          <Search className="absolute left-2.5 top-1/2 h-3 w-3 -translate-y-1/2 text-slate-500" />
           <input
             type="text"
-            placeholder="Search across all columns..."
+            placeholder="Go to..."
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            className="w-full rounded-lg border border-white/10 bg-white/5 py-2 pl-10 pr-4 text-sm text-white placeholder-slate-500 outline-none transition-colors focus:border-blue-500/50 focus:bg-white/[0.07]"
+            className="w-full rounded-md border py-1 pl-8 pr-3 text-[11px] outline-none transition-colors focus:border-blue-500/50"
+            style={{
+              background: 'var(--input-bg)',
+              borderColor: 'var(--input-border)',
+              color: 'var(--text-color)'
+            }}
           />
         </div>
 
         {/* Action buttons */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1">
           {showAddRow && editable && (
             <button
               onClick={handleAddRow}
-              className="flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-2 text-xs font-medium text-white shadow-sm shadow-blue-500/25 transition-all hover:bg-blue-500 active:scale-95"
+              className="flex items-center gap-1 rounded-md bg-blue-600/90 px-2 py-1 text-[10px] font-medium text-white transition-all hover:bg-blue-500"
             >
-              <Plus className="h-3.5 w-3.5" />
-              Add Row
+              <Plus className="h-2.5 w-2.5" />
+              Row
             </button>
           )}
 
-          {showDeleteRow && editable && selectedRows.length > 0 && (
-            <button
-              onClick={handleDeleteRows}
-              className="flex items-center gap-1.5 rounded-lg bg-red-600/80 px-3 py-2 text-xs font-medium text-white transition-all hover:bg-red-500 active:scale-95"
-            >
-              <Trash2 className="h-3.5 w-3.5" />
-              Delete ({selectedRows.length})
-            </button>
-          )}
+          {selectedRows.length > 0 && (
+            <div className="flex items-center gap-1 animate-in fade-in slide-in-from-right-2">
+              {showDeleteRow && editable && (
+                <button
+                  onClick={handleDeleteRows}
+                  className="flex items-center gap-1 rounded-md bg-red-600/80 px-2 py-1 text-[10px] font-medium text-white hover:bg-red-500"
+                >
+                  <Trash2 className="h-2.5 w-2.5" />
+                  Del
+                </button>
+              )}
+              { (isUpdating || saveStatus) && (
+                <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border shadow-lg animate-in fade-in slide-in-from-top-4 duration-300
+                  ${saveStatus?.includes('FAILED') ? 'bg-red-500/20 border-red-500/40 text-red-500' : 
+                    saveStatus?.includes('SUCCESSFULLY') ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-500' : 'bg-blue-500/20 border-blue-500/40 text-blue-500'}`}>
+                  {isUpdating ? <Loader2 className="h-4 w-4 animate-spin" /> : <div className="h-2 w-2 rounded-full bg-current animate-pulse" />}
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-bold tracking-widest uppercase">{saveStatus}</span>
+                    {lastApiCallTime && !isUpdating && <span className="text-[8px] opacity-70">Last Sync: {lastApiCallTime}</span>}
+                  </div>
+                </div>
+              )}
 
-          {showBulkEdit && editable && selectedRows.length > 0 && (
-            <button
-              onClick={() => setShowBulkEditPanel(!showBulkEditPanel)}
-              className="flex items-center gap-1.5 rounded-lg bg-amber-600/80 px-3 py-2 text-xs font-medium text-white transition-all hover:bg-amber-500 active:scale-95"
-            >
-              <Edit3 className="h-3.5 w-3.5" />
-              Bulk Edit ({selectedRows.length})
-            </button>
+          {showBulkEdit && editable && (
+                <button
+                  onClick={() => setShowBulkEditPanel(!showBulkEditPanel)}
+                  className="flex items-center gap-1 rounded-md bg-amber-600/80 px-2 py-1 text-[10px] font-medium text-white hover:bg-amber-500"
+                >
+                  <Edit3 className="h-2.5 w-2.5" />
+                  Bulk
+                </button>
+              )}
+            </div>
           )}
 
           {showExport && (
-            <>
+            <div className="flex items-center gap-0.5 ml-1">
               <button
                 onClick={handleExportCSV}
-                className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs font-medium text-slate-300 transition-all hover:bg-white/10 active:scale-95"
+                className="rounded-md border p-1 hover:bg-white/10"
+                style={{ background: 'var(--input-bg)', borderColor: 'var(--border-color)', color: 'var(--old-price)' }}
+                title="CSV"
               >
-                <Download className="h-3.5 w-3.5" />
-                CSV
+                <Download className="h-3 w-3" />
               </button>
               <button
                 onClick={handleExportExcel}
-                className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs font-medium text-slate-300 transition-all hover:bg-white/10 active:scale-95"
+                className="rounded-md border p-1 hover:bg-white/10"
+                style={{ background: 'var(--input-bg)', borderColor: 'var(--border-color)', color: 'var(--old-price)' }}
+                title="Excel"
               >
-                <FileSpreadsheet className="h-3.5 w-3.5" />
-                Excel
+                <FileSpreadsheet className="h-3 w-3" />
               </button>
-            </>
+            </div>
           )}
         </div>
       </div>
 
-      {/* Bulk edit panel */}
+      {/* Bulk edit panel (Conditional) */}
       {showBulkEditPanel && (
-        <div className="flex flex-wrap items-center gap-2 rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
+        <div className="mx-1 flex flex-wrap items-center gap-1.5 rounded-md border p-2"
+          style={{ background: 'rgba(217, 119, 6, 0.05)', borderColor: 'rgba(217, 119, 6, 0.2)' }}>
           <select
             value={bulkEditField}
             onChange={(e) => setBulkEditField(e.target.value)}
-            className="rounded-lg border border-white/10 bg-slate-800 px-3 py-1.5 text-sm text-white outline-none"
+            className="rounded border px-2 py-1 text-[10px] outline-none"
+            style={{ background: 'var(--input-bg)', borderColor: 'var(--input-border)', color: 'var(--text-color)' }}
           >
-            <option value="">Select field...</option>
+            <option value="" style={{ background: 'var(--croma-wall)' }}>Field...</option>
             {editableFields.map((f) => (
-              <option key={f} value={f}>
+              <option key={f} value={f} style={{ background: 'var(--croma-wall)' }}>
                 {f}
               </option>
             ))}
           </select>
           <input
             type="text"
-            placeholder="New value"
+            placeholder="Value"
             value={bulkEditValue}
             onChange={(e) => setBulkEditValue(e.target.value)}
-            className="rounded-lg border border-white/10 bg-slate-800 px-3 py-1.5 text-sm text-white outline-none focus:border-blue-500/50"
+            className="rounded border px-2 py-1 text-[10px] outline-none focus:border-blue-500/50"
+            style={{ background: 'var(--input-bg)', borderColor: 'var(--input-border)', color: 'var(--text-color)' }}
           />
           <button
             onClick={handleBulkEdit}
             disabled={!bulkEditField}
-            className="rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-medium text-white transition-all hover:bg-amber-500 disabled:opacity-40"
+            className="rounded bg-amber-600 px-2 py-1 text-[10px] font-medium text-white disabled:opacity-40"
           >
             Apply
           </button>
           <button
             onClick={() => setShowBulkEditPanel(false)}
-            className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-400 transition-all hover:bg-white/10"
+            className="rounded px-2 py-1 text-[10px]"
+            style={{ background: 'var(--input-bg)', color: 'var(--old-price)' }}
           >
             Cancel
           </button>
         </div>
       )}
 
-      {/* Grid */}
-      <div className="ag-theme-alpine-dark rounded-xl border border-white/10 overflow-hidden" style={{ height: 520 }}>
+      {/* 2. Grid */}
+      <div className={`${state.theme === 'light' ? 'ag-theme-alpine' : 'ag-theme-alpine-dark'} rounded-md border overflow-hidden`}
+        style={{ height: 480, borderColor: 'var(--border-color)' }}>
         <AgGridReact
           ref={gridRef}
           rowData={rowData}
@@ -306,10 +436,16 @@ export default function EditableDataGrid({
           rowSelection="multiple"
           suppressRowClickSelection={true}
           onCellValueChanged={onCellValueChanged}
+          onCellEditingStarted={onCellEditingStarted}
+          onCellEditingStopped={onCellEditingStopped}
           onSelectionChanged={onSelectionChanged}
+          onCellFocused={onCellFocused}
           animateRows={true}
           getRowId={(params) => params.data.id}
           domLayout="normal"
+          headerHeight={32}
+          rowHeight={28}
+          className="excel-mode-grid"
         />
       </div>
     </div>

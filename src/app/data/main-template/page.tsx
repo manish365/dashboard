@@ -28,6 +28,7 @@ export default function MainTemplatePage() {
           width: 180,
           cellEditor: AutocompleteCellEditor,
           cellEditorParams: { options: groupNames },
+          pinned: 'left',
         },
         {
           field: 'CategoryDescription_IncentiveBucket',

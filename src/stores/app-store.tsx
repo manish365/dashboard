@@ -50,6 +50,7 @@ export interface AppState {
   datasetMeta: Record<string, DatasetMeta>;
   uploadedFiles: UploadedFile[];
   sidebarOpen: boolean;
+  theme: 'light' | 'dark';
 }
 
 // ─── Actions ──────────────────────────────────────────────────
@@ -65,6 +66,8 @@ type Action =
   | { type: 'REMOVE_UPLOADED_FILE'; payload: string }
   | { type: 'TOGGLE_SIDEBAR' }
   | { type: 'SET_ROLE'; payload: UserRole }
+  | { type: 'TOGGLE_THEME' }
+  | { type: 'SET_THEME'; payload: 'light' | 'dark' }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   | { type: 'CLONE_DATA'; payload: { fromKey: string; toKey: string } };
 
@@ -77,6 +80,7 @@ export const initialState: AppState = {
   datasetMeta: {},
   uploadedFiles: [],
   sidebarOpen: true,
+  theme: 'dark',
 };
 
 export function reducer(state: AppState, action: Action): AppState {
@@ -113,6 +117,15 @@ export function reducer(state: AppState, action: Action): AppState {
         ...state,
         user: state.user ? { ...state.user, role: action.payload } : null,
       };
+    case 'TOGGLE_THEME': {
+      const newTheme = state.theme === 'light' ? 'dark' : 'light';
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('croma-theme', newTheme);
+      }
+      return { ...state, theme: newTheme };
+    }
+    case 'SET_THEME':
+      return { ...state, theme: action.payload };
     case 'CLONE_DATA': {
       const sourceData = state.datasets[action.payload.fromKey] || [];
       return {
@@ -146,6 +159,15 @@ const AppContext = createContext<AppContextValue | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  // Persistence: Load theme from localStorage on mount
+  React.useEffect(() => {
+    const savedTheme = localStorage.getItem('croma-theme');
+    if (savedTheme === 'light' || savedTheme === 'dark') {
+      dispatch({ type: 'SET_THEME', payload: savedTheme });
+    }
+  }, []);
+
   return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;
 }
 

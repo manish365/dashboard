@@ -11,6 +11,8 @@ import {
   User,
   Shield,
   ArrowLeftRight,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
@@ -40,13 +42,13 @@ export default function TopNav() {
   };
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-white/10 px-4 backdrop-blur-xl lg:px-6"
-      style={{ background: 'var(--foot-color)' }}>
+    <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b px-4 backdrop-blur-xl lg:px-6 shadow-sm"
+      style={{ background: 'var(--foot-color)', borderColor: 'var(--header-border)' }}>
       {/* Left: menu + logo */}
       <div className="flex items-center gap-3">
         <button
           onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}
-          className="rounded-lg p-2 text-[var(--old-price)] transition-colors hover:bg-white/10 hover:text-white lg:hidden"
+          className="rounded-lg p-2 text-[var(--old-price)] transition-colors hover:bg-white/10 hover:text-white"
         >
           <Menu className="h-5 w-5" />
         </button>
@@ -56,14 +58,29 @@ export default function TopNav() {
             C
           </div>
           <div className="hidden sm:block">
-            <h1 className="text-sm font-bold text-white leading-tight">Croma Incentive</h1>
+            <h1 className="text-sm font-bold leading-tight" style={{ color: 'var(--text-color)' }}>Croma Incentive</h1>
             <p className="text-[10px] leading-tight" style={{ color: 'var(--old-price)' }}>Management Dashboard</p>
           </div>
         </div>
       </div>
 
-      {/* Right: user menu */}
-      {user && (
+      {/* Right: theme toggle + user menu */}
+      <div className="flex items-center gap-2">
+        {/* Theme Toggle */}
+        <button
+          onClick={() => dispatch({ type: 'TOGGLE_THEME' })}
+          className="flex h-9 w-9 items-center justify-center rounded-lg border transition-all hover:bg-white/5 active:scale-95"
+          style={{ background: 'var(--input-bg)', borderColor: 'var(--input-border)' }}
+          title={state.theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+        >
+          {state.theme === 'light' ? (
+            <Moon className="h-4 w-4 text-slate-600" />
+          ) : (
+            <Sun className="h-4 w-4 text-amber-400" />
+          )}
+        </button>
+
+        {user && (
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setShowDropdown(!showDropdown)}
@@ -74,7 +91,7 @@ export default function TopNav() {
               {user.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
             </div>
             <div className="hidden text-left md:block">
-              <p className="text-sm font-medium text-white leading-tight">{user.name}</p>
+              <p className="text-sm font-medium leading-tight" style={{ color: 'var(--text-color)' }}>{user.name}</p>
               <p className="text-[10px] leading-tight" style={{ color: 'var(--old-price)' }}>{user.email}</p>
             </div>
             <span className={`hidden rounded-full border px-2 py-0.5 text-[10px] font-semibold md:inline-block ${ROLE_COLORS[user.role]}`}>
@@ -84,14 +101,14 @@ export default function TopNav() {
           </button>
 
           {showDropdown && (
-            <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-white/10 p-2 shadow-2xl backdrop-blur-xl"
-              style={{ background: 'var(--navbar-carousel-color)' }}>
+            <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border p-2 shadow-2xl backdrop-blur-xl"
+              style={{ background: 'var(--navbar-carousel-color)', borderColor: 'var(--header-border)' }}>
               {/* User info */}
-              <div className="border-b border-white/10 px-3 py-2.5 mb-1">
+              <div className="border-b px-3 py-2.5 mb-1" style={{ borderColor: 'var(--header-border)' }}>
                 <div className="flex items-center gap-2">
                   <User className="h-4 w-4" style={{ color: 'var(--old-price)' }} />
                   <div>
-                    <p className="text-sm font-medium text-white">{user.name}</p>
+                    <p className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>{user.name}</p>
                     <p className="text-xs" style={{ color: 'var(--old-price)' }}>{user.email}</p>
                   </div>
                 </div>
@@ -125,6 +142,7 @@ export default function TopNav() {
           )}
         </div>
       )}
+      </div>
     </header>
   );
 }

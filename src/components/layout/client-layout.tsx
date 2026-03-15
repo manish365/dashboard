@@ -1,18 +1,21 @@
 'use client';
 
-import React from 'react';
-import { AppProvider } from '@/stores/app-store';
+import React, { useEffect } from 'react';
+import { AppProvider, useAppStore } from '@/stores/app-store';
 import MsalAppProvider from '@/providers/msal-provider';
 import AuthGuard from '@/components/auth/auth-guard';
 import TopNav from '@/components/layout/top-nav';
 import Sidebar from '@/components/layout/sidebar';
+import { ToastProvider } from '@/providers/toast-context';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
     <AppProvider>
       <MsalAppProvider>
         <AuthGuard>
-          <LayoutShell>{children}</LayoutShell>
+          <ToastProvider>
+            <LayoutShell>{children}</LayoutShell>
+          </ToastProvider>
         </AuthGuard>
       </MsalAppProvider>
     </AppProvider>
@@ -20,12 +23,22 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 }
 
 function LayoutShell({ children }: { children: React.ReactNode }) {
+  const { state } = useAppStore();
+
+  useEffect(() => {
+    if (state.theme === 'light') {
+      document.body.classList.add('light-theme');
+    } else {
+      document.body.classList.remove('light-theme');
+    }
+  }, [state.theme]);
+
   return (
     <div className="flex h-screen flex-col">
       <TopNav />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6" style={{ background: 'var(--text-color-black)' }}>
+        <main className="flex-1 overflow-y-auto p-4 lg:p-6 transition-colors duration-300" style={{ background: 'var(--text-color-black)' }}>
           {children}
         </main>
       </div>

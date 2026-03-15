@@ -128,11 +128,12 @@ export default function FileUploadZone({
   };
 
   return (
-    <div className="rounded-xl border border-white/10 bg-slate-900/50 p-4">
+    <div className="rounded-xl border p-4 shadow-sm"
+      style={{ background: 'var(--toolbar-bg)', borderColor: 'var(--border-color)' }}>
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <FileSpreadsheet className="h-4 w-4 text-blue-400" />
-          <h3 className="text-sm font-semibold text-white">{templateName}</h3>
+          <FileSpreadsheet className="h-4 w-4 text-blue-500" />
+          <h3 className="text-sm font-semibold" style={{ color: 'var(--text-color)' }}>{templateName}</h3>
         </div>
         {onClose && (
           <button onClick={onClose} className="text-slate-500 hover:text-white">
@@ -153,15 +154,15 @@ export default function FileUploadZone({
           className={`flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-dashed p-8 transition-all ${
             isDragging
               ? 'border-blue-500 bg-blue-500/10 upload-zone-active'
-              : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]'
+              : 'border-slate-300 bg-slate-500/5 dark:border-white/10 dark:bg-white/[0.02] hover:border-blue-400 hover:bg-blue-500/5'
           }`}
         >
-          <Upload className={`h-8 w-8 ${isDragging ? 'text-blue-400' : 'text-slate-500'}`} />
+          <Upload className={`h-8 w-8 ${isDragging ? 'text-blue-500' : 'text-slate-400'}`} />
           <div className="text-center">
-            <p className="text-sm text-slate-300">
+            <p className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>
               {isDragging ? 'Drop file here' : 'Drag & drop or click to browse'}
             </p>
-            <p className="mt-1 text-xs text-slate-500">Supports .xlsx, .xls, .xlsb, .csv</p>
+            <p className="mt-1 text-xs opacity-60" style={{ color: 'var(--text-color)' }}>Supports .xlsx, .xls, .xlsb, .csv</p>
           </div>
           <input
             ref={fileInputRef}
@@ -174,10 +175,11 @@ export default function FileUploadZone({
       ) : (
         <div className="space-y-3">
           {/* File info */}
-          <div className="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2">
+          <div className="flex items-center justify-between rounded-lg px-3 py-2 border"
+               style={{ background: 'var(--input-bg)', borderColor: 'var(--border-color)' }}>
             <div className="flex items-center gap-2">
-              <FileSpreadsheet className="h-4 w-4 text-green-400" />
-              <span className="text-sm text-white">{fileName}</span>
+              <FileSpreadsheet className="h-4 w-4 text-emerald-500" />
+              <span className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>{fileName}</span>
             </div>
             <button
               onClick={() => {
@@ -228,14 +230,15 @@ export default function FileUploadZone({
                   Preview (first {previewData.length} rows)
                 </span>
               </div>
-              <div className="overflow-x-auto rounded-lg border border-white/10">
+              <div className="overflow-x-auto rounded-lg border" style={{ borderColor: 'var(--border-color)' }}>
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="border-b border-white/10 bg-slate-800/50">
+                    <tr className="border-b" style={{ background: 'var(--navbar-carousel-color)', borderColor: 'var(--border-color)' }}>
                       {previewColumns.map((col) => (
                         <th
                           key={col}
-                          className="whitespace-nowrap px-3 py-2 text-left font-semibold text-slate-400"
+                          className="whitespace-nowrap px-3 py-2 text-left font-bold uppercase tracking-wider opacity-70"
+                          style={{ color: 'var(--text-color)' }}
                         >
                           {col}
                         </th>
@@ -246,10 +249,11 @@ export default function FileUploadZone({
                     {previewData.map((row, idx) => (
                       <tr
                         key={idx}
-                        className="border-b border-white/5 hover:bg-white/[0.02]"
+                        className="border-b hover:bg-blue-500/5"
+                        style={{ borderColor: 'var(--border-color)' }}
                       >
                         {previewColumns.map((col) => (
-                          <td key={col} className="whitespace-nowrap px-3 py-1.5 text-slate-300">
+                          <td key={col} className="whitespace-nowrap px-3 py-1.5 font-medium" style={{ color: 'var(--text-color)' }}>
                             {String(row[col] ?? '')}
                           </td>
                         ))}

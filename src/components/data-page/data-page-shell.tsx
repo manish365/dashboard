@@ -80,7 +80,8 @@ export default function DataPageShell({
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleDataChange = useCallback((data: any[]) => {
-    dispatch({ type: 'SET_DATASET', payload: { key: dataKey, data } });
+    console.log('🔄 [DataPageShell] handleDataChange triggered. Row count:', data.length, 'DataKey:', dataKey);
+    dispatch({ type: 'SET_DATASET', payload: { key: dataKey, data: [...data] } }); // Ensure new reference
     setIsDirty(true);
   }, [dataKey, dispatch]);
 
@@ -149,22 +150,23 @@ export default function DataPageShell({
     <div className="space-y-2">
       {/* ─── Compact Header Bar ─────────────────────────────────── */}
       <div
-        className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-white/10 px-4 py-2.5"
-        style={{ background: 'var(--navbar-carousel-color)' }}
+        className="flex flex-wrap items-center justify-between gap-2 rounded-xl border px-4 py-1.5"
+        style={{ background: 'var(--navbar-carousel-color)', borderColor: 'var(--header-border)' }}
       >
         {/* Left: Title · Period · Rows */}
         <div className="flex items-center gap-2 min-w-0">
-          <h1 className="text-base font-bold text-white truncate">{title}</h1>
+          <h1 className="text-base font-bold truncate" style={{ color: 'var(--text-color)' }}>{title}</h1>
           <ChevronRight className="h-3.5 w-3.5 shrink-0" style={{ color: 'var(--circle)' }} />
           <div className="flex items-center gap-2 shrink-0">
             {/* Month / Year picker */}
-            <div className="flex items-center gap-1 rounded-md border border-white/10 px-2 py-1"
-              style={{ background: 'rgba(255,255,255,0.04)' }}>
+            <div className="flex items-center gap-1 rounded-md border px-2 py-1"
+              style={{ background: 'var(--input-bg)', borderColor: 'var(--input-border)' }}>
               <Calendar className="h-3 w-3" style={{ color: 'var(--circle)' }} />
               <select
                 value={state.selectedMonth}
                 onChange={(e) => dispatch({ type: 'SET_MONTH', payload: Number(e.target.value) })}
-                className="bg-transparent text-xs text-white outline-none cursor-pointer"
+                className="bg-transparent text-xs outline-none cursor-pointer"
+                style={{ color: 'var(--text-color)' }}
               >
                 {MONTHS.map((m) => (
                   <option key={m.value} value={m.value} style={{ background: 'var(--navbar-carousel-color)' }}>
@@ -175,7 +177,8 @@ export default function DataPageShell({
               <select
                 value={state.selectedYear}
                 onChange={(e) => dispatch({ type: 'SET_YEAR', payload: Number(e.target.value) })}
-                className="bg-transparent text-xs text-white outline-none cursor-pointer"
+                className="bg-transparent text-xs outline-none cursor-pointer"
+                style={{ color: 'var(--text-color)' }}
               >
                 {years.map((y) => (
                   <option key={y} value={y} style={{ background: 'var(--navbar-carousel-color)' }}>
@@ -187,7 +190,7 @@ export default function DataPageShell({
 
             {/* Row count pill */}
             <span className="text-[10px] px-2 py-0.5 rounded-full font-medium"
-              style={{ background: 'rgba(0, 233, 191, 0.1)', color: 'var(--neon-green)' }}>
+              style={{ background: 'rgba(0, 233, 191, 0.1)', color: 'var(--neon-green)', border: '1px solid rgba(0, 233, 191, 0.2)' }}>
               {isLoading ? '…' : `${currentData.length} rows`}
             </span>
           </div>
@@ -232,8 +235,8 @@ export default function DataPageShell({
           )}
           {state.user && canClone(state.user.role) && (
             <button onClick={() => setShowCloneDialog(true)}
-              className="flex items-center gap-1 rounded-lg border border-white/10 px-2.5 py-1 text-[11px] font-medium transition-all hover:bg-white/5 active:scale-95"
-              style={{ color: 'var(--old-price)' }}>
+              className="flex items-center gap-1 rounded-lg border px-2.5 py-1 text-[11px] font-medium transition-all hover:bg-slate-500/5 active:scale-95"
+              style={{ color: 'var(--old-price)', borderColor: 'var(--border-color)' }}>
               <Copy className="h-3 w-3" />
               Clone
             </button>
@@ -251,7 +254,8 @@ export default function DataPageShell({
 
       {/* Upload zone (collapsible) */}
       {showUpload && (
-        <div className="rounded-xl border border-white/10" style={{ background: 'var(--croma-wall)' }}>
+        <div className="rounded-xl border animate-in slide-in-from-top-2 duration-300" 
+             style={{ background: 'var(--toolbar-bg)', borderColor: 'var(--border-color)' }}>
           <FileUploadZone
             templateName={title}
             expectedColumns={uploadExpectedColumns}
@@ -261,43 +265,46 @@ export default function DataPageShell({
         </div>
       )}
 
-      {/* Sub-tabs */}
-      {tabs && (
-        <div className="flex gap-0.5 rounded-lg border border-white/10 p-0.5" style={{ background: 'var(--croma-wall)' }}>
-          {tabs.map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
-              className="rounded-md px-3.5 py-1 text-[11px] font-medium transition-all"
-              style={{
-                background: activeTab === tab.key ? 'var(--neon-green)' : 'transparent',
-                color: activeTab === tab.key ? 'var(--text-color-black)' : 'var(--old-price)',
-              }}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Loading state */}
-      {isLoading ? (
-        <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-8 w-8 animate-spin" style={{ color: 'var(--neon-green)' }} />
-        </div>
-      ) : (
-        /* Grid */
-        <div>
-          <EditableDataGrid
-            rowData={currentData}
-            columnDefs={effectiveColDefs}
-            onDataChange={handleDataChange}
-            editable={isEditable}
-            title={title}
-            defaultNewRow={effectiveDefaultNewRow}
-          />
-        </div>
-      )}
+      {/* Grid Area with Unified Toolbar */}
+      <div className="flex-1 min-h-0 flex flex-col group">
+        {isLoading ? (
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="h-8 w-8 animate-spin" style={{ color: 'var(--neon-green)' }} />
+          </div>
+        ) : (
+          <div className="flex-1 min-h-0">
+            <EditableDataGrid
+              rowData={currentData}
+              columnDefs={effectiveColDefs}
+              onDataChange={handleDataChange}
+              editable={isEditable}
+              title={title}
+              defaultNewRow={effectiveDefaultNewRow}
+              leftContent={
+                tabs && (
+                  <div className="flex gap-1 rounded-md p-0.5 border"
+                    style={{ background: 'var(--toolbar-bg)', borderColor: 'var(--border-color)' }}>
+                    {tabs.map((tab) => (
+                      <button
+                        key={tab.key}
+                        onClick={() => setActiveTab(tab.key)}
+                        className={`rounded px-3 py-1 text-[10px] font-semibold transition-all ${
+                          activeTab === tab.key 
+                            ? 'bg-[var(--neon-green)] text-black shadow-[0_0_10px_rgba(0,233,191,0.3)]' 
+                            : 'hover:text-[var(--neon-green)] hover:bg-slate-500/5'
+                        }`}
+                        style={{ color: activeTab === tab.key ? '#000' : 'var(--old-price)' }}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+                )
+              }
+            />
+          </div>
+        )}
+      </div>
 
       {/* Clone dialog */}
       {showCloneDialog && (
