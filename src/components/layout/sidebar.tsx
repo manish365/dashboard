@@ -17,6 +17,14 @@ import {
   Layout,
   Box,
   BarChart3,
+  Sprout,
+  MessageSquare,
+  FlaskConical,
+  Video,
+  BookOpen,
+  GraduationCap,
+  Map,
+  Table2,
 } from 'lucide-react';
 
 const NAV_SECTIONS = [
@@ -50,6 +58,31 @@ const NAV_SECTIONS = [
       { href: '/reference/stores', label: 'Stores', icon: MapPin },
       { href: '/reference/groups', label: 'Groups & Categories', icon: FileSpreadsheet },
       { href: '/reference/employees', label: 'Employee Directory', icon: Users },
+    ],
+  },
+  {
+    title: 'AgroPilot AI',
+    items: [
+      { href: '/agropilot/dashboard', label: 'Farm Dashboard', icon: Sprout },
+      { href: '/agropilot/chat', label: 'AI Assistant', icon: MessageSquare },
+      { href: '/agropilot/analysis', label: 'Crop Analysis', icon: FlaskConical },
+    ],
+  },
+  {
+    title: 'LearnPath',
+    items: [
+      { href: '/learnpath/admin', label: 'Admin Dashboard', icon: BookOpen },
+      { href: '/learnpath/admin/roadmaps', label: 'Roadmaps', icon: Map },
+      { href: '/learnpath/admin/users', label: 'Users', icon: Users },
+      { href: '/learnpath/learner', label: 'Learner Catalog', icon: GraduationCap },
+      { href: '/learnpath/datagrid', label: 'Invoice Grid', icon: Table2 },
+      { href: '/learnpath/datagrid/employees', label: 'Employee Grid', icon: Users },
+    ],
+  },
+  {
+    title: 'AI Tools',
+    items: [
+      { href: '/video-creator', label: 'Video Creator', icon: Video },
     ],
   },
   {
