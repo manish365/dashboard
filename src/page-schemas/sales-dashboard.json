@@ -1,0 +1,80 @@
+{
+  "id": "sales-dashboard-123",
+  "pageName": "Sales Analysis Dashboard",
+  "slug": "sales-dashboard",
+  "layout": "grid",
+  "columns": 12,
+  "components": [
+    {
+      "id": "kpi-1",
+      "type": "KpiCard",
+      "props": {
+        "title": "Gross Revenue",
+        "value": "$1.2M",
+        "trend": 14,
+        "color": "emerald"
+      },
+      "layout": { "w": 3 }
+    },
+    {
+      "id": "kpi-2",
+      "type": "KpiCard",
+      "props": {
+        "title": "Active Stores",
+        "value": "48",
+        "trend": -2,
+        "color": "blue"
+      },
+      "layout": { "w": 3 }
+    },
+    {
+      "id": "kpi-3",
+      "type": "KpiCard",
+      "props": {
+        "title": "Avg Basket Value",
+        "value": "$840",
+        "trend": 5,
+        "color": "purple"
+      },
+      "layout": { "w": 3 }
+    },
+    {
+      "id": "kpi-4",
+      "type": "KpiCard",
+      "props": {
+        "title": "Customer CSAT",
+        "value": "4.8/5",
+        "trend": 0.5,
+        "color": "amber"
+      },
+      "layout": { "w": 3 }
+    },
+    {
+      "id": "info-1",
+      "type": "InfoTile",
+      "props": {
+        "label": "Q1 Performance Insight",
+        "description": "Sales have exceeded targets by 15% due to the new loyalty program rollout."
+      },
+      "layout": { "w": 12 }
+    },
+    {
+      "id": "table-1",
+      "type": "DataTable",
+      "props": {
+        "title": "Top Performing Stores",
+        "columns": [
+          { "key": "store", "label": "Store Name" },
+          { "key": "revenue", "label": "Revenue" },
+          { "key": "growth", "label": "Growth" }
+        ],
+        "data": [
+          { "store": "Mumbai Flagship", "revenue": "$450K", "growth": "18%" },
+          { "store": "Delhi Central", "revenue": "$320K", "growth": "12%" },
+          { "store": "Bangalore Tech Park", "revenue": "$280K", "growth": "22%" }
+        ]
+      },
+      "layout": { "w": 12 }
+    }
+  ]
+}

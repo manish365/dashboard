@@ -15,6 +15,8 @@ import {
   ShoppingCart,
   MapPin,
   Layout,
+  Box,
+  BarChart3,
 } from 'lucide-react';
 
 const NAV_SECTIONS = [
@@ -23,6 +25,12 @@ const NAV_SECTIONS = [
     items: [
       { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
       { href: '/approvals', label: 'Approvals', icon: CheckSquare },
+    ],
+  },
+  {
+    title: 'Analytics',
+    items: [
+      { href: '/analytics', label: 'Analytics & Insights', icon: BarChart3 },
     ],
   },
   {
@@ -48,6 +56,7 @@ const NAV_SECTIONS = [
     title: 'System',
     items: [
       { href: '/ui-showcase', label: 'UI Showcase', icon: Layout },
+      { href: '/builder', label: 'Page Builder', icon: Box },
     ],
   },
 ];

@@ -12,8 +12,9 @@ import { ColDef } from 'ag-grid-community';
 import { v4 as uuidv4 } from 'uuid';
 import {
   Send, CheckCircle, Clock, FileX2, Calendar,
-  Upload, Copy, X, Save, Loader2, ChevronRight
+  Upload, Copy, X, Save, Loader2, ChevronRight, BarChart3, Database
 } from 'lucide-react';
+import { useToast } from '@/providers/toast-context';
 
 interface DataPageShellProps {
   pageId: string;
@@ -45,6 +46,8 @@ export default function DataPageShell({
   const [isDirty, setIsDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSendingToAI, setIsSendingToAI] = useState(false);
+  const { showToast } = useToast();
   const years = getYears();
 
   const currentTab = tabs?.find((t) => t.key === activeTab);
@@ -116,6 +119,14 @@ export default function DataPageShell({
         },
       },
     });
+  };
+  
+  const handleSendToAI = async () => {
+    setIsSendingToAI(true);
+    // Simulate API call to A&I pipeline
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setIsSendingToAI(false);
+    showToast(`${title} data successfully pushed to A&I analytics pipeline.`, 'success');
   };
 
   const handleClone = (fromMonth: number, fromYear: number) => {
@@ -247,6 +258,21 @@ export default function DataPageShell({
               style={{ background: '#12DAA8', color: 'var(--text-color-black)' }}>
               <Send className="h-3 w-3" />
               Submit
+            </button>
+          )}
+
+          {status === 'Approved' && (
+            <button 
+              onClick={handleSendToAI}
+              disabled={isSendingToAI}
+              className="flex items-center gap-1.5 rounded-lg px-3 py-1 text-[11px] font-semibold transition-all hover:opacity-90 active:scale-95 disabled:opacity-60 bg-indigo-600 text-white shadow-lg shadow-indigo-500/20 mr-1"
+            >
+              {isSendingToAI ? (
+                <Loader2 className="h-3 w-3 animate-spin text-white" />
+              ) : (
+                <BarChart3 className="h-3.5 w-3.5 text-white" />
+              )}
+              {isSendingToAI ? 'Sending...' : 'Send to A&I'}
             </button>
           )}
         </div>
