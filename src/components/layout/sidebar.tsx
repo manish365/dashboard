@@ -25,74 +25,65 @@ import {
   GraduationCap,
   Map,
   Table2,
+  Store,
+  Package,
+  ShieldCheck,
+  Headphones,
+  GitBranch,
+  Tag,
+  Ticket,
+  Layers,
+  Settings2,
+  Mail,
+  Truck,
+  FileText,
+  ClipboardList,
+  Settings,
+  History,
+  Archive,
+  CreditCard,
+  UserPlus,
+  TreePalm,
+  Building2,
 } from 'lucide-react';
 
-const NAV_SECTIONS = [
-  {
-    title: 'Main',
-    items: [
-      { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-      { href: '/approvals', label: 'Approvals', icon: CheckSquare },
-    ],
-  },
-  {
-    title: 'Analytics',
-    items: [
-      { href: '/analytics', label: 'Analytics & Insights', icon: BarChart3 },
-    ],
-  },
-  {
-    title: 'Data Management',
-    items: [
-      { href: '/data/csat', label: 'CSAT Data', icon: Star },
-      { href: '/data/volume-budget', label: 'Volume Budget', icon: Target },
-      { href: '/data/main-template', label: 'Main Template', icon: FileSpreadsheet },
-      { href: '/data/sm-mo-mapping', label: 'SM MO Mapping', icon: MapPin },
-      { href: '/data/vas-sku', label: 'VAS SKU', icon: ShoppingCart },
-      { href: '/data/employee-master', label: 'Employee Master', icon: Users },
-    ],
-  },
-  {
-    title: 'Reference Data',
-    items: [
-      { href: '/reference/stores', label: 'Stores', icon: MapPin },
-      { href: '/reference/groups', label: 'Groups & Categories', icon: FileSpreadsheet },
-      { href: '/reference/employees', label: 'Employee Directory', icon: Users },
-    ],
-  },
-  {
-    title: 'AgroPilot AI',
-    items: [
-      { href: '/agropilot/dashboard', label: 'Farm Dashboard', icon: Sprout },
-      { href: '/agropilot/chat', label: 'AI Assistant', icon: MessageSquare },
-      { href: '/agropilot/analysis', label: 'Crop Analysis', icon: FlaskConical },
-    ],
-  },
-  {
-    title: 'LearnPath',
-    items: [
-      { href: '/learnpath/admin', label: 'Admin Dashboard', icon: BookOpen },
-      { href: '/learnpath/admin/roadmaps', label: 'Roadmaps', icon: Map },
-      { href: '/learnpath/admin/users', label: 'Users', icon: Users },
-      { href: '/learnpath/learner', label: 'Learner Catalog', icon: GraduationCap },
-      { href: '/learnpath/datagrid', label: 'Invoice Grid', icon: Table2 },
-      { href: '/learnpath/datagrid/employees', label: 'Employee Grid', icon: Users },
-    ],
-  },
-  {
-    title: 'AI Tools',
-    items: [
-      { href: '/video-creator', label: 'Video Creator', icon: Video },
-    ],
-  },
-  {
-    title: 'System',
-    items: [
-      { href: '/ui-showcase', label: 'UI Showcase', icon: Layout },
-      { href: '/builder', label: 'Page Builder', icon: Box },
-    ],
-  },
-];
+import { NAV_SECTIONS } from '@/config/navigation';
+
+const NavLink = React.memo(({ item, isActive, isOpen, onClick }: { item: any; isActive: boolean; isOpen: boolean; onClick: () => void }) => {
+  return (
+    <Link
+      href={item.href}
+      title={!isOpen ? item.label : undefined}
+      onClick={onClick}
+      className={`group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-all ${isActive
+        ? 'text-[var(--neon-green)]'
+        : 'hover:bg-white/5'
+        } ${!isOpen ? 'justify-center px-2' : ''}`}
+      style={{
+        background: isActive ? 'rgba(0, 233, 191, 0.08)' : undefined,
+        color: isActive ? 'var(--neon-green)' : 'var(--old-price)',
+        ...(item.highlight && !isActive ? { border: '1px solid rgba(0, 233, 191, 0.2)', background: 'rgba(0, 233, 191, 0.03)' } : {})
+      }}
+    >
+      <item.icon
+        className={`h-4 w-4 shrink-0 transition-colors ${item.highlight ? 'animate-pulse' : ''}`}
+        style={{
+          color: isActive || item.highlight ? 'var(--neon-green)' : 'var(--circle)',
+        }}
+      />
+      {isOpen && (
+        <span className="truncate transition-opacity duration-300 opacity-100">
+          {item.label}
+        </span>
+      )}
+      {isActive && isOpen && (
+        <div className="ml-auto h-1.5 w-1.5 rounded-full" style={{ background: 'var(--neon-green)' }} />
+      )}
+    </Link>
+  );
+});
+
+NavLink.displayName = 'NavLink';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -133,42 +124,17 @@ export default function Sidebar() {
                 style={{ color: 'var(--circle)' }}>
                 {section.title}
               </p>
-              {section.items.map((item) => {
-                const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    title={!state.sidebarOpen ? item.label : undefined}
-                    onClick={() => {
-                      if (window.innerWidth < 1024) dispatch({ type: 'TOGGLE_SIDEBAR' });
-                    }}
-                    className={`group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-all ${isActive
-                        ? 'text-[var(--neon-green)]'
-                        : 'hover:bg-white/5'
-                      } ${!state.sidebarOpen ? 'justify-center px-2' : ''}`}
-                    style={{
-                      background: isActive ? 'rgba(0, 233, 191, 0.08)' : undefined,
-                      color: isActive ? 'var(--neon-green)' : 'var(--old-price)',
-                    }}
-                  >
-                    <item.icon
-                      className="h-4 w-4 shrink-0 transition-colors"
-                      style={{
-                        color: isActive ? 'var(--neon-green)' : 'var(--circle)',
-                      }}
-                    />
-                    {state.sidebarOpen && (
-                      <span className="truncate transition-opacity duration-300 opacity-100">
-                        {item.label}
-                      </span>
-                    )}
-                    {isActive && state.sidebarOpen && (
-                      <div className="ml-auto h-1.5 w-1.5 rounded-full" style={{ background: 'var(--neon-green)' }} />
-                    )}
-                  </Link>
-                );
-              })}
+              {section.items.map((item) => (
+                <NavLink
+                  key={item.href}
+                  item={item}
+                  isOpen={state.sidebarOpen}
+                  isActive={pathname === item.href || pathname?.startsWith(item.href + '/')}
+                  onClick={() => {
+                    if (window.innerWidth < 1024) dispatch({ type: 'TOGGLE_SIDEBAR' });
+                  }}
+                />
+              ))}
             </div>
           ))}
         </nav>

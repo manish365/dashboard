@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --breakpoint-2xsm: 375px;
+        --breakpoint-xsm: 425px;
+        --breakpoint-3xl: 2000px;
+        --breakpoint-sm: 640px;
+        --breakpoint-md: 768px;
+        --breakpoint-lg: 1024px;
+        --breakpoint-xl: 1280px;
+        --breakpoint-2xl: 1536px;
+        --text-title-2xl: 72px;
+        --text-title-2xl--line-height: 90px;
+        --text-title-xl: 60px;
+        --text-title-xl--line-height: 72px;
+        --text-title-lg: 48px;
+        --text-title-lg--line-height: 60px;
+        --text-title-md: 36px;
+        --text-title-md--line-height: 44px;
+        --text-title-sm: 30px;
+        --text-title-sm--line-height: 38px;
+    }
+
+    .no-scrollbar {
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
