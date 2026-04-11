@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, Sparkles, ArrowRight, Loader2 } from 'lucide-react';
+import { Sparkles, ArrowRight, Loader2, Database } from 'lucide-react';
 
 interface SearchBarProps {
   onSearch: (config: any) => void;
@@ -15,52 +15,44 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
-
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:8000/api/search/parse?q=${encodeURIComponent(query)}`);
-      const result = await response.json();
-      setPreview(result);
-      onSearch(result);
-    } catch (err) {
-      console.error('Failed to parse search', err);
-    } finally {
-      setLoading(false);
-    }
+      const result = await (await fetch(`http://localhost:8000/api/search/parse?q=${encodeURIComponent(query)}`)).json();
+      setPreview(result); onSearch(result);
+    } catch (err) { console.error(err); } finally { setLoading(false); }
   };
 
   return (
     <div className="w-full">
       <form onSubmit={handleSearch} className="relative group">
         <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
-          {loading ? (
-            <Loader2 className="h-6 w-6 text-[#00E9BF] animate-spin" />
-          ) : (
-            <Sparkles className="h-6 w-6 text-[#00E9BF] group-hover:scale-110 group-hover:rotate-12 transition-all duration-500" />
-          )}
+          {loading
+            ? <Loader2 className="de-neon h-6 w-6 animate-spin" />
+            : <Sparkles className="de-neon h-6 w-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500" />
+          }
         </div>
-        <input 
-          type="text" 
+        <input
+          type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder='Try "orders price > 100" or "customers city Delhi"'
-          className="w-full pl-14 pr-32 py-5 bg-[#191919] border-2 border-white/5 rounded-[2rem] text-white placeholder-white/20 focus:outline-none focus:ring-8 focus:ring-[#00E9BF]/5 focus:border-[#00E9BF] transition-all shadow-2xl shadow-black/20 text-xl font-medium tracking-tight"
+          className="de-card-bg de-border de-text w-full pl-14 pr-32 py-5 border-2 rounded-[2rem] focus:outline-none focus:ring-8 focus:ring-[#00e9bf]/5 focus:border-[#00e9bf] transition-all shadow-2xl text-xl font-medium tracking-tight placeholder:opacity-40"
         />
-        <button 
+        <button
           type="submit"
           disabled={loading || !query.trim()}
-          className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2.5 bg-[#00E9BF] text-[#121212] px-7 py-3 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white active:scale-95 transition-all disabled:opacity-50 disabled:scale-100 shadow-xl shadow-[#00E9BF]/20"
+          className="de-bg-neon de-text-page absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2.5 px-7 py-3 rounded-2xl font-black uppercase tracking-widest text-xs hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:scale-100 shadow-xl"
         >
           {loading ? 'Synthesizing...' : 'Explore'}
           <ArrowRight className="h-4 w-4" />
         </button>
       </form>
 
-      {preview && preview.table && (
-        <div className="mt-5 flex items-center gap-4 animate-in fade-in slide-in-from-top-3 duration-500 bg-[#191919]/40 p-3 rounded-2xl border border-white/5 backdrop-blur-sm">
-          <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] pl-2">Intent Parsed:</span>
+      {preview?.table && (
+        <div className="de-card-bg de-border mt-5 flex items-center gap-4 animate-in fade-in slide-in-from-top-3 duration-500 p-3 rounded-2xl border backdrop-blur-sm">
+          <span className="de-text-muted text-[10px] font-black uppercase tracking-[0.2em] pl-2">Intent Parsed:</span>
           <div className="flex flex-wrap gap-2.5">
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-[#00E9BF]/10 text-[#00E9BF] rounded-xl text-[10px] font-black border border-[#00E9BF]/20 uppercase tracking-widest">
+            <div className="de-neon flex items-center gap-2 px-3 py-1.5 bg-[#00e9bf]/10 rounded-xl text-[10px] font-black border border-[#00e9bf]/20 uppercase tracking-widest">
               <Database className="h-3 w-3" />
               Table: {preview.table}
             </div>

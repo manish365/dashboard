@@ -31,7 +31,7 @@ export default function KpiCard({
   return (
     <div 
       className="group rounded-2xl border p-5 transition-all hover:translate-y-[-2px] hover:shadow-xl"
-      style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}
+      className="theme-card-bg group rounded-2xl border p-5 transition-all hover:translate-y-[-2px] hover:shadow-xl"
     >
       <div className="flex items-center justify-between">
         <div className={`rounded-lg p-2.5 ${colorMap[color]}`}>
@@ -44,9 +44,9 @@ export default function KpiCard({
         )}
       </div>
       <div className="mt-4">
-        <p className="text-2xl font-bold" style={{ color: 'var(--text-color)' }}>{value}</p>
-        <p className="text-xs font-semibold opacity-60" style={{ color: 'var(--text-color)' }}>{title}</p>
-        <p className="mt-1 text-[10px]" style={{ color: 'var(--old-price)' }}>{trendLabel}</p>
+        <p className="theme-text text-2xl font-bold">{value}</p>
+        <p className="theme-text text-xs font-semibold opacity-60">{title}</p>
+        <p className="theme-text-muted mt-1 text-[10px]">{trendLabel}</p>
       </div>
     </div>
   );

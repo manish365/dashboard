@@ -45,15 +45,14 @@ export default function Modal({
       {/* Modal Content */}
       <div 
         className={`relative w-full ${maxWidth} overflow-hidden rounded-2xl border shadow-2xl animate-in zoom-in-95 duration-200`}
-        style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}
+        className={`theme-card-bg relative w-full ${maxWidth} overflow-hidden rounded-2xl border shadow-2xl animate-in zoom-in-95 duration-200`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b px-6 py-4" style={{ borderColor: 'var(--border-color)' }}>
-          <h3 className="text-lg font-bold" style={{ color: 'var(--text-color)' }}>{title}</h3>
+        <div className="theme-border flex items-center justify-between border-b px-6 py-4">
+          <h3 className="theme-text text-lg font-bold">{title}</h3>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 transition-colors hover:bg-black/5"
-            style={{ color: 'var(--old-price)' }}
+            className="theme-text-muted rounded-lg p-1 transition-colors hover:bg-black/5"
           >
             <X className="h-5 w-5" />
           </button>

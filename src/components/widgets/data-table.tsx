@@ -21,26 +21,26 @@ export default function DataTable({
   ],
 }: DataTableProps) {
   return (
-    <div className="rounded-2xl border overflow-hidden" style={{ borderColor: 'var(--border-color)' }}>
-      <div className="px-5 py-4 border-b" style={{ background: 'var(--navbar-carousel-color)', borderColor: 'var(--border-color)' }}>
-        <h3 className="text-sm font-bold" style={{ color: 'var(--text-color)' }}>{title}</h3>
+    <div className="theme-border rounded-2xl border overflow-hidden">
+      <div className="theme-panel theme-border px-5 py-4 border-b">
+        <h3 className="theme-text text-sm font-bold">{title}</h3>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-xs text-left">
-          <thead style={{ background: 'var(--toolbar-bg)' }}>
+          <thead className="theme-table-header">
             <tr>
               {columns.map((col) => (
-                <th key={col.key} className="px-5 py-3 font-bold uppercase tracking-wider opacity-70" style={{ color: 'var(--text-color)' }}>
+                <th key={col.key} className="theme-text px-5 py-3 font-bold uppercase tracking-wider opacity-70">
                   {col.label}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody style={{ background: 'var(--croma-wall)' }}>
+          <tbody className="theme-table-body">
             {data.map((row, i) => (
-              <tr key={i} className="border-t hover:bg-slate-500/5 transition-colors" style={{ borderColor: 'var(--border-color)' }}>
+              <tr key={i} className="theme-border border-t hover:bg-slate-500/5 transition-colors">
                 {columns.map((col) => (
-                  <td key={col.key} className="px-5 py-3 font-medium" style={{ color: 'var(--text-color)' }}>
+                  <td key={col.key} className="theme-text px-5 py-3 font-medium">
                     {row[col.key]}
                   </td>
                 ))}

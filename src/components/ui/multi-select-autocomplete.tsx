@@ -52,13 +52,11 @@ export default function MultiSelectAutocomplete({
 
   return (
     <div className="flex flex-col gap-1.5" ref={containerRef}>
-      {label && <label className="text-xs font-semibold opacity-70" style={{ color: 'var(--text-color)' }}>{label}</label>}
+      {label && <label className="theme-text text-xs font-semibold opacity-70">{label}</label>}
       <div className="relative">
         <div
           className="flex min-h-[42px] flex-wrap gap-1.5 rounded-xl border p-2 transition-all focus-within:ring-2 focus-within:ring-blue-500/20"
-          style={{ background: 'var(--input-bg)', borderColor: 'var(--border-color)' }}
-          onClick={() => setIsOpen(true)}
-        >
+          className="theme-input-bg theme-border flex min-h-[42px] flex-wrap gap-1.5 rounded-xl border p-2 transition-all focus-within:ring-2 focus-within:ring-blue-500/20"
           {selected.map((opt) => (
             <span
               key={opt}
@@ -78,8 +76,7 @@ export default function MultiSelectAutocomplete({
           ))}
           <input
             type="text"
-            className="flex-1 bg-transparent text-sm outline-none placeholder:text-slate-500"
-            style={{ color: 'var(--text-color)' }}
+            className="theme-text flex-1 bg-transparent text-sm outline-none placeholder:text-slate-500"
             placeholder={selected.length === 0 ? placeholder : ''}
             value={query}
             onChange={(e) => {
@@ -88,16 +85,16 @@ export default function MultiSelectAutocomplete({
             }}
             onFocus={() => setIsOpen(true)}
           />
-          <ChevronDown className={`h-4 w-4 shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} style={{ color: 'var(--old-price)' }} />
+          <ChevronDown className={`theme-text-muted h-4 w-4 shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </div>
 
         {isOpen && (
           <div
             className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[250px] overflow-auto rounded-xl border p-1 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200"
-            style={{ background: 'var(--navbar-carousel-color)', borderColor: 'var(--header-border)' }}
+            className="theme-dropdown-bg absolute left-0 right-0 top-full z-50 mt-1 max-h-[250px] overflow-auto rounded-xl border p-1 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200"
           >
             {filteredOptions.length === 0 ? (
-              <div className="px-3 py-4 text-center text-sm" style={{ color: 'var(--old-price)' }}>
+              <div className="theme-text-muted px-3 py-4 text-center text-sm">
                 No options found
               </div>
             ) : (
@@ -105,8 +102,7 @@ export default function MultiSelectAutocomplete({
                 <div
                   key={opt}
                   className="flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors hover:bg-blue-500/10"
-                  style={{ color: 'var(--text-color)' }}
-                  onClick={() => toggleOption(opt)}
+                  className="theme-text flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors hover:bg-blue-500/10"
                 >
                   {opt}
                   {selected.includes(opt) && <Check className="h-4 w-4 text-blue-500" />}

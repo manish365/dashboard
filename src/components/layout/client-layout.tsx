@@ -38,7 +38,7 @@ function LayoutShell({ children }: { children: React.ReactNode }) {
       <TopNav />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6 transition-colors duration-300" style={{ background: 'var(--text-color-black)' }}>
+        <main className="theme-main-bg flex-1 overflow-y-auto p-4 lg:p-6 transition-colors duration-300">
           {children}
         </main>
       </div>

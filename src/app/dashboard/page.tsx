@@ -6,20 +6,7 @@ import { MONTHS, getYears, UPLOAD_TEMPLATES, DATA_PAGE_LABELS, DataPageId } from
 import { canUpload, canClone } from '@/lib/roles';
 import FileUploadZone from '@/components/upload/file-upload-zone';
 import CloneDialog from '@/components/clone/clone-dialog';
-import {
-  Calendar,
-  Upload,
-  Copy,
-  BarChart3,
-  Star,
-  Target,
-  FileSpreadsheet,
-  Users,
-  ShoppingCart,
-  MapPin,
-  ChevronRight,
-  X,
-} from 'lucide-react';
+import { Calendar, Upload, Copy, BarChart3, Star, Target, FileSpreadsheet, Users, ShoppingCart, MapPin, ChevronRight, X } from 'lucide-react';
 import Link from 'next/link';
 
 const DATA_PAGES: { id: DataPageId; icon: React.ElementType; href: string }[] = [
@@ -38,7 +25,6 @@ export default function DashboardPage() {
   const [activeTemplate, setActiveTemplate] = useState<string | null>(null);
   const years = getYears();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleFileLoaded = (data: any[], fileName: string) => {
     dispatch({
       type: 'ADD_UPLOADED_FILE',
@@ -56,10 +42,6 @@ export default function DashboardPage() {
     setActiveTemplate(null);
   };
 
-  const handleClone = () => {
-    // Clone logic handled in individual pages
-  };
-
   const summaryCards = [
     { icon: Star, label: 'CSAT Data', value: '580+', desc: 'Store scores' },
     { icon: Target, label: 'Volume Budget', value: '6.8K+', desc: 'SE targets' },
@@ -72,35 +54,27 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: 'var(--text-color)' }}>Dashboard</h1>
-          <p className="text-sm" style={{ color: 'var(--old-price)' }}>Manage incentive data for Croma stores</p>
+          <h1 className="theme-text text-2xl font-bold">Dashboard</h1>
+          <p className="theme-text-muted text-sm">Manage incentive data for Croma stores</p>
         </div>
-        {/* Month / Year selectors */}
-        <div className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-1.5"
-          style={{ background: 'var(--input-color)' }}>
-          <Calendar className="h-4 w-4" style={{ color: 'var(--circle)' }} />
+        <div className="theme-input-wrap flex items-center gap-2 rounded-lg border border-white/10 px-3 py-1.5">
+          <Calendar className="theme-text-subtle h-4 w-4" />
           <select
             value={state.selectedMonth}
             onChange={(e) => dispatch({ type: 'SET_MONTH', payload: Number(e.target.value) })}
-            className="bg-transparent text-sm outline-none"
-            style={{ color: 'var(--text-color)' }}
+            className="theme-text bg-transparent text-sm outline-none"
           >
             {MONTHS.map((m) => (
-              <option key={m.value} value={m.value} style={{ background: 'var(--navbar-carousel-color)' }}>
-                {m.label}
-              </option>
+              <option key={m.value} value={m.value} className="theme-dropdown-bg">{m.label}</option>
             ))}
           </select>
           <select
             value={state.selectedYear}
             onChange={(e) => dispatch({ type: 'SET_YEAR', payload: Number(e.target.value) })}
-            className="bg-transparent text-sm outline-none"
-            style={{ color: 'var(--text-color)' }}
+            className="theme-text bg-transparent text-sm outline-none"
           >
             {years.map((y) => (
-              <option key={y} value={y} style={{ background: 'var(--navbar-carousel-color)' }}>
-                {y}
-              </option>
+              <option key={y} value={y} className="theme-dropdown-bg">{y}</option>
             ))}
           </select>
         </div>
@@ -109,21 +83,17 @@ export default function DashboardPage() {
       {/* Summary cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {summaryCards.map((card) => (
-          <div
-            key={card.label}
-            className="group rounded-xl border p-5 transition-all hover:border-[var(--neon-green)]/20"
-            style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}
-          >
+          <div key={card.label} className="theme-card-bg group rounded-xl border p-5 transition-all hover:border-[var(--neon-green)]/20">
             <div className="flex items-center justify-between">
-              <div className="rounded-lg p-2.5" style={{ background: 'rgba(0, 233, 191, 0.08)' }}>
-                <card.icon className="h-5 w-5" style={{ color: 'var(--neon-green)' }} />
+              <div className="theme-neon-bg-subtle rounded-lg p-2.5">
+                <card.icon className="theme-text-neon h-5 w-5" />
               </div>
-              <BarChart3 className="h-4 w-4 transition-colors group-hover:opacity-80" style={{ color: 'var(--circle)' }} />
+              <BarChart3 className="theme-text-subtle h-4 w-4 transition-colors group-hover:opacity-80" />
             </div>
             <div className="mt-4">
-              <p className="text-2xl font-bold" style={{ color: 'var(--text-color)' }}>{card.value}</p>
-              <p className="text-xs" style={{ color: 'var(--old-price)' }}>{card.label}</p>
-              <p className="text-[10px] mt-0.5" style={{ color: 'var(--circle)' }}>{card.desc}</p>
+              <p className="theme-text text-2xl font-bold">{card.value}</p>
+              <p className="theme-text-muted text-xs">{card.label}</p>
+              <p className="theme-text-subtle text-[10px] mt-0.5">{card.desc}</p>
             </div>
           </div>
         ))}
@@ -135,8 +105,7 @@ export default function DashboardPage() {
           {canUpload(state.user.role) && (
             <button
               onClick={() => setShowUploadDialog(true)}
-              className="flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all hover:opacity-90 active:scale-[0.98]"
-              style={{ background: 'var(--neon-green)', color: 'var(--text-color-black)' }}
+              className="theme-btn-neon flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all active:scale-[0.98]"
             >
               <Upload className="h-4 w-4" />
               Upload Template
@@ -145,8 +114,7 @@ export default function DashboardPage() {
           {canClone(state.user.role) && (
             <button
               onClick={() => setShowCloneDialog(true)}
-              className="flex items-center gap-2 rounded-xl border px-5 py-3 text-sm font-medium transition-all hover:bg-slate-500/5 active:scale-[0.98]"
-              style={{ color: 'var(--old-price)', borderColor: 'var(--border-color)' }}
+              className="theme-btn-outline flex items-center gap-2 rounded-xl border px-5 py-3 text-sm font-medium transition-all hover:bg-slate-500/5 active:scale-[0.98]"
             >
               <Copy className="h-4 w-4" />
               Clone Previous Month
@@ -157,22 +125,19 @@ export default function DashboardPage() {
 
       {/* Data Pages quick links */}
       <div>
-        <h2 className="mb-3 text-lg font-semibold" style={{ color: 'var(--text-color)' }}>Data Tables</h2>
+        <h2 className="theme-text mb-3 text-lg font-semibold">Data Tables</h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {DATA_PAGES.map((page) => (
             <Link
               key={page.id}
               href={page.href}
-              className="group flex items-center justify-between rounded-xl border p-4 transition-all hover:border-[var(--neon-green)]/30"
-              style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}
+              className="theme-card-bg group flex items-center justify-between rounded-xl border p-4 transition-all hover:border-[var(--neon-green)]/30"
             >
               <div className="flex items-center gap-3">
-                <page.icon className="h-5 w-5 transition-colors" style={{ color: 'var(--circle)' }} />
-                <div>
-                  <p className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>{DATA_PAGE_LABELS[page.id]}</p>
-                </div>
+                <page.icon className="theme-text-subtle h-5 w-5 transition-colors" />
+                <p className="theme-text text-sm font-medium">{DATA_PAGE_LABELS[page.id]}</p>
               </div>
-              <ChevronRight className="h-4 w-4 transition-all group-hover:translate-x-0.5" style={{ color: 'var(--circle)' }} />
+              <ChevronRight className="theme-text-subtle h-4 w-4 transition-all group-hover:translate-x-0.5" />
             </Link>
           ))}
         </div>
@@ -181,17 +146,15 @@ export default function DashboardPage() {
       {/* Upload Dialog */}
       {showUploadDialog && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-white/10 p-6 shadow-2xl"
-            style={{ background: 'var(--croma-wall)' }}>
+          <div className="theme-card-bg w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-white/10 p-6 shadow-2xl">
             <div className="mb-5 flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-white">Upload Templates</h2>
-                <p className="text-xs" style={{ color: 'var(--old-price)' }}>Select a template type and upload the Excel file</p>
+                <h2 className="theme-text text-lg font-semibold">Upload Templates</h2>
+                <p className="theme-text-muted text-xs">Select a template type and upload the Excel file</p>
               </div>
               <button
                 onClick={() => { setShowUploadDialog(false); setActiveTemplate(null); }}
-                className="rounded-lg p-1.5 hover:bg-white/10"
-                style={{ color: 'var(--circle)' }}
+                className="theme-text-subtle rounded-lg p-1.5 hover:bg-white/10"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -203,13 +166,12 @@ export default function DashboardPage() {
                   <button
                     key={template.name}
                     onClick={() => setActiveTemplate(template.name)}
-                    className="flex items-center gap-3 rounded-xl border border-white/10 p-4 text-left transition-all hover:border-[var(--neon-green)]/30"
-                    style={{ background: 'var(--foot-color)' }}
+                    className="theme-toolbar-bg flex items-center gap-3 rounded-xl border border-white/10 p-4 text-left transition-all hover:border-[var(--neon-green)]/30"
                   >
-                    <FileSpreadsheet className="h-5 w-5" style={{ color: 'var(--neon-green)' }} />
+                    <FileSpreadsheet className="theme-text-neon h-5 w-5" />
                     <div>
-                      <p className="text-sm font-medium text-white">{template.label}</p>
-                      <p className="text-[10px]" style={{ color: 'var(--circle)' }}>{template.expectedColumns.length} columns expected</p>
+                      <p className="theme-text text-sm font-medium">{template.label}</p>
+                      <p className="theme-text-subtle text-[10px]">{template.expectedColumns.length} columns expected</p>
                     </div>
                   </button>
                 ))}
@@ -218,8 +180,7 @@ export default function DashboardPage() {
               <div>
                 <button
                   onClick={() => setActiveTemplate(null)}
-                  className="mb-3 flex items-center gap-1 text-xs hover:opacity-80"
-                  style={{ color: 'var(--hyperlink)' }}
+                  className="theme-text-link mb-3 flex items-center gap-1 text-xs hover:opacity-80"
                 >
                   ← Back to templates
                 </button>
@@ -234,40 +195,33 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Clone dialog */}
       {showCloneDialog && (
         <CloneDialog
           currentMonth={state.selectedMonth}
           currentYear={state.selectedYear}
-          onClone={handleClone}
+          onClone={() => {}}
           onClose={() => setShowCloneDialog(false)}
         />
       )}
 
-      {/* Recent uploads */}
       {state.uploadedFiles.length > 0 && (
         <div>
-          <h2 className="mb-3 text-lg font-semibold text-white">Recent Uploads</h2>
+          <h2 className="theme-text mb-3 text-lg font-semibold">Recent Uploads</h2>
           <div className="space-y-2">
             {state.uploadedFiles.map((file) => (
-              <div
-                key={file.id}
-                className="flex items-center justify-between rounded-xl border border-white/10 p-3"
-                style={{ background: 'var(--croma-wall)' }}
-              >
+              <div key={file.id} className="theme-card-bg flex items-center justify-between rounded-xl border border-white/10 p-3">
                 <div className="flex items-center gap-3">
-                  <FileSpreadsheet className="h-4 w-4" style={{ color: 'var(--neon-green)' }} />
+                  <FileSpreadsheet className="theme-text-neon h-4 w-4" />
                   <div>
-                    <p className="text-sm text-white">{file.fileName}</p>
-                    <p className="text-xs" style={{ color: 'var(--circle)' }}>
+                    <p className="theme-text text-sm">{file.fileName}</p>
+                    <p className="theme-text-subtle text-xs">
                       {file.templateName} • {file.rowCount} rows • {new Date(file.uploadedAt).toLocaleTimeString()}
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={() => dispatch({ type: 'REMOVE_UPLOADED_FILE', payload: file.id })}
-                  className="rounded-lg p-1.5 hover:bg-white/10"
-                  style={{ color: 'var(--circle)' }}
+                  className="theme-text-subtle rounded-lg p-1.5 hover:bg-white/10"
                 >
                   <X className="h-4 w-4" />
                 </button>

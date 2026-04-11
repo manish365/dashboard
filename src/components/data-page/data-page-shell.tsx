@@ -160,48 +160,36 @@ export default function DataPageShell({
   return (
     <div className="space-y-2">
       {/* ─── Compact Header Bar ─────────────────────────────────── */}
-      <div
-        className="flex flex-wrap items-center justify-between gap-2 rounded-xl border px-4 py-1.5"
-        style={{ background: 'var(--navbar-carousel-color)', borderColor: 'var(--header-border)' }}
-      >
+      <div className="theme-header-bar flex flex-wrap items-center justify-between gap-2 rounded-xl border px-4 py-1.5">
         {/* Left: Title · Period · Rows */}
         <div className="flex items-center gap-2 min-w-0">
-          <h1 className="text-base font-bold truncate" style={{ color: 'var(--text-color)' }}>{title}</h1>
-          <ChevronRight className="h-3.5 w-3.5 shrink-0" style={{ color: 'var(--circle)' }} />
+          <h1 className="theme-text text-base font-bold truncate">{title}</h1>
+          <ChevronRight className="theme-text-subtle h-3.5 w-3.5 shrink-0" />
           <div className="flex items-center gap-2 shrink-0">
             {/* Month / Year picker */}
-            <div className="flex items-center gap-1 rounded-md border px-2 py-1"
-              style={{ background: 'var(--input-bg)', borderColor: 'var(--input-border)' }}>
-              <Calendar className="h-3 w-3" style={{ color: 'var(--circle)' }} />
+            <div className="theme-period-picker flex items-center gap-1 rounded-md border px-2 py-1">
+              <Calendar className="theme-text-subtle h-3 w-3" />
               <select
                 value={state.selectedMonth}
                 onChange={(e) => dispatch({ type: 'SET_MONTH', payload: Number(e.target.value) })}
-                className="bg-transparent text-xs outline-none cursor-pointer"
-                style={{ color: 'var(--text-color)' }}
+                className="theme-text bg-transparent text-xs outline-none cursor-pointer"
               >
                 {MONTHS.map((m) => (
-                  <option key={m.value} value={m.value} style={{ background: 'var(--navbar-carousel-color)' }}>
-                    {m.label}
-                  </option>
+                  <option key={m.value} value={m.value} className="theme-dropdown-bg">{m.label}</option>
                 ))}
               </select>
               <select
                 value={state.selectedYear}
                 onChange={(e) => dispatch({ type: 'SET_YEAR', payload: Number(e.target.value) })}
-                className="bg-transparent text-xs outline-none cursor-pointer"
-                style={{ color: 'var(--text-color)' }}
+                className="theme-text bg-transparent text-xs outline-none cursor-pointer"
               >
                 {years.map((y) => (
-                  <option key={y} value={y} style={{ background: 'var(--navbar-carousel-color)' }}>
-                    {y}
-                  </option>
+                  <option key={y} value={y} className="theme-dropdown-bg">{y}</option>
                 ))}
               </select>
             </div>
 
-            {/* Row count pill */}
-            <span className="text-[10px] px-2 py-0.5 rounded-full font-medium"
-              style={{ background: 'rgba(0, 233, 191, 0.1)', color: 'var(--neon-green)', border: '1px solid rgba(0, 233, 191, 0.2)' }}>
+            <span className="theme-neon-pill text-[10px] px-2 py-0.5 rounded-full font-medium">
               {isLoading ? '…' : `${currentData.length} rows`}
             </span>
           </div>
@@ -220,12 +208,7 @@ export default function DataPageShell({
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-semibold transition-all hover:opacity-90 active:scale-95 disabled:opacity-60"
-              style={{
-                background: 'linear-gradient(135deg, #00e9bf, #12DAA8)',
-                color: 'var(--text-color-black)',
-                boxShadow: '0 0 12px rgba(0, 233, 191, 0.3)',
-              }}
+              className="theme-btn-save flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-semibold transition-all hover:opacity-90 active:scale-95 disabled:opacity-60"
             >
               {isSaving ? (
                 <Loader2 className="h-3 w-3 animate-spin" />
@@ -238,24 +221,21 @@ export default function DataPageShell({
 
           {state.user && canUpload(state.user.role) && (
             <button onClick={() => setShowUpload(!showUpload)}
-              className="flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-medium text-white transition-all hover:opacity-80 active:scale-95"
-              style={{ background: 'var(--neon-green)', color: 'var(--text-color-black)' }}>
+              className="theme-btn-neon flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-medium transition-all hover:opacity-80 active:scale-95">
               <Upload className="h-3 w-3" />
               Upload
             </button>
           )}
           {state.user && canClone(state.user.role) && (
             <button onClick={() => setShowCloneDialog(true)}
-              className="flex items-center gap-1 rounded-lg border px-2.5 py-1 text-[11px] font-medium transition-all hover:bg-slate-500/5 active:scale-95"
-              style={{ color: 'var(--old-price)', borderColor: 'var(--border-color)' }}>
+              className="theme-btn-outline flex items-center gap-1 rounded-lg border px-2.5 py-1 text-[11px] font-medium transition-all hover:bg-slate-500/5 active:scale-95">
               <Copy className="h-3 w-3" />
               Clone
             </button>
           )}
           {state.user && canSubmit(state.user.role) && status === 'Draft' && (
             <button onClick={handleSubmitForApproval}
-              className="flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-medium text-white transition-all hover:opacity-80 active:scale-95"
-              style={{ background: '#12DAA8', color: 'var(--text-color-black)' }}>
+              className="theme-btn-neon flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-medium transition-all hover:opacity-80 active:scale-95">
               <Send className="h-3 w-3" />
               Submit
             </button>
@@ -280,8 +260,7 @@ export default function DataPageShell({
 
       {/* Upload zone (collapsible) */}
       {showUpload && (
-        <div className="rounded-xl border animate-in slide-in-from-top-2 duration-300" 
-             style={{ background: 'var(--toolbar-bg)', borderColor: 'var(--border-color)' }}>
+        <div className="theme-toolbar-bg theme-border rounded-xl border animate-in slide-in-from-top-2 duration-300">
           <FileUploadZone
             templateName={title}
             expectedColumns={uploadExpectedColumns}
@@ -295,7 +274,7 @@ export default function DataPageShell({
       <div className="flex-1 min-h-0 flex flex-col group">
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="h-8 w-8 animate-spin" style={{ color: 'var(--neon-green)' }} />
+            <Loader2 className="theme-text-neon h-8 w-8 animate-spin" />
           </div>
         ) : (
           <div className="flex-1 min-h-0">
@@ -308,18 +287,16 @@ export default function DataPageShell({
               defaultNewRow={effectiveDefaultNewRow}
               leftContent={
                 tabs && (
-                  <div className="flex gap-1 rounded-md p-0.5 border"
-                    style={{ background: 'var(--toolbar-bg)', borderColor: 'var(--border-color)' }}>
+                  <div className="theme-toolbar-bg theme-border flex gap-1 rounded-md p-0.5 border">
                     {tabs.map((tab) => (
                       <button
                         key={tab.key}
                         onClick={() => setActiveTab(tab.key)}
                         className={`rounded px-3 py-1 text-[10px] font-semibold transition-all ${
-                          activeTab === tab.key 
-                            ? 'bg-[var(--neon-green)] text-black shadow-[0_0_10px_rgba(0,233,191,0.3)]' 
-                            : 'hover:text-[var(--neon-green)] hover:bg-slate-500/5'
+                          activeTab === tab.key
+                            ? 'theme-neon-bg theme-text-on-neon shadow-[0_0_10px_rgba(0,233,191,0.3)]'
+                            : 'theme-text-muted hover:text-[var(--neon-green)] hover:bg-slate-500/5'
                         }`}
-                        style={{ color: activeTab === tab.key ? '#000' : 'var(--old-price)' }}
                       >
                         {tab.label}
                       </button>

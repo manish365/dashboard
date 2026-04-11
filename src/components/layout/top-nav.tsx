@@ -4,16 +4,7 @@ import React from 'react';
 import { useAppStore } from '@/stores/app-store';
 import { ROLE_LABELS, ROLE_COLORS, UserRole } from '@/lib/roles';
 import { isAuthEnabled } from '@/lib/msal-config';
-import {
-  LogOut,
-  Menu,
-  ChevronDown,
-  User,
-  Shield,
-  ArrowLeftRight,
-  Sun,
-  Moon,
-} from 'lucide-react';
+import { LogOut, Menu, ChevronDown, User, Shield, ArrowLeftRight, Sun, Moon } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -22,8 +13,10 @@ export default function TopNav() {
   const { logout } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowDropdown(false);
@@ -42,106 +35,96 @@ export default function TopNav() {
   };
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b px-4 backdrop-blur-xl lg:px-6 shadow-sm"
-      style={{ background: 'var(--foot-color)', borderColor: 'var(--header-border)' }}>
-      {/* Left: menu + logo */}
+    <header className="theme-nav-bg sticky top-0 z-40 flex h-16 items-center justify-between border-b px-4 backdrop-blur-xl lg:px-6 shadow-sm">
       <div className="flex items-center gap-3">
         <button
           onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}
-          className="rounded-lg p-2 text-[var(--old-price)] transition-colors hover:bg-white/10 hover:text-white"
+          className="theme-text-muted rounded-lg p-2 transition-colors hover:bg-white/10"
         >
           <Menu className="h-5 w-5" />
         </button>
         <div className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg text-sm font-bold text-[var(--text-color-black)]"
-            style={{ background: 'var(--neon-green)' }}>
+          <div className="theme-neon-bg theme-text-on-neon flex h-9 w-9 items-center justify-center rounded-lg text-sm font-bold">
             C
           </div>
           <div className="hidden sm:block">
-            <h1 className="text-sm font-bold leading-tight" style={{ color: 'var(--text-color)' }}>Croma Incentive</h1>
-            <p className="text-[10px] leading-tight" style={{ color: 'var(--old-price)' }}>Management Dashboard</p>
+            <h1 className="theme-text text-sm font-bold leading-tight">Croma Incentive</h1>
+            <p className="theme-text-muted text-[10px] leading-tight">Management Dashboard</p>
           </div>
         </div>
       </div>
 
-      {/* Right: theme toggle + user menu */}
       <div className="flex items-center gap-2">
-        {/* Theme Toggle */}
         <button
           onClick={() => dispatch({ type: 'TOGGLE_THEME' })}
-          className="flex h-9 w-9 items-center justify-center rounded-lg border transition-all hover:bg-white/5 active:scale-95"
-          style={{ background: 'var(--input-bg)', borderColor: 'var(--input-border)' }}
-          title={state.theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+          className="theme-input-bg theme-border flex h-9 w-9 items-center justify-center rounded-lg border transition-all hover:bg-white/5 active:scale-95"
+          title={mounted ? (state.theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode') : ''}
         >
-          {state.theme === 'light' ? (
+          {!mounted ? (
+            <div className="h-4 w-4" />
+          ) : state.theme === 'light' ? (
             <Moon className="h-4 w-4 text-slate-600" />
           ) : (
             <Sun className="h-4 w-4 text-amber-400" />
           )}
         </button>
 
-        {user && (
-        <div className="relative" ref={dropdownRef}>
-          <button
-            onClick={() => setShowDropdown(!showDropdown)}
-            className="flex items-center gap-3 rounded-xl px-3 py-2 transition-colors hover:bg-white/5"
-          >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-[var(--text-color-black)]"
-              style={{ background: 'var(--neon-green)' }}>
-              {user.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
-            </div>
-            <div className="hidden text-left md:block">
-              <p className="text-sm font-medium leading-tight" style={{ color: 'var(--text-color)' }}>{user.name}</p>
-              <p className="text-[10px] leading-tight" style={{ color: 'var(--old-price)' }}>{user.email}</p>
-            </div>
-            <span className={`hidden rounded-full border px-2 py-0.5 text-[10px] font-semibold md:inline-block ${ROLE_COLORS[user.role]}`}>
-              {ROLE_LABELS[user.role]}
-            </span>
-            <ChevronDown className="h-4 w-4" style={{ color: 'var(--old-price)' }} />
-          </button>
+        {mounted && user && (
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setShowDropdown(!showDropdown)}
+              className="flex items-center gap-3 rounded-xl px-3 py-2 transition-colors hover:bg-white/5"
+            >
+              <div className="theme-neon-bg theme-text-on-neon flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold">
+                {user.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
+              </div>
+              <div className="hidden text-left md:block">
+                <p className="theme-text text-sm font-medium leading-tight">{user.name}</p>
+                <p className="theme-text-muted text-[10px] leading-tight">{user.email}</p>
+              </div>
+              <span className={`hidden rounded-full border px-2 py-0.5 text-[10px] font-semibold md:inline-block ${ROLE_COLORS[user.role]}`}>
+                {ROLE_LABELS[user.role]}
+              </span>
+              <ChevronDown className="theme-text-muted h-4 w-4" />
+            </button>
 
-          {showDropdown && (
-            <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border p-2 shadow-2xl backdrop-blur-xl"
-              style={{ background: 'var(--navbar-carousel-color)', borderColor: 'var(--header-border)' }}>
-              {/* User info */}
-              <div className="border-b px-3 py-2.5 mb-1" style={{ borderColor: 'var(--header-border)' }}>
-                <div className="flex items-center gap-2">
-                  <User className="h-4 w-4" style={{ color: 'var(--old-price)' }} />
-                  <div>
-                    <p className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>{user.name}</p>
-                    <p className="text-xs" style={{ color: 'var(--old-price)' }}>{user.email}</p>
+            {showDropdown && (
+              <div className="theme-dropdown-bg absolute right-0 top-full mt-2 w-64 rounded-xl border p-2 shadow-2xl backdrop-blur-xl">
+                <div className="theme-border-header border-b px-3 py-2.5 mb-1">
+                  <div className="flex items-center gap-2">
+                    <User className="theme-text-muted h-4 w-4" />
+                    <div>
+                      <p className="theme-text text-sm font-medium">{user.name}</p>
+                      <p className="theme-text-muted text-xs">{user.email}</p>
+                    </div>
+                  </div>
+                  <div className={`mt-2 inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[10px] font-semibold ${ROLE_COLORS[user.role]}`}>
+                    <Shield className="h-3 w-3" />
+                    {ROLE_LABELS[user.role]}
                   </div>
                 </div>
-                <div className={`mt-2 inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[10px] font-semibold ${ROLE_COLORS[user.role]}`}>
-                  <Shield className="h-3 w-3" />
-                  {ROLE_LABELS[user.role]}
-                </div>
-              </div>
 
-              {/* Switch role */}
-              <button
-                onClick={handleRoleSwitch}
-                className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-white/10"
-                style={{ color: 'var(--hyperlink)' }}
-              >
-                <ArrowLeftRight className="h-4 w-4" />
-                Switch to {user.role === UserRole.DATA_MANAGER ? 'Approver' : 'Data Manager'}
-              </button>
-
-              {/* Logout */}
-              {isAuthEnabled && (
                 <button
-                  onClick={logout}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-red-400 transition-colors hover:bg-red-500/10 hover:text-red-300"
+                  onClick={handleRoleSwitch}
+                  className="theme-text-link flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-white/10"
                 >
-                  <LogOut className="h-4 w-4" />
-                  Sign Out
+                  <ArrowLeftRight className="h-4 w-4" />
+                  Switch to {user.role === UserRole.DATA_MANAGER ? 'Approver' : 'Data Manager'}
                 </button>
-              )}
-            </div>
-          )}
-        </div>
-      )}
+
+                {isAuthEnabled && (
+                  <button
+                    onClick={logout}
+                    className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-red-400 transition-colors hover:bg-red-500/10 hover:text-red-300"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </header>
   );

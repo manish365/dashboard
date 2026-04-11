@@ -15,18 +15,13 @@ export default function InfoTile({
   icon: Icon = HelpCircle,
 }: InfoTileProps) {
   return (
-    <div 
-      className="flex items-start gap-4 rounded-2xl border p-5"
-      style={{ background: 'var(--navbar-carousel-color)', borderColor: 'var(--header-border)' }}
-    >
-      <div className="rounded-xl border p-3" style={{ background: 'var(--foot-color)', borderColor: 'var(--border-color)' }}>
+    <div className="theme-panel flex items-start gap-4 rounded-2xl border p-5">
+      <div className="theme-footer-bg rounded-xl border p-3">
         <Icon className="h-6 w-6 text-blue-500" />
       </div>
       <div>
-        <h4 className="text-sm font-bold" style={{ color: 'var(--text-color)' }}>{label}</h4>
-        <p className="mt-1 text-xs leading-relaxed opacity-60" style={{ color: 'var(--text-color)' }}>
-          {description}
-        </p>
+        <h4 className="theme-text text-sm font-bold">{label}</h4>
+        <p className="theme-text mt-1 text-xs leading-relaxed opacity-60">{description}</p>
       </div>
     </div>
   );

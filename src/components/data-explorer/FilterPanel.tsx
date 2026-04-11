@@ -16,87 +16,55 @@ interface FilterPanelProps {
 }
 
 const OPERATORS = [
-  { label: 'Equals', value: 'equals' },
-  { label: 'Contains', value: 'contains' },
-  { label: 'Greater Than', value: '>' },
-  { label: 'Less Than', value: '<' },
-  { label: 'Is Null', value: 'is_null' }
+  { value: 'equals' }, { value: 'contains' },
+  { value: '>' }, { value: '<' }, { value: 'is_null' }
 ];
 
 export const FilterPanel: React.FC<FilterPanelProps> = ({ columns, filters, onChange }) => {
-  const addFilter = () => {
-    onChange([...filters, { column: columns[0] || '', operator: 'equals', value: '' }]);
-  };
-
-  const removeFilter = (index: number) => {
-    onChange(filters.filter((_, i) => i !== index));
-  };
-
-  const updateFilter = (index: number, updates: Partial<FilterItem>) => {
-    const newFilters = [...filters];
-    newFilters[index] = { ...newFilters[index], ...updates };
-    onChange(newFilters);
+  const add = () => onChange([...filters, { column: columns[0] || '', operator: 'equals', value: '' }]);
+  const remove = (i: number) => onChange(filters.filter((_, idx) => idx !== i));
+  const update = (i: number, u: Partial<FilterItem>) => {
+    const f = [...filters]; f[i] = { ...f[i], ...u }; onChange(f);
   };
 
   return (
-    <div className="bg-[#191919] border border-white/5 rounded-2xl p-6 shadow-2xl shadow-black/20">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2.5">
-          <Filter className="h-4 w-4 text-[#00E9BF]" />
-          <h4 className="text-xs font-black text-white uppercase tracking-widest">Filter Layers</h4>
+    <div className="de-card-bg de-border rounded-2xl border p-4 shadow-2xl">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <Filter className="de-neon h-3.5 w-3.5" />
+          <h4 className="de-text text-[10px] font-black uppercase tracking-widest">Filter Layers</h4>
         </div>
-        <button 
-          onClick={addFilter}
-          className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#00E9BF] hover:text-[#121212] hover:bg-[#00E9BF] bg-[#00E9BF]/5 px-4 py-2 rounded-xl border border-[#00E9BF]/20 transition-all active:scale-95"
-        >
-          <Plus className="h-3.5 w-3.5" />
-          Add Filter
+        <button onClick={add} className="de-neon de-hover-bg-neon flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest bg-[#00e9bf]/5 px-3 py-1.5 rounded-lg border border-[#00e9bf]/20 transition-all active:scale-95">
+          <Plus className="h-3 w-3" />
+          Add Layer
         </button>
       </div>
 
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
         {filters.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-6 bg-[#121212]/50 rounded-xl border border-dashed border-white/5">
-            <div className="text-[10px] text-white/20 uppercase font-black tracking-widest italic">No filters active • Scanning all records</div>
+          <div className="de-input-bg de-border md:col-span-2 lg:col-span-3 flex items-center justify-center py-4 rounded-xl border border-dashed">
+            <div className="de-text-muted text-[9px] uppercase font-black tracking-widest italic opacity-40">No filters active • Scanning all records</div>
           </div>
         ) : (
           filters.map((filter, idx) => (
-            <div key={idx} className="flex items-center gap-3 bg-[#121212] p-3 rounded-xl border border-white/5 shadow-sm animate-in fade-in slide-in-from-left-2 duration-300">
-              <select 
-                value={filter.column}
-                onChange={(e) => updateFilter(idx, { column: e.target.value })}
-                className="flex-1 min-w-[140px] text-xs h-10 border border-white/10 rounded-xl bg-[#191919] px-4 text-white focus:outline-none focus:ring-1 focus:ring-[#00E9BF] transition-all font-bold"
-              >
-                {columns.map(col => (
-                  <option key={col} value={col}>{col.toUpperCase()}</option>
-                ))}
+            <div key={idx} className="de-input-bg de-border flex items-center gap-1.5 p-2 rounded-xl border shadow-sm animate-in fade-in slide-in-from-left-2 duration-300">
+              <select value={filter.column} onChange={(e) => update(idx, { column: e.target.value })}
+                className="de-select flex-1 min-w-0 text-[10px] h-8 border rounded-lg px-2 focus:outline-none focus:ring-1 focus:ring-[#00e9bf] transition-all font-bold appearance-none cursor-pointer">
+                {columns.map(col => {
+                  const parts = col.split('.');
+                  return <option key={col} value={col}>{parts.length > 1 ? `${parts[0].toUpperCase()} • ${parts[1].toUpperCase()}` : col.toUpperCase()}</option>;
+                })}
               </select>
-
-              <select 
-                value={filter.operator}
-                onChange={(e) => updateFilter(idx, { operator: e.target.value })}
-                className="w-32 text-xs h-10 border border-white/10 rounded-xl bg-[#191919] px-4 text-white focus:outline-none focus:ring-1 focus:ring-[#00E9BF] transition-all font-bold"
-              >
-                {OPERATORS.map(op => (
-                  <option key={op.value} value={op.value}>{op.label.toUpperCase()}</option>
-                ))}
+              <select value={filter.operator} onChange={(e) => update(idx, { operator: e.target.value })}
+                className="de-select w-20 text-[10px] h-8 border rounded-lg px-2 focus:outline-none focus:ring-1 focus:ring-[#00e9bf] transition-all font-bold appearance-none cursor-pointer text-center">
+                {OPERATORS.map(op => <option key={op.value} value={op.value}>{op.value.toUpperCase()}</option>)}
               </select>
-
               {filter.operator !== 'is_null' && (
-                <input 
-                  type="text"
-                  value={filter.value}
-                  onChange={(e) => updateFilter(idx, { value: e.target.value })}
-                  placeholder="Enter value..."
-                  className="flex-1 min-w-[120px] text-xs h-10 border border-white/10 rounded-xl bg-[#121212] px-4 text-white placeholder-white/20 focus:outline-none focus:ring-1 focus:ring-[#00E9BF] transition-all font-medium"
-                />
+                <input type="text" value={filter.value} onChange={(e) => update(idx, { value: e.target.value })} placeholder="..."
+                  className="de-input flex-1 min-w-0 text-[10px] h-8 border rounded-lg px-2 focus:ring-1 focus:ring-[#00e9bf] transition-all font-medium" />
               )}
-
-              <button 
-                onClick={() => removeFilter(idx)}
-                className="p-2 hover:bg-red-500/10 hover:text-red-500 rounded-xl text-white/20 transition-all active:scale-90"
-              >
-                <X className="h-4 w-4" />
+              <button onClick={() => remove(idx)} className="de-text-muted p-1.5 hover:bg-red-500/10 hover:text-red-500 rounded-lg transition-all active:scale-90">
+                <X className="h-3.5 w-3.5" />
               </button>
             </div>
           ))

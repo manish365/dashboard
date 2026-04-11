@@ -1,5 +1,204 @@
 @import "tailwindcss";
 
+/* ─── Global semantic theme classes ────────────────────────────────────────
+   Plain CSS classes referencing CSS variables so they react to body.light-theme
+   at runtime. Tailwind @theme bakes values at build time — don't use it here.
+──────────────────────────────────────────────────────────────────────────── */
+
+/* ── Layout / Shell ── */
+.theme-main-bg    { background-color: var(--text-color-black); }
+.theme-sidebar-bg { background-color: var(--foot-color); border-color: var(--border-color); }
+.theme-nav-bg     { background-color: var(--foot-color); border-color: var(--header-border); }
+.theme-card-bg    { background-color: var(--croma-wall); border-color: var(--border-color); }
+.theme-dropdown-bg { background-color: var(--navbar-carousel-color); border-color: var(--header-border); }
+.theme-toolbar-bg { background-color: var(--toolbar-bg); border-color: var(--border-color); }
+.theme-input-wrap { background-color: var(--input-color); }
+.theme-input-bg   { background-color: var(--input-bg); border-color: var(--input-border); }
+
+/* ── Text ── */
+.theme-text        { color: var(--text-color); }
+.theme-text-muted  { color: var(--old-price); }
+.theme-text-subtle { color: var(--circle); }
+.theme-text-link   { color: var(--hyperlink); }
+.theme-text-neon   { color: var(--neon-green); }
+.theme-text-on-neon { color: var(--text-color-black); }
+
+/* ── Borders ── */
+.theme-border   { border-color: var(--border-color); }
+.theme-border-header { border-color: var(--header-border); }
+
+/* ── Neon accent ── */
+.theme-neon-bg        { background-color: var(--neon-green); }
+.theme-neon-bg-subtle { background-color: rgba(0, 233, 191, 0.08); }
+.theme-neon-tag {
+  background-color: rgba(0, 233, 191, 0.08);
+  border: 1px solid rgba(0, 233, 191, 0.2);
+  color: var(--neon-green);
+}
+.theme-neon-pill {
+  background-color: rgba(0, 233, 191, 0.1);
+  border: 1px solid rgba(0, 233, 191, 0.2);
+  color: var(--neon-green);
+}
+.theme-neon-glow { box-shadow: 0 4px 24px rgba(0, 233, 191, 0.2); }
+
+/* ── Buttons ── */
+.theme-btn-neon {
+  background-color: var(--neon-green);
+  color: var(--text-color-black);
+  box-shadow: 0 4px 24px rgba(0, 233, 191, 0.2);
+}
+.theme-btn-neon:hover { opacity: 0.9; }
+
+.theme-btn-outline {
+  color: var(--old-price);
+  border-color: var(--border-color);
+}
+
+.theme-btn-save {
+  background: linear-gradient(135deg, #00e9bf, #12DAA8);
+  color: var(--text-color-black);
+  box-shadow: 0 0 12px rgba(0, 233, 191, 0.3);
+}
+
+/* ── Nav active link ── */
+.theme-nav-active {
+  background-color: rgba(0, 233, 191, 0.08);
+  color: var(--neon-green);
+}
+.theme-nav-highlight {
+  border: 1px solid rgba(0, 233, 191, 0.2);
+  background-color: rgba(0, 233, 191, 0.03);
+}
+.theme-nav-dot { background-color: var(--neon-green); }
+.theme-nav-icon-active { color: var(--neon-green); }
+.theme-nav-icon        { color: var(--circle); }
+.theme-nav-section     { color: var(--circle); }
+
+/* ── Sidebar version badge ── */
+.theme-version-badge {
+  background-color: rgba(0, 233, 191, 0.05);
+  border: 1px solid rgba(0, 233, 191, 0.1);
+}
+
+/* ── Login page ── */
+.theme-login-glow-1 { background: rgba(0, 233, 191, 0.06); }
+.theme-login-glow-2 { background: rgba(18, 218, 168, 0.06); }
+.theme-login-divider { background: linear-gradient(to right, transparent, var(--circle), transparent); }
+
+/* ── Data page header ── */
+.theme-header-bar {
+  background-color: var(--navbar-carousel-color);
+  border-color: var(--header-border);
+}
+.theme-period-picker {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+}
+
+/* ── Inputs ── */
+.theme-input {
+  background-color: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+.theme-input::placeholder { color: var(--old-price); opacity: 0.6; }
+.theme-input:focus { outline: none; border-color: var(--neon-green); }
+
+.theme-input-field {
+  background-color: var(--foot-color);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.theme-select {
+  background-color: var(--foot-color);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.theme-option { background-color: var(--navbar-carousel-color); }
+
+/* ── Cards / Panels ── */
+.theme-panel {
+  background-color: var(--navbar-carousel-color);
+  border-color: var(--header-border);
+}
+.theme-footer-bg { background-color: var(--foot-color); border-color: var(--border-color); }
+.theme-table-header { background-color: var(--toolbar-bg); }
+.theme-table-body  { background-color: var(--croma-wall); }
+
+/* ── Cancel button ── */
+.theme-btn-cancel {
+  border-color: var(--border-color);
+  color: var(--old-price);
+}
+
+/* ── Danger / delete ── */
+.theme-text-danger { color: #f87171; }
+
+/* ── Progress bar track ── */
+.theme-progress-track { background-color: var(--foot-color); }
+.theme-progress-fill  { background-color: var(--neon-green); }
+
+/* Backgrounds */
+.de-page-bg   { background-color: var(--text-color-black); }
+.de-card-bg   { background-color: var(--croma-wall); }
+.de-input-bg  { background-color: var(--text-color-black); }
+.de-toolbar-bg { background-color: var(--toolbar-bg); }
+.de-bg-neon   { background-color: var(--neon-green); }
+
+/* Text */
+.de-text       { color: var(--text-color); }
+.de-text-muted { color: var(--old-price); }
+.de-text-page  { color: var(--text-color-black); }
+.de-neon       { color: var(--neon-green); }
+
+/* Borders — use with Tailwind's border/border-t/border-b utilities */
+.de-border   { border-color: var(--border-color); }
+.de-border-t { border-top-color: var(--border-color); }
+.de-border-b { border-bottom-color: var(--border-color); }
+
+/* Hover states */
+.de-hover-text:hover    { color: var(--text-color); }
+.de-hover-neon:hover    { color: var(--neon-green); }
+.de-hover-bg-neon:hover { background-color: var(--neon-green); color: var(--text-color-black); }
+
+/* Interactive table rows */
+.de-row:hover { background-color: var(--toolbar-bg); }
+
+/* Inputs */
+.de-input {
+  background-color: var(--text-color-black);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+.de-input::placeholder { color: var(--old-price); opacity: 0.6; }
+.de-input:focus { outline: none; border-color: var(--neon-green); box-shadow: 0 0 0 1px var(--neon-green); }
+
+/* Selects */
+.de-select {
+  background-color: var(--croma-wall);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+.de-select:focus { outline: none; border-color: var(--neon-green); box-shadow: 0 0 0 1px var(--neon-green); }
+
+/* Neon accent helpers — replaces hardcoded #00e9bf hex in classNames */
+.de-neon-bg-subtle  { background-color: rgba(0, 233, 191, 0.08); }
+.de-neon-border     { border-color: rgba(0, 233, 191, 0.2); }
+.de-neon-tag {
+  background-color: rgba(0, 233, 191, 0.08);
+  border: 1px solid rgba(0, 233, 191, 0.2);
+  color: var(--neon-green);
+}
+.de-save-btn {
+  background-color: var(--croma-wall);
+  border: 1px solid rgba(0, 233, 191, 0.2);
+  color: var(--neon-green);
+}
+.de-save-btn:hover { background-color: var(--neon-green); color: var(--text-color-black); }
+
 @layer base {
   :root {
     /* Croma brand colors - DARK (Default) */

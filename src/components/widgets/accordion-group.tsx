@@ -31,11 +31,10 @@ export default function AccordionGroup({
   return (
     <div className="flex w-full flex-col gap-2">
       {items.map((item, index) => (
-        <div key={index} className="rounded-xl border transition-all" style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}>
+        <div key={index} className="theme-card-bg rounded-xl border transition-all">
           <button
             onClick={() => setOpenIndex(openIndex === index ? null : index)}
-            className="flex w-full items-center justify-between px-5 py-4 text-left transition-colors hover:bg-white/5"
-            style={{ color: 'var(--text-color)' }}
+            className="theme-text flex w-full items-center justify-between px-5 py-4 text-left transition-colors hover:bg-white/5"
           >
             <span className="text-sm font-bold">{item.title}</span>
             <ChevronDown 
@@ -46,7 +45,7 @@ export default function AccordionGroup({
           <div 
             className={`overflow-hidden transition-all duration-300 ${openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
           >
-            <div className="border-t px-5 py-4 text-sm leading-relaxed opacity-70" style={{ borderColor: 'var(--border-color)', color: 'var(--text-color)' }}>
+            <div className="theme-border theme-text border-t px-5 py-4 text-sm leading-relaxed opacity-70">
               {item.content}
             </div>
           </div>
