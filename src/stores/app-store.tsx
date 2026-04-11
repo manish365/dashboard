@@ -120,7 +120,7 @@ export function reducer(state: AppState, action: Action): AppState {
     case 'TOGGLE_THEME': {
       const newTheme = state.theme === 'light' ? 'dark' : 'light';
       if (typeof window !== 'undefined') {
-        localStorage.setItem('croma-theme', newTheme);
+        localStorage.setItem('store-theme', newTheme);
       }
       return { ...state, theme: newTheme };
     }
@@ -162,7 +162,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Persistence: Load theme from localStorage on mount
   React.useEffect(() => {
-    const savedTheme = localStorage.getItem('croma-theme');
+    const savedTheme = localStorage.getItem('store-theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {
       dispatch({ type: 'SET_THEME', payload: savedTheme });
     }

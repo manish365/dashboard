@@ -73,7 +73,7 @@ describe('ROLE_LABELS and ROLE_COLORS', () => {
 describe('MOCK_USER', () => {
   it('has correct default values', () => {
     expect(MOCK_USER.name).toBe('Demo User');
-    expect(MOCK_USER.email).toBe('demo.user@croma.com');
+    expect(MOCK_USER.email).toBe('demo.user@store.com');
     expect(MOCK_USER.role).toBe(UserRole.DATA_MANAGER);
   });
 });

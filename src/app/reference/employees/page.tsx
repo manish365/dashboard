@@ -24,7 +24,7 @@ export default function EmployeesPage() {
     <div className="flex h-full flex-col p-6">
       <div className="mb-6 flex flex-col gap-1">
         <h1 className="text-2xl font-bold tracking-tight text-white">Employee Directory</h1>
-        <p className="text-sm text-slate-400">Croma personnel and their assignments</p>
+        <p className="text-sm text-slate-400">Store personnel and their assignments</p>
       </div>
       <div className="flex-1 overflow-hidden">
         <EditableDataGrid

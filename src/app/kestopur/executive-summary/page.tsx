@@ -141,7 +141,7 @@ export default function ExecutiveSummary() {
             className="text-sm mt-3 max-w-xl leading-relaxed theme-text-muted"
           >
             Real-time strategic performance indicators for the Kestopur ecosystem. 
-            Aggregated diagnostics and growth trajectories for Croma stakeholders.
+            Aggregated diagnostics and growth trajectories for Store stakeholders.
           </motion.p>
         </div>
 

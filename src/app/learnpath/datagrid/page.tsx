@@ -70,7 +70,7 @@ export default function DataGridPage() {
   const [page, setPage] = useState(1);
   const [rpp, setRpp] = useState(12);
   const [selected, setSelected] = useState<Set<string>>(new Set());
-  const debounce = useRef<ReturnType<typeof setTimeout>>();
+  const debounce = useRef<ReturnType<typeof setTimeout>>(null);
 
   const filtered = useMemo(() => INVOICE_DATA.filter(r => {
     if (filters.id && !r.id.toLowerCase().includes(filters.id.toLowerCase())) return false;

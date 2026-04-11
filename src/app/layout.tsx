@@ -3,8 +3,8 @@ import './globals.css';
 import ClientLayout from '@/components/layout/client-layout';
 
 export const metadata: Metadata = {
-  title: 'Croma Incentive Management Dashboard',
-  description: 'Enterprise incentive management dashboard for Croma stores',
+  title: 'weboffice Management Dashboard',
+  description: 'Enterprise incentive management dashboard for Store stores',
 };
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
             __html: `
               (function() {
                 try {
-                  var saved = localStorage.getItem('croma-theme');
+                  var saved = localStorage.getItem('store-theme');
                   var theme = saved || 'light';
                   if (theme === 'light') {
                     document.body.classList.add('light-theme');

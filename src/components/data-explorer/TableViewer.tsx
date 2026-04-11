@@ -64,9 +64,9 @@ export const TableViewer: React.FC<TableViewerProps> = ({ tableName, tables = []
   const columns = data.length > 0 ? Object.keys(data[0]) : [];
 
   return (
-    <div className="de-card-bg de-border flex flex-col h-full rounded-2xl shadow-2xl border overflow-hidden">
+    <div className="de-card-bg de-border flex flex-col h-full rounded-xl shadow-2xl border overflow-hidden">
       {/* Header */}
-      <div className="de-toolbar-bg de-border flex items-center justify-between p-5 border-b shrink-0">
+      <div className="de-toolbar-bg de-border flex items-center justify-between p-3.5 border-b shrink-0">
         <div className="flex items-center gap-3">
           <Table className="de-neon h-5 w-5" />
           <div className="flex flex-col">
@@ -107,7 +107,7 @@ export const TableViewer: React.FC<TableViewerProps> = ({ tableName, tables = []
                   ? <><span className="de-text-muted opacity-40">{parts[0]}.</span>{parts.slice(1).join('_')}</>
                   : col;
                 return (
-                  <th key={col} className="de-text-muted px-4 py-4 text-[10px] font-black uppercase tracking-widest group cursor-pointer hover:bg-white/2 transition-colors">
+                  <th key={col} className="de-text-muted px-4 py-3 text-[10px] font-black uppercase tracking-widest group cursor-pointer hover:bg-white/2 transition-colors">
                     <div className="flex items-center gap-2">
                       {displayName}
                       <ArrowUpDown className="de-neon h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -121,7 +121,7 @@ export const TableViewer: React.FC<TableViewerProps> = ({ tableName, tables = []
             {data.map((row, idx) => (
               <tr key={idx} className="de-border de-row border-b transition-colors">
                 {columns.map(col => (
-                  <td key={col} className="de-text px-4 py-3.5 text-xs whitespace-nowrap font-medium">
+                  <td key={col} className="de-text px-4 py-2 text-xs whitespace-nowrap font-medium">
                     {row[col] !== null ? String(row[col]) : <span className="de-text-muted italic opacity-40">null</span>}
                   </td>
                 ))}

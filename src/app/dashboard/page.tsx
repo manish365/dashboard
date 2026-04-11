@@ -55,7 +55,7 @@ export default function DashboardPage() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="theme-text text-2xl font-bold">Dashboard</h1>
-          <p className="theme-text-muted text-sm">Manage incentive data for Croma stores</p>
+          <p className="theme-text-muted text-sm">Manage incentive data for Store stores</p>
         </div>
         <div className="theme-input-wrap flex items-center gap-2 rounded-lg border border-white/10 px-3 py-1.5">
           <Calendar className="theme-text-subtle h-4 w-4" />

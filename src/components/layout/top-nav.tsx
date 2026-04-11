@@ -45,10 +45,10 @@ export default function TopNav() {
         </button>
         <div className="flex items-center gap-2.5">
           <div className="theme-neon-bg theme-text-on-neon flex h-9 w-9 items-center justify-center rounded-lg text-sm font-bold">
-            C
+            W
           </div>
           <div className="hidden sm:block">
-            <h1 className="theme-text text-sm font-bold leading-tight">Croma Incentive</h1>
+            <h1 className="theme-text text-sm font-bold leading-tight">weboffice</h1>
             <p className="theme-text-muted text-[10px] leading-tight">Management Dashboard</p>
           </div>
         </div>

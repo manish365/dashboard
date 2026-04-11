@@ -18,7 +18,7 @@ export default function StoresPage() {
     <div className="flex h-full flex-col p-6">
       <div className="mb-6 flex flex-col gap-1">
         <h1 className="text-2xl font-bold tracking-tight text-white">Stores</h1>
-        <p className="text-sm text-slate-400">Master list of Croma store locations</p>
+        <p className="text-sm text-slate-400">Master list of Store store locations</p>
       </div>
       <div className="flex-1 overflow-hidden">
         <EditableDataGrid

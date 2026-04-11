@@ -25,10 +25,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   return (
     <div className="w-full">
       <form onSubmit={handleSearch} className="relative group">
-        <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+        <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
           {loading
-            ? <Loader2 className="de-neon h-6 w-6 animate-spin" />
-            : <Sparkles className="de-neon h-6 w-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500" />
+            ? <Loader2 className="de-neon h-4 w-4 animate-spin" />
+            : <Sparkles className="de-neon h-4 w-4 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500" />
           }
         </div>
         <input
@@ -36,15 +36,15 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder='Try "orders price > 100" or "customers city Delhi"'
-          className="de-card-bg de-border de-text w-full pl-14 pr-32 py-5 border-2 rounded-[2rem] focus:outline-none focus:ring-8 focus:ring-[#00e9bf]/5 focus:border-[#00e9bf] transition-all shadow-2xl text-xl font-medium tracking-tight placeholder:opacity-40"
+          className="de-card-bg de-border de-text w-full pl-11 pr-28 py-2.5 border rounded-xl focus:outline-none focus:ring-4 focus:ring-[#00e9bf]/5 focus:border-[#00e9bf] transition-all shadow-xl text-sm font-medium tracking-tight placeholder:opacity-40"
         />
         <button
           type="submit"
           disabled={loading || !query.trim()}
-          className="de-bg-neon de-text-page absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2.5 px-7 py-3 rounded-2xl font-black uppercase tracking-widest text-xs hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:scale-100 shadow-xl"
+          className="de-bg-neon de-text-page absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-2 px-5 py-1.5 rounded-lg font-black uppercase tracking-widest text-[10px] hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:scale-100 shadow-lg"
         >
-          {loading ? 'Synthesizing...' : 'Explore'}
-          <ArrowRight className="h-4 w-4" />
+          {loading ? 'Thinking...' : 'Explore'}
+          <ArrowRight className="h-3.5 w-3.5" />
         </button>
       </form>
 

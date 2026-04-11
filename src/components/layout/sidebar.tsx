@@ -87,7 +87,7 @@ export default function Sidebar() {
         <div className={`absolute bottom-0 left-0 right-0 theme-border border-t p-3 transition-opacity duration-300
           ${state.sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <div className="theme-version-badge rounded-lg p-2.5">
-            <p className="theme-text-neon text-xs font-medium">Croma Incentive v1.0</p>
+            <p className="theme-text-neon text-xs font-medium">weboffice v1.0</p>
             <p className="theme-text-subtle text-[10px] mt-0.5">Enterprise Dashboard</p>
           </div>
         </div>

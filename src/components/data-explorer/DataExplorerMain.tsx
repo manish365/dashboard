@@ -98,19 +98,19 @@ export const DataExplorerMain: React.FC<DataExplorerMainProps> = ({ initialConfi
   );
 
   return (
-    <div className="de-page-bg flex h-[calc(100vh-48px)] gap-6 p-6 relative overflow-hidden">
+    <div className="de-page-bg flex h-[calc(100vh-48px)] gap-4 relative overflow-hidden">
 
       {/* Sidebar Toggle */}
       <button
         onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-        className="de-card-bg de-border de-text-muted de-hover-neon absolute left-[20px] top-[40px] z-50 p-2 border rounded-full transition-all shadow-xl"
+        className="de-card-bg de-border de-text-muted de-hover-neon absolute z-50 p-2 border rounded-full transition-all shadow-xl"
       >
         {isSidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
       </button>
 
       {/* Sidebar */}
-      <div className={`de-card-bg de-border flex flex-col rounded-2xl shadow-2xl border overflow-hidden shrink-0 transition-all duration-500 ease-in-out ${isSidebarCollapsed ? 'w-0 opacity-0 -translate-x-full pointer-events-none' : 'w-72'}`}>
-        <div className="de-border p-5 border-b">
+      <div className={`de-card-bg de-border flex flex-col rounded-xl shadow-2xl border overflow-hidden shrink-0 transition-all duration-500 ease-in-out ${isSidebarCollapsed ? 'w-0 opacity-0 -translate-x-full pointer-events-none' : 'w-64'}`}>
+        <div className="de-border p-4 border-b">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Database className="de-neon h-4 w-4" />
@@ -127,12 +127,12 @@ export const DataExplorerMain: React.FC<DataExplorerMainProps> = ({ initialConfi
               placeholder="Filter resources..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="de-input w-full pl-9 pr-4 py-2.5 border rounded-xl text-xs focus:ring-1 focus:ring-[#00e9bf] transition-all font-medium"
+              className="de-input w-full pl-8 pr-3 py-1.5 border rounded-lg text-xs focus:ring-1 focus:ring-[#00e9bf] transition-all font-medium"
             />
           </div>
         </div>
 
-        <div className="flex-1 overflow-auto px-2 py-4 space-y-6">
+        <div className="flex-1 overflow-auto px-1.5 py-3 space-y-4">
           {/* Tables */}
           <div>
             <div className="de-text-muted px-3 mb-2 text-[10px] font-black uppercase tracking-widest">Tables ({filteredTables.length})</div>
@@ -147,7 +147,7 @@ export const DataExplorerMain: React.FC<DataExplorerMainProps> = ({ initialConfi
                         setSelectedTables(isSelected ? selectedTables.filter(t => t !== table) : [...selectedTables, table].slice(-3));
                         setView('explore');
                       }}
-                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${isSelected ? 'de-bg-neon de-text-page shadow-lg' : 'de-text-muted hover:bg-white/5'}`}
+                      className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-bold transition-all ${isSelected ? 'de-bg-neon de-text-page shadow-lg' : 'de-text-muted hover:bg-white/5'}`}
                     >
                       <TableIcon className="h-3.5 w-3.5 shrink-0" />
                       <span className="truncate uppercase tracking-wider">{table}</span>
@@ -206,10 +206,10 @@ export const DataExplorerMain: React.FC<DataExplorerMainProps> = ({ initialConfi
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0 gap-6 overflow-auto">
+      <div className="flex-1 flex flex-col min-w-0 gap-4 overflow-auto">
 
         {/* View Switcher */}
-        <div className="de-card-bg de-border flex items-center gap-1 p-1.5 rounded-2xl border shadow-2xl self-start shrink-0">
+        <div className="de-card-bg de-border flex items-center gap-1 p-1 rounded-xl border shadow-2xl self-start shrink-0">
           {([
             { v: 'explore', label: 'Visual Explorer', Icon: Sparkles },
             { v: 'sql', label: 'SQL Workbench', Icon: Terminal },
@@ -228,7 +228,7 @@ export const DataExplorerMain: React.FC<DataExplorerMainProps> = ({ initialConfi
 
         {/* Explore View */}
         {view === 'explore' && (
-          <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500 flex-1">
+          <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500 flex-1">
             <div className="shrink-0">
               <SearchBar onSearch={(intent) => {
                 if (intent.tables || intent.table) {
@@ -239,7 +239,7 @@ export const DataExplorerMain: React.FC<DataExplorerMainProps> = ({ initialConfi
             </div>
 
             {selectedTables.length > 0 ? (
-              <div className="flex flex-col gap-6 flex-1 min-h-0">
+              <div className="flex flex-col gap-4 flex-1 min-h-0">
                 <div className="shrink-0 flex flex-col gap-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2.5">

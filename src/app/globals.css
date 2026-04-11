@@ -9,7 +9,7 @@
 .theme-main-bg    { background-color: var(--text-color-black); }
 .theme-sidebar-bg { background-color: var(--foot-color); border-color: var(--border-color); }
 .theme-nav-bg     { background-color: var(--foot-color); border-color: var(--header-border); }
-.theme-card-bg    { background-color: var(--croma-wall); border-color: var(--border-color); }
+.theme-card-bg    { background-color: var(--store-wall); border-color: var(--border-color); }
 .theme-dropdown-bg { background-color: var(--navbar-carousel-color); border-color: var(--header-border); }
 .theme-toolbar-bg { background-color: var(--toolbar-bg); border-color: var(--border-color); }
 .theme-input-wrap { background-color: var(--input-color); }
@@ -129,7 +129,7 @@
 }
 .theme-footer-bg { background-color: var(--foot-color); border-color: var(--border-color); }
 .theme-table-header { background-color: var(--toolbar-bg); }
-.theme-table-body  { background-color: var(--croma-wall); }
+.theme-table-body  { background-color: var(--store-wall); }
 
 /* ── Cancel button ── */
 .theme-btn-cancel {
@@ -146,7 +146,7 @@
 
 /* Backgrounds */
 .de-page-bg   { background-color: var(--text-color-black); }
-.de-card-bg   { background-color: var(--croma-wall); }
+.de-card-bg   { background-color: var(--store-wall); }
 .de-input-bg  { background-color: var(--text-color-black); }
 .de-toolbar-bg { background-color: var(--toolbar-bg); }
 .de-bg-neon   { background-color: var(--neon-green); }
@@ -181,7 +181,7 @@
 
 /* Selects */
 .de-select {
-  background-color: var(--croma-wall);
+  background-color: var(--store-wall);
   border: 1px solid var(--border-color);
   color: var(--text-color);
 }
@@ -196,7 +196,7 @@
   color: var(--neon-green);
 }
 .de-save-btn {
-  background-color: var(--croma-wall);
+  background-color: var(--store-wall);
   border: 1px solid rgba(0, 233, 191, 0.2);
   color: var(--neon-green);
 }
@@ -204,10 +204,10 @@
 
 @layer base {
   :root {
-    /* Croma brand colors - DARK (Default) */
+    /* Store brand colors - DARK (Default) */
     --navbar-carousel-color: #353535;
     --text-color: #ffffff;
-    --croma-wall: #191919;
+    --store-wall: #191919;
     --old-price: #9a9a9a;
     --foot-color: #1d1d1d;
     --hyperlink: #12DAA8;
@@ -215,17 +215,17 @@
     --input-color: #333;
     --neon-green: #00e9bf;
     --text-color-black: #121212;
-    --croma-wall-white: #ffffff;
+    --store-wall-white: #ffffff;
     --header-border: rgba(255, 255, 255, 0.1);
     --toolbar-bg: rgba(0, 0, 0, 0.2);
     --input-bg: rgba(255, 255, 255, 0.05);
     --input-border: rgba(255, 255, 255, 0.1);
-    --card-bg: var(--croma-wall);
+    --card-bg: var(--store-wall);
     --border-color: rgba(255, 255, 255, 0.1);
 
     /* AG Grid theme variables */
     --ag-foreground-color: #e2e8f0;
-    --ag-background-color: var(--croma-wall);
+    --ag-background-color: var(--store-wall);
     --ag-header-foreground-color: var(--old-price);
     --ag-header-background-color: var(--navbar-carousel-color);
     --ag-odd-row-background-color: #1a1a1a;
@@ -243,17 +243,17 @@
   }
 
   body.light-theme {
-    /* Croma brand colors - LIGHT (Premium White) */
+    /* Store brand colors - LIGHT (Premium White) */
     --navbar-carousel-color: #ffffff;
     --text-color: #1a1a1a;
-    --croma-wall: #f8f9fa;
+    --store-wall: #f8f9fa;
     --old-price: #57606a;
     --foot-color: #ffffff;
     --hyperlink: #0bb893;
     --circle: #8b949e;
     --input-color: #ffffff;
     --text-color-black: #ffffff;
-    --croma-wall-white: #1a1a1a;
+    --store-wall-white: #1a1a1a;
     --header-border: rgba(0, 0, 0, 0.08);
     --toolbar-bg: #f6f8fa;
     --input-bg: #ffffff;
@@ -311,7 +311,7 @@
 
 /* AG Grid overrides */
 .ag-theme-alpine-dark {
-  --ag-background-color: var(--croma-wall);
+  --ag-background-color: var(--store-wall);
   --ag-header-background-color: var(--navbar-carousel-color);
   --ag-odd-row-background-color: #1a1a1a;
   --ag-header-foreground-color: var(--old-price);
@@ -428,7 +428,7 @@
 }
 
 .dg-card {
-  background: var(--croma-wall);
+  background: var(--store-wall);
   border-radius: 10px;
   box-shadow: 0 1px 4px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.05);
   border: 1px solid var(--border-color);

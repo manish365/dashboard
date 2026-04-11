@@ -21,7 +21,7 @@ export default function LoginPage() {
               <Monitor className="theme-text-on-neon h-8 w-8" />
             </div>
             <div className="text-center">
-              <h1 className="theme-text text-2xl font-bold">Croma Incentive</h1>
+              <h1 className="theme-text text-2xl font-bold">weboffice</h1>
               <p className="theme-text-muted mt-1 text-sm">Management Dashboard</p>
             </div>
           </div>
@@ -48,7 +48,7 @@ export default function LoginPage() {
         </div>
 
         <p className="theme-text-subtle mt-6 text-center text-xs">
-          © {new Date().getFullYear()} Croma — A TATA Enterprise
+          © {new Date().getFullYear()} Store — A TATA Enterprise
         </p>
       </div>
     </div>

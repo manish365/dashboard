@@ -20,7 +20,7 @@ export default function UIShowcasePage() {
     <div className="mx-auto max-w-5xl space-y-8 pb-20">
       <div>
         <h1 className="theme-text text-3xl font-extrabold">UI Component Showcase</h1>
-        <p className="theme-text-muted mt-2 text-sm">A premium collection of theme-aware, accessible UI components for the Croma Incentive Dashboard.</p>
+        <p className="theme-text-muted mt-2 text-sm">A premium collection of theme-aware, accessible UI components for the weboffice Dashboard.</p>
       </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">

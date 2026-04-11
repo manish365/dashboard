@@ -14,7 +14,7 @@ interface ChartWidgetProps {
 
 // CSS variables work fine in recharts style objects — they read at render time
 const tooltipStyle = {
-  backgroundColor: 'var(--croma-wall)',
+  backgroundColor: 'var(--store-wall)',
   borderRadius: '16px',
   border: '1px solid var(--border-color)',
   color: 'var(--text-color)',

@@ -52,6 +52,6 @@ export function assignRole(email: string): UserRole {
 
 export const MOCK_USER: UserInfo = {
   name: 'Demo User',
-  email: 'demo.user@croma.com',
+  email: 'demo.user@store.com',
   role: UserRole.DATA_MANAGER,
 };

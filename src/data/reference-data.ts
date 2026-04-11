@@ -1,14 +1,14 @@
 // Master lists for autocomplete and reference pages
 
 export const STORES = [
-  { code: 'A001', name: 'Croma Mumbai LG', city: 'Mumbai', region: 'West' },
-  { code: 'A002', name: 'Croma Delhi Select City', city: 'Delhi', region: 'North' },
-  { code: 'A105', name: 'Croma Bangalore Indiranagar', city: 'Bangalore', region: 'South' },
-  { code: 'B202', name: 'Croma Pune Phoenix', city: 'Pune', region: 'West' },
-  { code: 'C301', name: 'Croma Hyderabad Gachibowli', city: 'Hyderabad', region: 'South' },
-  { code: 'D401', name: 'Croma Kolkata Salt Lake', city: 'Kolkata', region: 'East' },
-  { code: 'E501', name: 'Croma Ahmedabad Alpha', city: 'Ahmedabad', region: 'West' },
-  { code: 'F601', name: 'Croma Chennai VR Mall', city: 'Chennai', region: 'South' },
+  { code: 'A001', name: 'Store Mumbai LG', city: 'Mumbai', region: 'West' },
+  { code: 'A002', name: 'Store Delhi Select City', city: 'Delhi', region: 'North' },
+  { code: 'A105', name: 'Store Bangalore Indiranagar', city: 'Bangalore', region: 'South' },
+  { code: 'B202', name: 'Store Pune Phoenix', city: 'Pune', region: 'West' },
+  { code: 'C301', name: 'Store Hyderabad Gachibowli', city: 'Hyderabad', region: 'South' },
+  { code: 'D401', name: 'Store Kolkata Salt Lake', city: 'Kolkata', region: 'East' },
+  { code: 'E501', name: 'Store Ahmedabad Alpha', city: 'Ahmedabad', region: 'West' },
+  { code: 'F601', name: 'Store Chennai VR Mall', city: 'Chennai', region: 'South' },
 ];
 
 export const GROUPS = [
