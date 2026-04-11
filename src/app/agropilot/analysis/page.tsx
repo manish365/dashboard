@@ -17,9 +17,8 @@ const DEFAULT_FORM = { crop_type: 'Rice', soil_type: 'Loam', soil_ph: 6.5, nitro
 function FieldInput({ label, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string }) {
   return (
     <div className="space-y-1">
-      <label className="block text-xs font-medium" style={{ color: 'var(--old-price)' }}>{label}</label>
-      <input className="w-full rounded-lg px-3 py-2 text-sm outline-none border transition-colors"
-        style={{ background: 'var(--foot-color)', borderColor: 'var(--border-color)', color: 'var(--text-color)' }}
+      <label className="block text-xs font-medium theme-text-muted">{label}</label>
+      <input className="w-full rounded-lg px-3 py-2 text-sm outline-none border transition-colors theme-select theme-border"
         {...props} />
     </div>
   );
@@ -28,11 +27,10 @@ function FieldInput({ label, ...props }: React.InputHTMLAttributes<HTMLInputElem
 function SelectInput({ label, options, value, onChange }: { label: string; options: string[]; value: string; onChange: (v: string) => void }) {
   return (
     <div className="space-y-1">
-      <label className="block text-xs font-medium" style={{ color: 'var(--old-price)' }}>{label}</label>
+      <label className="block text-xs font-medium theme-text-muted">{label}</label>
       <select value={value} onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg px-3 py-2 text-sm outline-none border"
-        style={{ background: 'var(--foot-color)', borderColor: 'var(--border-color)', color: 'var(--text-color)' }}>
-        {options.map((o) => <option key={o} value={o} style={{ background: 'var(--navbar-carousel-color)' }}>{o}</option>)}
+        className="w-full rounded-lg px-3 py-2 text-sm outline-none border theme-select theme-border">
+        {options.map((o) => <option key={o} value={o} className="theme-option">{o}</option>)}
       </select>
     </div>
   );
@@ -40,8 +38,7 @@ function SelectInput({ label, options, value, onChange }: { label: string; optio
 
 function ResultCard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-xl border p-5 space-y-4 h-full"
-      style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}>
+    <div className="rounded-xl border p-5 space-y-4 h-full theme-card-bg">
       {children}
     </div>
   );
@@ -49,11 +46,10 @@ function ResultCard({ children }: { children: React.ReactNode }) {
 
 function EmptyResult({ icon: Icon, text }: { icon: any; text: string }) {
   return (
-    <div className="h-full flex items-center justify-center text-center rounded-xl border-2 border-dashed p-8"
-      style={{ borderColor: 'var(--border-color)' }}>
+    <div className="h-full flex items-center justify-center text-center rounded-xl border-2 border-dashed p-8 theme-border">
       <div>
-        <Icon className="h-10 w-10 mx-auto mb-2 opacity-20" style={{ color: 'var(--circle)' }} />
-        <p className="text-sm" style={{ color: 'var(--circle)' }}>{text}</p>
+        <Icon className="h-10 w-10 mx-auto mb-2 opacity-20 theme-text-subtle" />
+        <p className="text-sm theme-text-subtle">{text}</p>
       </div>
     </div>
   );
@@ -99,15 +95,15 @@ function DiseaseTab() {
             <div className="relative">
               <img src={preview} alt="Crop" className="w-full h-48 object-cover rounded-lg" />
               <button onClick={(e) => { e.stopPropagation(); clear(); }}
-                className="absolute top-2 right-2 rounded-full p-1 shadow" style={{ background: 'var(--foot-color)' }}>
-                <X className="h-4 w-4" style={{ color: 'var(--text-color)' }} />
+                className="absolute top-2 right-2 rounded-full p-1 shadow theme-footer-bg">
+                <X className="h-4 w-4 theme-text" />
               </button>
             </div>
           ) : (
             <div className="space-y-2">
-              <ImageIcon className="h-10 w-10 mx-auto opacity-30" style={{ color: 'var(--circle)' }} />
-              <p className="text-sm font-medium" style={{ color: 'var(--old-price)' }}>Drag & drop or click to upload</p>
-              <p className="text-xs" style={{ color: 'var(--circle)' }}>JPG, PNG, WebP · Max 10MB</p>
+              <ImageIcon className="h-10 w-10 mx-auto opacity-30 theme-text-subtle" />
+              <p className="text-sm font-medium theme-text-muted">Drag & drop or click to upload</p>
+              <p className="text-xs theme-text-subtle">JPG, PNG, WebP · Max 10MB</p>
             </div>
           )}
         </div>
@@ -117,8 +113,7 @@ function DiseaseTab() {
           </div>
           <div className="flex items-end">
             <button onClick={analyze} disabled={!file || loading}
-              className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-40"
-              style={{ background: 'var(--neon-green)', color: '#000' }}>
+              className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-40 theme-btn-neon">
               <Bug className="h-4 w-4" /> {loading ? 'Analyzing...' : 'Analyze'}
             </button>
           </div>
@@ -132,24 +127,24 @@ function DiseaseTab() {
           <ResultCard>
             <div className="flex items-start justify-between gap-2">
               <div>
-                <h3 className="font-bold text-lg" style={{ color: 'var(--text-color)' }}>{result.disease_name}</h3>
+                <h3 className="font-bold text-lg theme-text">{result.disease_name}</h3>
                 <div className="flex gap-2 mt-1 flex-wrap">
-                  <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(0,233,191,0.1)', color: 'var(--neon-green)' }}>{Math.round(result.confidence * 100)}% confidence</span>
+                  <span className="text-xs px-2 py-0.5 rounded-full theme-neon-tag">{Math.round(result.confidence * 100)}% confidence</span>
                   <span className="text-xs px-2 py-0.5 rounded-full capitalize" style={{ background: 'rgba(251,191,36,0.1)', color: '#fbbf24' }}>{result.severity}</span>
                 </div>
               </div>
-              {result.severity === 'healthy' ? <CheckCircle className="h-8 w-8 flex-shrink-0" style={{ color: 'var(--neon-green)' }} /> : <AlertTriangle className="h-8 w-8 flex-shrink-0" style={{ color: '#fbbf24' }} />}
+              {result.severity === 'healthy' ? <CheckCircle className="h-8 w-8 flex-shrink-0 theme-text-neon" /> : <AlertTriangle className="h-8 w-8 flex-shrink-0" style={{ color: '#fbbf24' }} />}
             </div>
             {result.treatment?.length > 0 && (
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: 'var(--circle)' }}>Treatment</p>
-                <ul className="space-y-1">{result.treatment.map((t: string, i: number) => <li key={i} className="text-sm flex gap-2" style={{ color: 'var(--old-price)' }}><span style={{ color: 'var(--neon-green)' }}>•</span>{t}</li>)}</ul>
+                <p className="text-xs font-semibold uppercase tracking-wide mb-2 theme-text-subtle">Treatment</p>
+                <ul className="space-y-1">{result.treatment.map((t: string, i: number) => <li key={i} className="text-sm flex gap-2 theme-text-muted"><span className="theme-text-neon">•</span>{t}</li>)}</ul>
               </div>
             )}
             {result.prevention?.length > 0 && (
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: 'var(--circle)' }}>Prevention</p>
-                <ul className="space-y-1">{result.prevention.map((p: string, i: number) => <li key={i} className="text-sm flex gap-2" style={{ color: 'var(--old-price)' }}><span style={{ color: '#60a5fa' }}>•</span>{p}</li>)}</ul>
+                <p className="text-xs font-semibold uppercase tracking-wide mb-2 theme-text-subtle">Prevention</p>
+                <ul className="space-y-1">{result.prevention.map((p: string, i: number) => <li key={i} className="text-sm flex gap-2 theme-text-muted"><span style={{ color: '#60a5fa' }}>•</span>{p}</li>)}</ul>
               </div>
             )}
           </ResultCard>
@@ -198,8 +193,7 @@ function YieldTab() {
         </div>
         {error && <p className="text-sm rounded-lg p-2" style={{ color: '#f87171', background: 'rgba(248,113,113,0.1)' }}>{error}</p>}
         <button onClick={predict} disabled={loading}
-          className="w-full flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-40"
-          style={{ background: 'var(--neon-green)', color: '#000' }}>
+          className="w-full flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-40 theme-btn-neon">
           <TrendingUp className="h-4 w-4" /> {loading ? 'Calculating...' : 'Predict Yield'}
         </button>
       </div>
@@ -208,15 +202,15 @@ function YieldTab() {
         {result && !loading && (
           <ResultCard>
             <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(0,233,191,0.05)' }}>
-              <p className="text-sm" style={{ color: 'var(--old-price)' }}>Predicted Yield</p>
-              <p className="text-4xl font-bold mt-1" style={{ color: 'var(--neon-green)' }}>{result.predicted_yield_kg_per_ha?.toLocaleString()}</p>
-              <p className="text-sm" style={{ color: 'var(--old-price)' }}>kg / hectare</p>
-              <span className="text-xs px-2 py-0.5 rounded-full mt-2 inline-block" style={{ background: 'rgba(0,233,191,0.1)', color: 'var(--neon-green)' }}>{Math.round(result.confidence * 100)}% confidence</span>
+              <p className="text-sm theme-text-muted">Predicted Yield</p>
+              <p className="text-4xl font-bold mt-1 theme-text-neon">{result.predicted_yield_kg_per_ha?.toLocaleString()}</p>
+              <p className="text-sm theme-text-muted">kg / hectare</p>
+              <span className="text-xs px-2 py-0.5 rounded-full mt-2 inline-block theme-neon-tag">{Math.round(result.confidence * 100)}% confidence</span>
             </div>
             {result.recommendations?.length > 0 && (
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: 'var(--circle)' }}>Recommendations</p>
-                <ul className="space-y-1">{result.recommendations.map((r: string, i: number) => <li key={i} className="text-sm flex gap-2" style={{ color: 'var(--old-price)' }}><span style={{ color: 'var(--neon-green)' }}>✓</span>{r}</li>)}</ul>
+                <p className="text-xs font-semibold uppercase tracking-wide mb-2 theme-text-subtle">Recommendations</p>
+                <ul className="space-y-1">{result.recommendations.map((r: string, i: number) => <li key={i} className="text-sm flex gap-2 theme-text-muted"><span className="theme-text-neon">✓</span>{r}</li>)}</ul>
               </div>
             )}
             {result.explanation && <p className="text-sm rounded-lg p-3" style={{ color: 'var(--old-price)', background: 'var(--foot-color)' }}>{result.explanation}</p>}
@@ -262,8 +256,7 @@ function FertilizerTab() {
         <SelectInput label="Growth Stage" options={['germination', 'vegetative', 'flowering', 'fruiting', 'maturity']} value={form.growth_stage} onChange={(v) => set('growth_stage', v)} />
         {error && <p className="text-sm rounded-lg p-2" style={{ color: '#f87171', background: 'rgba(248,113,113,0.1)' }}>{error}</p>}
         <button onClick={recommend} disabled={loading}
-          className="w-full flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-40"
-          style={{ background: 'var(--neon-green)', color: '#000' }}>
+          className="w-full flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-40 theme-btn-neon">
           <Leaf className="h-4 w-4" /> {loading ? 'Generating...' : 'Get Recommendation'}
         </button>
       </div>
@@ -272,18 +265,18 @@ function FertilizerTab() {
         {result && !loading && (
           <ResultCard>
             <div className="p-4 rounded-xl" style={{ background: 'rgba(251,191,36,0.05)' }}>
-              <p className="text-xs uppercase tracking-wide font-semibold" style={{ color: 'var(--circle)' }}>Primary Fertilizer</p>
-              <p className="text-2xl font-bold mt-1" style={{ color: 'var(--text-color)' }}>{result.primary_fertilizer}</p>
-              <p className="text-sm" style={{ color: 'var(--old-price)' }}>{result.quantity_kg_per_ha} kg/ha</p>
+              <p className="text-xs uppercase tracking-wide font-semibold theme-text-subtle">Primary Fertilizer</p>
+              <p className="text-2xl font-bold mt-1 theme-text">{result.primary_fertilizer}</p>
+              <p className="text-sm theme-text-muted">{result.quantity_kg_per_ha} kg/ha</p>
             </div>
             {result.secondary_fertilizers?.length > 0 && (
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: 'var(--circle)' }}>Additional Fertilizers</p>
+                <p className="text-xs font-semibold uppercase tracking-wide mb-2 theme-text-subtle">Additional Fertilizers</p>
                 <div className="space-y-2">
                   {result.secondary_fertilizers.map((f: any, i: number) => (
-                    <div key={i} className="flex justify-between items-center p-2 rounded-lg text-sm" style={{ background: 'var(--foot-color)' }}>
-                      <span className="font-medium" style={{ color: 'var(--text-color)' }}>{f.name}</span>
-                      <span style={{ color: 'var(--old-price)' }}>{f.quantity_kg_per_ha} kg/ha</span>
+                    <div key={i} className="flex justify-between items-center p-2 rounded-lg text-sm theme-footer-bg">
+                      <span className="font-medium theme-text">{f.name}</span>
+                      <span className="theme-text-muted">{f.quantity_kg_per_ha} kg/ha</span>
                     </div>
                   ))}
                 </div>
@@ -291,8 +284,8 @@ function FertilizerTab() {
             )}
             {result.application_schedule && (
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: 'var(--circle)' }}>Application Schedule</p>
-                <p className="text-sm" style={{ color: 'var(--old-price)' }}>{result.application_schedule}</p>
+                <p className="text-xs font-semibold uppercase tracking-wide mb-1 theme-text-subtle">Application Schedule</p>
+                <p className="text-sm theme-text-muted">{result.application_schedule}</p>
               </div>
             )}
             {result.explanation && <p className="text-sm rounded-lg p-3" style={{ color: 'var(--old-price)', background: 'var(--foot-color)' }}>{result.explanation}</p>}
@@ -315,12 +308,12 @@ function AnalysisContent() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold" style={{ color: 'var(--text-color)' }}>AI Crop Analysis</h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--old-price)' }}>Disease detection, yield prediction, and fertilizer recommendations</p>
+        <h1 className="text-2xl font-bold theme-text">AI Crop Analysis</h1>
+        <p className="text-sm mt-1 theme-text-muted">Disease detection, yield prediction, and fertilizer recommendations</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 rounded-xl border p-1 w-fit" style={{ background: 'var(--foot-color)', borderColor: 'var(--border-color)' }}>
+      <div className="flex gap-1 rounded-xl border p-1 w-fit theme-footer-bg theme-border">
         {TABS.map(({ id, label, icon: Icon }) => (
           <button key={id} onClick={() => setTab(id)}
             className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
@@ -333,7 +326,7 @@ function AnalysisContent() {
         ))}
       </div>
 
-      <div className="rounded-xl border p-6" style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}>
+      <div className="rounded-xl border p-6 theme-card-bg">
         {tab === 'disease' && <DiseaseTab />}
         {tab === 'yield' && <YieldTab />}
         {tab === 'fertilizer' && <FertilizerTab />}

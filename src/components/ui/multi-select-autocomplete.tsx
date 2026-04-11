@@ -55,8 +55,8 @@ export default function MultiSelectAutocomplete({
       {label && <label className="theme-text text-xs font-semibold opacity-70">{label}</label>}
       <div className="relative">
         <div
-          className="flex min-h-[42px] flex-wrap gap-1.5 rounded-xl border p-2 transition-all focus-within:ring-2 focus-within:ring-blue-500/20"
-          className="theme-input-bg theme-border flex min-h-[42px] flex-wrap gap-1.5 rounded-xl border p-2 transition-all focus-within:ring-2 focus-within:ring-blue-500/20"
+          className="flex min-h-[42px] flex-wrap gap-1.5 rounded-xl border p-2 transition-all focus-within:ring-2 focus-within:ring-blue-500/20 theme-input-bg theme-border"
+        >
           {selected.map((opt) => (
             <span
               key={opt}
@@ -90,8 +90,7 @@ export default function MultiSelectAutocomplete({
 
         {isOpen && (
           <div
-            className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[250px] overflow-auto rounded-xl border p-1 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200"
-            className="theme-dropdown-bg absolute left-0 right-0 top-full z-50 mt-1 max-h-[250px] overflow-auto rounded-xl border p-1 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200"
+            className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[250px] overflow-auto rounded-xl border p-1 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200 theme-dropdown-bg"
           >
             {filteredOptions.length === 0 ? (
               <div className="theme-text-muted px-3 py-4 text-center text-sm">
@@ -101,8 +100,8 @@ export default function MultiSelectAutocomplete({
               filteredOptions.map((opt) => (
                 <div
                   key={opt}
-                  className="flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors hover:bg-blue-500/10"
-                  className="theme-text flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors hover:bg-blue-500/10"
+                  className="flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors hover:bg-blue-500/10 theme-text"
+                  onClick={() => toggleOption(opt)}
                 >
                   {opt}
                   {selected.includes(opt) && <Check className="h-4 w-4 text-blue-500" />}

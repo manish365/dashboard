@@ -94,15 +94,15 @@ export default function ProductStatusPage() {
       label: 'Product',
       render: (p: Product) => (
         <div>
-          <p className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>{p.product_name}</p>
-          <p className="text-xs" style={{ color: 'var(--circle)' }}>ID: {p.product_id.split('-')[0]}...</p>
+          <p className="text-sm font-medium theme-text">{p.product_name}</p>
+          <p className="text-xs theme-text-subtle">ID: {p.product_id.split('-')[0]}...</p>
         </div>
       ),
     },
     {
       key: 'sku',
       label: 'SKU',
-      render: (p: Product) => <span className="text-xs font-mono" style={{ color: 'var(--old-price)' }}>{p.sku || 'NO-SKU'}</span>,
+      render: (p: Product) => <span className="text-xs font-mono theme-text-muted">{p.sku || 'NO-SKU'}</span>,
     },
     {
       key: 'status',
@@ -128,11 +128,10 @@ export default function ProductStatusPage() {
               showToast(r.error || 'Update failed', 'error');
             }
           }}
-          className="text-xs rounded-lg p-1 outline-none border transition-all opacity-60 hover:opacity-100"
-          style={{ background: 'var(--foot-color)', borderColor: 'var(--border-color)', color: 'var(--text-color)' }}
+          className="text-xs rounded-lg p-1 outline-none border transition-all opacity-60 hover:opacity-100 theme-select theme-border"
         >
           {STATUS_OPTIONS.map(opt => (
-            <option key={opt.value} value={opt.value} style={{ background: 'var(--navbar-carousel-color)' }}>{opt.label}</option>
+            <option key={opt.value} value={opt.value} className="theme-option">{opt.label}</option>
           ))}
         </select>
       ),
@@ -146,17 +145,15 @@ export default function ProductStatusPage() {
         subtitle="Bulk manage product publishing workflows"
         action={
           selected.length > 0 && (
-            <div className="flex items-center gap-3 p-2 rounded-xl border animate-in fade-in slide-in-from-top-2"
-              style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}>
-              <span className="text-xs font-bold px-2" style={{ color: 'var(--neon-green)' }}>{selected.length} Selected</span>
+            <div className="flex items-center gap-3 p-2 rounded-xl border animate-in fade-in slide-in-from-top-2 theme-card-bg">
+              <span className="text-xs font-bold px-2 theme-text-neon">{selected.length} Selected</span>
               <select
                 value={bulkStatus}
                 onChange={(e) => setBulkStatus(e.target.value)}
-                className="px-3 py-1.5 text-xs rounded-lg outline-none border"
-                style={{ background: 'var(--foot-color)', borderColor: 'var(--border-color)', color: 'var(--text-color)' }}
+                className="px-3 py-1.5 text-xs rounded-lg outline-none border theme-select theme-border"
               >
                 <option value="">Choose status...</option>
-                {STATUS_OPTIONS.map(opt => <option key={opt.value} value={opt.value} style={{ background: 'var(--navbar-carousel-color)' }}>{opt.label}</option>)}
+                {STATUS_OPTIONS.map(opt => <option key={opt.value} value={opt.value} className="theme-option">{opt.label}</option>)}
               </select>
               <KpBtn onClick={handleBulkUpdate} loading={updating} disabled={!bulkStatus} className="py-1.5 px-3 whitespace-nowrap">
                 Apply Bulk

@@ -37,7 +37,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      <div className="fixed bottom-4 right-4 z-[9999] flex flex-col gap-2" style={{ minWidth: '300px' }}>
+      <div className="fixed bottom-4 right-4 z-[9999] flex flex-col gap-2 min-w-[300px]">
         {toasts.map(toast => (
           <div key={toast.id}
             className={`flex items-center gap-3 rounded-xl border p-4 shadow-2xl backdrop-blur-md animate-in slide-in-from-right-10 duration-300 ${colors[toast.type]}`}>

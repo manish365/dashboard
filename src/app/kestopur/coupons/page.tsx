@@ -24,14 +24,14 @@ export default function CouponsPage() {
   });
 
   const cols = [
-    { key: 'code', label: 'Code', render: (c: Coupon) => <div className="flex items-center gap-2"><Tag className="h-4 w-4" style={{ color: '#60a5fa' }} /><span className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>{c.couponCode}</span></div> },
-    { key: 'name', label: 'Name', render: (c: Coupon) => <span className="text-sm" style={{ color: 'var(--old-price)' }}>{c.couponName}</span> },
-    { key: 'type', label: 'Type', render: (c: Coupon) => <span className="text-sm capitalize" style={{ color: 'var(--old-price)' }}>{c.couponType?.replace('_', ' ')}</span> },
-    { key: 'value', label: 'Value', render: (c: Coupon) => <span className="text-sm font-medium flex items-center gap-1" style={{ color: 'var(--text-color)' }}>{c.couponType === 'percentage_discount' ? <><Percent className="h-3.5 w-3.5" />{c.discountValue}%</> : <><DollarSign className="h-3.5 w-3.5" />₹{c.discountValue}</>}</span> },
-    { key: 'usage', label: 'Usage', render: (c: Coupon) => <span className="text-sm" style={{ color: 'var(--old-price)' }}>{c.timesUsed || 0} / {c.usageLimit || '∞'}</span> },
-    { key: 'expiry', label: 'Valid Until', render: (c: Coupon) => <span className="text-sm flex items-center gap-1" style={{ color: 'var(--circle)' }}><Calendar className="h-3.5 w-3.5" />{c.validUntil ? new Date(c.validUntil).toLocaleDateString() : 'No expiry'}</span> },
+    { key: 'code', label: 'Code', render: (c: Coupon) => <div className="flex items-center gap-2"><Tag className="h-4 w-4" style={{ color: '#60a5fa' }} /><span className="text-sm font-medium theme-text">{c.couponCode}</span></div> },
+    { key: 'name', label: 'Name', render: (c: Coupon) => <span className="text-sm theme-text-muted">{c.couponName}</span> },
+    { key: 'type', label: 'Type', render: (c: Coupon) => <span className="text-sm capitalize theme-text-muted">{c.couponType?.replace('_', ' ')}</span> },
+    { key: 'value', label: 'Value', render: (c: Coupon) => <span className="text-sm font-medium flex items-center gap-1 theme-text">{c.couponType === 'percentage_discount' ? <><Percent className="h-3.5 w-3.5" />{c.discountValue}%</> : <><DollarSign className="h-3.5 w-3.5" />₹{c.discountValue}</>}</span> },
+    { key: 'usage', label: 'Usage', render: (c: Coupon) => <span className="text-sm theme-text-muted">{c.timesUsed || 0} / {c.usageLimit || '∞'}</span> },
+    { key: 'expiry', label: 'Valid Until', render: (c: Coupon) => <span className="text-sm flex items-center gap-1 theme-text-subtle"><Calendar className="h-3.5 w-3.5" />{c.validUntil ? new Date(c.validUntil).toLocaleDateString() : 'No expiry'}</span> },
     { key: 'status', label: 'Status', render: (c: Coupon) => <KpBadge label={c.isActive ? 'Active' : 'Inactive'} variant={c.isActive ? 'active' : 'inactive'} /> },
-    { key: 'actions', label: 'Actions', align: 'right' as const, render: (c: Coupon) => <button onClick={() => handleDelete(c.couponId)} className="p-1.5 rounded-lg hover:bg-red-500/10" style={{ color: '#f87171' }}><Trash2 className="h-4 w-4" /></button> },
+    { key: 'actions', label: 'Actions', align: 'right' as const, render: (c: Coupon) => <button onClick={() => handleDelete(c.couponId)} className="p-1.5 rounded-lg hover:bg-red-500/10 theme-text-danger"><Trash2 className="h-4 w-4" /></button> },
   ];
 
   return (
@@ -45,9 +45,9 @@ export default function CouponsPage() {
       <div className="flex gap-3">
         <KpSearch value={search} onChange={setSearch} placeholder="Search coupons..." className="flex-1 max-w-sm" />
         <KpSelect value={activeFilter} onChange={setActiveFilter}>
-          <option value="" style={{ background: 'var(--navbar-carousel-color)' }}>All Coupons</option>
-          <option value="true" style={{ background: 'var(--navbar-carousel-color)' }}>Active Only</option>
-          <option value="false" style={{ background: 'var(--navbar-carousel-color)' }}>Inactive Only</option>
+          <option value="" className="theme-option">All Coupons</option>
+          <option value="true" className="theme-option">Active Only</option>
+          <option value="false" className="theme-option">Inactive Only</option>
         </KpSelect>
       </div>
       <KpCard>{loading ? <KpSkeleton /> : <KpTable cols={cols} rows={filtered} rowKey={c => c.couponId} emptyMsg="No coupons found." />}</KpCard>

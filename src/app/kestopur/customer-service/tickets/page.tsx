@@ -24,7 +24,7 @@ export default function TicketsPage() {
   const filtered = items.filter(i => i.subject?.toLowerCase().includes(search.toLowerCase()));
 
   const cols = [
-    { key: 'subject', label: 'Subject', render: (t: SupportTicket) => <span className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>{t.subject}</span> },
+    { key: 'subject', label: 'Subject', render: (t: SupportTicket) => <span className="text-sm font-medium theme-text">{t.subject}</span> },
     {
       key: 'priority', label: 'Priority', render: (t: SupportTicket) => (
         <span className="text-xs px-2 py-0.5 rounded-full font-semibold capitalize"
@@ -34,12 +34,12 @@ export default function TicketsPage() {
       ),
     },
     { key: 'status', label: 'Status', render: (t: SupportTicket) => <KpBadge label={t.status} variant={t.status} /> },
-    { key: 'date', label: 'Created', render: (t: SupportTicket) => <span className="text-sm" style={{ color: 'var(--circle)' }}>{new Date(t.createdAt).toLocaleDateString()}</span> },
+    { key: 'date', label: 'Created', render: (t: SupportTicket) => <span className="text-sm theme-text-subtle">{new Date(t.createdAt).toLocaleDateString()}</span> },
   ];
 
   return (
     <div className="space-y-6">
-      <Link href="/kestopur/customer-service" className="inline-flex items-center gap-1.5 text-sm hover:opacity-80" style={{ color: 'var(--circle)' }}>
+      <Link href="/kestopur/customer-service" className="inline-flex items-center gap-1.5 text-sm hover:opacity-80 theme-text-subtle">
         <ArrowLeft className="h-4 w-4" /> Customer Service
       </Link>
       <KpPageHeader title="Support Tickets" subtitle="Handle customer support requests"

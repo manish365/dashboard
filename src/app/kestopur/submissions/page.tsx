@@ -50,20 +50,20 @@ export default function SubmissionsPage() {
       label: 'Code / Type',
       render: (sub: Submission) => (
         <div>
-          <p className="text-sm font-semibold uppercase" style={{ color: 'var(--text-color)' }}>{sub.submission_code || 'N/A'}</p>
-          <p className="text-xs capitalize" style={{ color: 'var(--old-price)' }}>{sub.submission_type}</p>
+          <p className="text-sm font-semibold uppercase theme-text">{sub.submission_code || 'N/A'}</p>
+          <p className="text-xs capitalize theme-text-muted">{sub.submission_type}</p>
         </div>
       ),
     },
     {
       key: 'seller',
       label: 'Seller ID',
-      render: (sub: Submission) => <span className="text-xs font-mono" style={{ color: 'var(--circle)' }}>{sub.seller_id}</span>,
+      render: (sub: Submission) => <span className="text-xs font-mono theme-text-subtle">{sub.seller_id}</span>,
     },
     {
       key: 'date',
       label: 'Submitted',
-      render: (sub: Submission) => <span className="text-sm" style={{ color: 'var(--old-price)' }}>{new Date(sub.created_at).toLocaleDateString()}</span>,
+      render: (sub: Submission) => <span className="text-sm theme-text-muted">{new Date(sub.created_at).toLocaleDateString()}</span>,
     },
     {
       key: 'status',
@@ -91,12 +91,11 @@ export default function SubmissionsPage() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-3 py-2 text-sm rounded-xl outline-none border min-w-[150px]"
-          style={{ background: 'var(--foot-color)', borderColor: 'var(--border-color)', color: 'var(--text-color)' }}
+          className="px-3 py-2 text-sm rounded-xl outline-none border min-w-[150px] theme-select theme-border"
         >
-          <option value="all" style={{ background: 'var(--navbar-carousel-color)' }}>All Statuses</option>
+          <option value="all" className="theme-option">All Statuses</option>
           {['submitted', 'under_review', 'approved', 'rejected', 'requires_changes'].map(s => (
-            <option key={s} value={s} style={{ background: 'var(--navbar-carousel-color)' }}>{s.replace('_', ' ').toUpperCase()}</option>
+            <option key={s} value={s} className="theme-option">{s.replace('_', ' ').toUpperCase()}</option>
           ))}
         </select>
       </div>
@@ -119,18 +118,18 @@ export default function SubmissionsPage() {
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-[10px] uppercase font-bold" style={{ color: 'var(--circle)' }}>Submission ID</p>
-                <p className="text-sm font-mono mt-1" style={{ color: 'var(--text-color)' }}>{selected.submission_id}</p>
+                <p className="text-[10px] uppercase font-bold theme-text-subtle">Submission ID</p>
+                <p className="text-sm font-mono mt-1 theme-text">{selected.submission_id}</p>
               </div>
               <div>
-                <p className="text-[10px] uppercase font-bold" style={{ color: 'var(--circle)' }}>Seller ID</p>
-                <p className="text-sm font-mono mt-1" style={{ color: 'var(--text-color)' }}>{selected.seller_id}</p>
+                <p className="text-[10px] uppercase font-bold theme-text-subtle">Seller ID</p>
+                <p className="text-sm font-mono mt-1 theme-text">{selected.seller_id}</p>
               </div>
             </div>
 
-            <div className="p-4 rounded-xl border" style={{ background: 'var(--foot-color)', borderColor: 'var(--border-color)' }}>
-              <p className="text-[10px] uppercase font-bold mb-3" style={{ color: 'var(--circle)' }}>Submission Data (JSON)</p>
-              <pre className="text-xs overflow-auto max-h-40 p-2 rounded bg-black/20" style={{ color: 'var(--old-price)' }}>
+            <div className="p-4 rounded-xl border theme-footer-bg theme-border">
+              <p className="text-[10px] uppercase font-bold mb-3 theme-text-subtle">Submission Data (JSON)</p>
+              <pre className="text-xs overflow-auto max-h-40 p-2 rounded bg-black/20 theme-text-muted">
                 {JSON.stringify(selected.data || {}, null, 2)}
               </pre>
             </div>
@@ -140,8 +139,7 @@ export default function SubmissionsPage() {
                 Approve
               </KpBtn>
               <button onClick={() => { showToast('Rejected (Mock)', 'error'); setSelected(null); }}
-                className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-red-500/10 transition-colors"
-                style={{ borderColor: 'var(--border-color)', color: '#f87171' }}>
+                className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-red-500/10 transition-colors theme-text-danger theme-border">
                 Reject
               </button>
             </div>

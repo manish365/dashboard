@@ -17,7 +17,7 @@ export default function VisualChart({
   const maxValue = parsedData.length > 0 ? Math.max(...parsedData.map((d: any) => d.value ?? 0)) : 100;
 
   return (
-    <div className="theme-card-bg flex flex-col rounded-2xl border p-5">
+    <div className="dg-card p-5 flex flex-col">
       <div className="mb-6">
         <h3 className="theme-text text-sm font-bold">{title}</h3>
         {subtitle && <p className="theme-text text-[10px] opacity-60">{subtitle}</p>}

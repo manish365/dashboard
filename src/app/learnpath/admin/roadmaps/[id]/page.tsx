@@ -86,23 +86,22 @@ export default function RoadmapFormPage() {
       {/* Header */}
       <div className="flex items-center gap-3">
         <Link href="/learnpath/admin/roadmaps"
-          className="rounded-xl p-2 border hover:bg-white/5 transition-colors"
-          style={{ borderColor: 'var(--border-color)', color: 'var(--circle)' }}>
+          className="rounded-xl p-2 border hover:bg-white/5 transition-colors theme-text-subtle theme-border">
           <ArrowLeft className="h-5 w-5" />
         </Link>
         <div>
-          <h1 className="text-xl font-bold" style={{ color: 'var(--text-color)' }}>{isEdit ? 'Edit Roadmap' : 'Create Roadmap'}</h1>
-          <p className="text-sm" style={{ color: 'var(--old-price)' }}>{isEdit ? 'Update details, steps, and todos.' : 'Define the title, steps, and todo tasks.'}</p>
+          <h1 className="text-xl font-bold theme-text">{isEdit ? 'Edit Roadmap' : 'Create Roadmap'}</h1>
+          <p className="text-sm theme-text-muted">{isEdit ? 'Update details, steps, and todos.' : 'Define the title, steps, and todo tasks.'}</p>
         </div>
       </div>
 
       <ErrorAlert message={error} />
 
       {/* Details card */}
-      <div className="rounded-xl border overflow-hidden" style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}>
-        <div className="flex items-center gap-2 px-5 py-3.5 border-b" style={{ borderColor: 'var(--border-color)' }}>
-          <BookOpen className="h-4 w-4" style={{ color: 'var(--neon-green)' }} />
-          <span className="font-semibold text-sm" style={{ color: 'var(--text-color)' }}>Roadmap Details</span>
+      <div className="rounded-xl border overflow-hidden theme-card-bg">
+        <div className="flex items-center gap-2 px-5 py-3.5 border-b theme-border">
+          <BookOpen className="h-4 w-4 theme-text-neon" />
+          <span className="font-semibold text-sm theme-text">Roadmap Details</span>
         </div>
         <div className="p-5 space-y-4">
           <FieldInput label="Title *" value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. Full-Stack Web Development" />
@@ -115,7 +114,7 @@ export default function RoadmapFormPage() {
           {tags.trim() && (
             <div className="flex flex-wrap gap-1.5">
               {tags.split(',').map(t => t.trim()).filter(Boolean).map(t => (
-                <span key={t} className="text-xs px-2 py-0.5 rounded" style={{ background: 'rgba(0,233,191,0.1)', color: 'var(--neon-green)' }}>{t}</span>
+                <span key={t} className="text-xs px-2 py-0.5 rounded theme-neon-tag">{t}</span>
               ))}
             </div>
           )}
@@ -125,19 +124,17 @@ export default function RoadmapFormPage() {
       {/* Steps */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <span className="font-semibold text-sm" style={{ color: 'var(--text-color)' }}>
-            Steps & Todos <span className="text-xs font-normal" style={{ color: 'var(--circle)' }}>{steps.length} step{steps.length !== 1 ? 's' : ''}</span>
+          <span className="font-semibold text-sm theme-text">
+            Steps & Todos <span className="text-xs font-normal theme-text-subtle">{steps.length} step{steps.length !== 1 ? 's' : ''}</span>
           </span>
           <button type="button" onClick={addStep}
-            className="flex items-center gap-1 text-xs rounded-lg px-3 py-1.5 border transition-colors hover:bg-white/5"
-            style={{ borderColor: 'var(--border-color)', color: 'var(--old-price)' }}>
+            className="flex items-center gap-1 text-xs rounded-lg px-3 py-1.5 border transition-colors hover:bg-white/5 theme-btn-cancel">
             <Plus className="h-3.5 w-3.5" /> Add Step
           </button>
         </div>
 
         {steps.map((step, si) => (
-          <div key={si} className="rounded-xl border overflow-hidden"
-            style={{ background: 'var(--croma-wall)', borderColor: step.open ? 'rgba(0,233,191,0.2)' : 'var(--border-color)' }}>
+          <div key={si} className="rounded-xl border overflow-hidden theme-card-bg" style={{ borderColor: step.open ? 'rgba(0,233,191,0.2)' : 'var(--border-color)' }}>
             {/* Step header */}
             <div className="flex items-center gap-3 px-4 py-3">
               <div className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0"
@@ -147,8 +144,7 @@ export default function RoadmapFormPage() {
               {step.open ? (
                 <input value={step.title} onChange={e => updateStep(si, 'title', e.target.value)}
                   placeholder={`Step ${si + 1} title…`} onClick={e => e.stopPropagation()}
-                  className="flex-1 bg-transparent border-b text-sm font-semibold outline-none pb-0.5"
-                  style={{ borderColor: 'rgba(0,233,191,0.3)', color: 'var(--text-color)' }} />
+                  className="flex-1 bg-transparent border-b text-sm font-semibold outline-none pb-0.5 theme-text" style={{ borderColor: 'rgba(0,233,191,0.3)' }} />
               ) : (
                 <span className="flex-1 text-sm font-semibold truncate" style={{ color: step.title ? 'var(--text-color)' : 'var(--circle)' }}>
                   {step.title || `Step ${si + 1} — (untitled)`}
@@ -157,12 +153,12 @@ export default function RoadmapFormPage() {
               <div className="flex items-center gap-1 flex-shrink-0">
                 {steps.length > 1 && (
                   <button type="button" onClick={() => removeStep(si)}
-                    className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors" style={{ color: 'var(--circle)' }}>
+                    className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors theme-text-subtle">
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
                 )}
                 <button type="button" onClick={() => updateStep(si, 'open', !step.open)}
-                  className="p-1.5 rounded-lg hover:bg-white/5 transition-colors" style={{ color: 'var(--circle)' }}>
+                  className="p-1.5 rounded-lg hover:bg-white/5 transition-colors theme-text-subtle">
                   {step.open ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                 </button>
               </div>
@@ -170,7 +166,7 @@ export default function RoadmapFormPage() {
 
             {/* Step body */}
             {step.open && (
-              <div className="border-t px-4 py-4 space-y-4" style={{ borderColor: 'var(--border-color)' }}>
+              <div className="border-t px-4 py-4 space-y-4 theme-border">
                 <FieldTextarea label="Description" rows={2} value={step.description}
                   onChange={e => updateStep(si, 'description', e.target.value)} placeholder="What will learners accomplish?" />
                 <div className="grid grid-cols-2 gap-3">
@@ -183,20 +179,19 @@ export default function RoadmapFormPage() {
                 {/* Todos */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <label className="text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--circle)' }}>Todo Tasks</label>
-                    <button type="button" onClick={() => addTodo(si)} className="text-xs hover:opacity-80" style={{ color: 'var(--neon-green)' }}>+ Add task</button>
+                    <label className="text-xs font-semibold uppercase tracking-wide theme-text-subtle">Todo Tasks</label>
+                    <button type="button" onClick={() => addTodo(si)} className="text-xs hover:opacity-80 theme-text-neon">+ Add task</button>
                   </div>
                   <div className="space-y-2">
                     {step.todos.map((todo, ti) => (
                       <div key={ti} className="flex items-center gap-2">
-                        <div className="w-5 h-5 rounded-full border-2 flex-shrink-0" style={{ borderColor: 'var(--border-color)' }} />
+                        <div className="w-5 h-5 rounded-full border-2 flex-shrink-0 theme-border" />
                         <input value={todo.label} onChange={e => updateTodo(si, ti, e.target.value)}
                           placeholder={`Task ${ti + 1}…`}
-                          className="flex-1 rounded-lg px-3 py-1.5 text-sm outline-none border"
-                          style={{ background: 'var(--foot-color)', borderColor: 'var(--border-color)', color: 'var(--text-color)' }} />
+                          className="flex-1 rounded-lg px-3 py-1.5 text-sm outline-none border theme-select theme-border" />
                         {step.todos.length > 1 && (
                           <button type="button" onClick={() => removeTodo(si, ti)}
-                            className="p-1 rounded hover:bg-red-500/10 flex-shrink-0" style={{ color: 'var(--circle)' }}>
+                            className="p-1 rounded hover:bg-red-500/10 flex-shrink-0 theme-text-subtle">
                             <Trash2 className="h-3.5 w-3.5" />
                           </button>
                         )}
@@ -210,15 +205,13 @@ export default function RoadmapFormPage() {
         ))}
 
         <button type="button" onClick={addStep}
-          className="w-full rounded-xl py-3 text-sm font-semibold border-2 border-dashed transition-all hover:bg-white/5"
-          style={{ borderColor: 'rgba(0,233,191,0.2)', color: 'var(--circle)' }}>
+          className="w-full rounded-xl py-3 text-sm font-semibold border-2 border-dashed transition-all hover:bg-white/5 theme-text-subtle" style={{ borderColor: 'rgba(0,233,191,0.2)' }}>
           <Plus className="h-4 w-4 inline mr-1" /> Add Another Step
         </button>
       </div>
 
       {/* Sticky footer */}
-      <div className="sticky bottom-4 flex items-center justify-between gap-3 rounded-xl border px-5 py-4"
-        style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)', backdropFilter: 'blur(12px)' }}>
+      <div className="sticky bottom-4 flex items-center justify-between gap-3 rounded-xl border px-5 py-4 theme-card-bg backdrop-blur-md">
         <span className="text-xs px-2 py-0.5 rounded-full font-bold"
           style={{ background: lc.bg, color: lc.color, border: `1px solid ${lc.border}` }}>{level}</span>
         <div className="flex gap-2">

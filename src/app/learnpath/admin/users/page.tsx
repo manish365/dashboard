@@ -12,12 +12,14 @@ interface FormState { name: string; email: string; password: string; role: 'LEAR
 const emptyForm: FormState = { name: '', email: '', password: '', role: 'LEARNER' };
 
 function RoleBadge({ role }: { role: 'ADMIN' | 'LEARNER' }) {
+  const isAdmin = role === 'ADMIN';
+  const styles = isAdmin
+    ? { background: 'rgba(167,139,250,0.1)', color: '#a78bfa', borderColor: 'rgba(167,139,250,0.2)' }
+    : { background: 'rgba(52,211,153,0.1)', color: '#34d399', borderColor: 'rgba(52,211,153,0.2)' };
+
   return (
-    <span className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full w-fit font-semibold"
-      style={role === 'ADMIN'
-        ? { background: 'rgba(167,139,250,0.1)', color: '#a78bfa', border: '1px solid rgba(167,139,250,0.2)' }
-        : { background: 'rgba(52,211,153,0.1)', color: '#34d399', border: '1px solid rgba(52,211,153,0.2)' }}>
-      {role === 'ADMIN' ? <Shield className="h-2.5 w-2.5" /> : <GraduationCap className="h-2.5 w-2.5" />}
+    <span className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full w-fit font-semibold border" style={styles}>
+      {isAdmin ? <Shield className="h-2.5 w-2.5" /> : <GraduationCap className="h-2.5 w-2.5" />}
       {role}
     </span>
   );
@@ -25,9 +27,14 @@ function RoleBadge({ role }: { role: 'ADMIN' | 'LEARNER' }) {
 
 function UserAvatar({ name, role }: { name: string; role: string }) {
   const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+  const isAdmin = role === 'ADMIN';
+  const gradient = isAdmin
+    ? 'linear-gradient(135deg,#6366f1,#8b5cf6)'
+    : 'linear-gradient(135deg,#10b981,#059669)';
+
   return (
-    <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
-      style={{ background: role === 'ADMIN' ? 'linear-gradient(135deg,#6366f1,#8b5cf6)' : 'linear-gradient(135deg,#10b981,#059669)', color: '#fff' }}>
+    <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-white"
+      style={{ background: gradient }}>
       {initials}
     </div>
   );
@@ -91,17 +98,17 @@ export default function AdminUsersPage() {
         <div className="flex items-center gap-3">
           <UserAvatar name={u.name} role={u.role} />
           <div>
-            <p className="text-sm font-semibold" style={{ color: 'var(--text-color)' }}>{u.name}</p>
-            <p className="text-xs" style={{ color: 'var(--old-price)' }}>{u.email}</p>
+            <p className="text-sm font-semibold theme-text">{u.name}</p>
+            <p className="text-xs theme-text-muted">{u.email}</p>
           </div>
         </div>
       ),
     },
     { key: 'role', label: 'Role', render: (u: LPUser) => <RoleBadge role={u.role} /> },
-    { key: 'enrollments', label: 'Enrollments', render: (u: LPUser) => <span className="text-sm" style={{ color: 'var(--old-price)' }}>{u._count.enrollments}</span> },
+    { key: 'enrollments', label: 'Enrollments', render: (u: LPUser) => <span className="text-sm theme-text-muted">{u._count.enrollments}</span> },
     {
       key: 'joined', label: 'Joined', render: (u: LPUser) => (
-        <span className="text-sm" style={{ color: 'var(--circle)' }}>
+        <span className="text-sm theme-text-subtle">
           {new Date(u.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
         </span>
       ),
@@ -109,7 +116,7 @@ export default function AdminUsersPage() {
     {
       key: 'actions', label: 'Actions', align: 'right' as const, render: (u: LPUser) => (
         <div className="flex items-center justify-end gap-1">
-          <button onClick={() => openEdit(u)} className="p-1.5 rounded-lg hover:bg-white/10 transition-colors" style={{ color: 'var(--circle)' }}>
+          <button onClick={() => openEdit(u)} className="p-1.5 rounded-lg hover:bg-white/10 transition-colors theme-text-subtle">
             <Edit2 className="h-4 w-4" />
           </button>
           <DangerBtn onClick={() => handleDelete(u.id, u.name)} loading={deleting === u.id}>
@@ -126,8 +133,7 @@ export default function AdminUsersPage() {
         title="User Management"
         subtitle="Add, edit, and manage learner accounts."
         action={
-          <button onClick={openAdd} className="flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold hover:opacity-90"
-            style={{ background: 'var(--neon-green)', color: 'var(--text-color-black)' }}>
+          <button onClick={openAdd} className="flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold hover:opacity-90 theme-btn-neon">
             <UserPlus className="h-4 w-4" /> Add User
           </button>
         }
@@ -138,10 +144,10 @@ export default function AdminUsersPage() {
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <SearchInput value={search} onChange={setSearch} placeholder="Search by name or email…" className="flex-1 max-w-sm" />
         <div className="flex gap-2">
-          <span className="text-xs px-3 py-1.5 rounded-lg font-semibold" style={{ background: 'rgba(129,140,248,0.1)', color: '#818cf8', border: '1px solid rgba(129,140,248,0.2)' }}>
+          <span className="text-xs px-3 py-1.5 rounded-lg font-semibold bg-[#818cf81a] text-[#818cf8] border border-[#818cf833]">
             {users.filter(u => u.role === 'LEARNER').length} Learners
           </span>
-          <span className="text-xs px-3 py-1.5 rounded-lg font-semibold" style={{ background: 'rgba(167,139,250,0.1)', color: '#a78bfa', border: '1px solid rgba(167,139,250,0.2)' }}>
+          <span className="text-xs px-3 py-1.5 rounded-lg font-semibold bg-[#a78bfa1a] text-[#a78bfa] border border-[#a78bfa33]">
             {users.filter(u => u.role === 'ADMIN').length} Admins
           </span>
         </div>

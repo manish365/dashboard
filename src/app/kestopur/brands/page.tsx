@@ -48,14 +48,14 @@ export default function BrandsPage() {
       render: (b: Brand) => (
         <div className="flex items-center gap-3">
           {b.logo_url && <img src={b.logo_url} alt={b.brand_name} className="w-8 h-8 rounded object-contain" />}
-          <span className="text-sm font-semibold" style={{ color: 'var(--text-color)' }}>{b.brand_name}</span>
+          <span className="text-sm font-semibold theme-text">{b.brand_name}</span>
         </div>
       ) 
     },
     { 
       key: 'slug', 
       label: 'Slug', 
-      render: (b: Brand) => <span className="text-xs font-mono" style={{ color: 'var(--circle)' }}>{b.brand_slug}</span> 
+      render: (b: Brand) => <span className="text-xs font-mono theme-text-subtle">{b.brand_slug}</span> 
     },
     { 
       key: 'status', 
@@ -69,9 +69,9 @@ export default function BrandsPage() {
       render: (b: Brand) => (
         <div className="flex items-center justify-end gap-1">
           <button onClick={() => { setSelected(b); setForm({ brand_name: b.brand_name, brand_slug: b.brand_slug }); setShowModal(true); }} 
-            className="p-1.5 rounded-lg hover:bg-white/10" style={{ color: 'var(--circle)' }}><Edit className="h-4 w-4" /></button>
+            className="p-1.5 rounded-lg hover:bg-white/10 theme-text-subtle"><Edit className="h-4 w-4" /></button>
           <button onClick={() => handleDelete(b.brand_id)} 
-            className="p-1.5 rounded-lg hover:bg-red-500/10" style={{ color: '#f87171' }}><Trash2 className="h-4 w-4" /></button>
+            className="p-1.5 rounded-lg hover:bg-red-500/10 theme-text-danger"><Trash2 className="h-4 w-4" /></button>
         </div>
       ) 
     },
@@ -100,8 +100,7 @@ export default function BrandsPage() {
             <KpField label="Brand Name" value={form.brand_name} onChange={e => setForm(f => ({ ...f, brand_name: e.target.value }))} placeholder="e.g. Nike" />
             <KpField label="Slug" value={form.brand_slug} onChange={e => setForm(f => ({ ...f, brand_slug: e.target.value }))} placeholder="e.g. nike" />
             <div className="flex gap-3 pt-1">
-              <button onClick={() => setShowModal(false)} className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5" 
-                style={{ borderColor: 'var(--border-color)', color: 'var(--old-price)' }}>Cancel</button>
+              <button onClick={() => setShowModal(false)} className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5 theme-btn-cancel">Cancel</button>
               <KpBtn onClick={handleSave} loading={saving} className="flex-1 justify-center">Save</KpBtn>
             </div>
           </div>

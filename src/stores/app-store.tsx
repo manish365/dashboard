@@ -80,7 +80,7 @@ export const initialState: AppState = {
   datasetMeta: {},
   uploadedFiles: [],
   sidebarOpen: true,
-  theme: 'dark',
+  theme: 'light',
 };
 
 export function reducer(state: AppState, action: Action): AppState {

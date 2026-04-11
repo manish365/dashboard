@@ -74,21 +74,20 @@ export default function LearnerRoadmapDetail() {
   return (
     <div className="max-w-2xl mx-auto space-y-5">
       <Link href="/learnpath/learner"
-        className="inline-flex items-center gap-1.5 text-sm hover:opacity-80 transition-opacity"
-        style={{ color: 'var(--circle)' }}>
+        className="inline-flex items-center gap-1.5 text-sm hover:opacity-80 transition-opacity theme-text-subtle">
         <ArrowLeft className="h-4 w-4" /> Back to Catalog
       </Link>
 
       {/* Hero card */}
       <Card className="p-6 relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, var(--neon-green), transparent)' }} />
+        <div className="absolute top-0 left-0 right-0 h-0.5 theme-neon-gradient" />
         <div className="flex flex-wrap gap-1.5 mb-3">
           <LevelBadge level={roadmap.level} />
-          <span className="text-xs px-2 py-0.5 rounded-full border" style={{ borderColor: 'var(--border-color)', color: 'var(--circle)' }}>{roadmap.category}</span>
+          <span className="text-xs px-2 py-0.5 rounded-full border theme-text-subtle theme-border">{roadmap.category}</span>
         </div>
-        <h1 className="text-xl font-bold mb-2" style={{ color: 'var(--text-color)' }}>{roadmap.title}</h1>
-        <p className="text-sm mb-4" style={{ color: 'var(--old-price)' }}>{roadmap.description}</p>
-        <div className="flex flex-wrap gap-4 mb-4 text-xs" style={{ color: 'var(--circle)' }}>
+        <h1 className="text-xl font-bold mb-2 theme-text">{roadmap.title}</h1>
+        <p className="text-sm mb-4 theme-text-muted">{roadmap.description}</p>
+        <div className="flex flex-wrap gap-4 mb-4 text-xs theme-text-subtle">
           <span className="flex items-center gap-1"><BookOpen className="h-3.5 w-3.5" />{roadmap.steps.length} steps</span>
           <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{totalHours}h estimated</span>
           <span className="flex items-center gap-1"><Users className="h-3.5 w-3.5" />{roadmap._count?.enrollments ?? 0} enrolled</span>
@@ -108,8 +107,8 @@ export default function LearnerRoadmapDetail() {
             <FileText className="h-5 w-5" style={{ color: '#60a5fa' }} />
           </div>
           <div>
-            <p className="font-semibold text-sm" style={{ color: 'var(--text-color)' }}>Google Doc</p>
-            <p className="text-xs" style={{ color: 'var(--circle)' }}>Attach your personal study notes document</p>
+            <p className="font-semibold text-sm theme-text">Google Doc</p>
+            <p className="text-xs theme-text-subtle">Attach your personal study notes document</p>
           </div>
         </div>
         {savedDoc && !editingDoc ? (
@@ -132,8 +131,7 @@ export default function LearnerRoadmapDetail() {
           <div className="space-y-3">
             <input type="url" value={docUrl} onChange={e => setDocUrl(e.target.value)}
               placeholder="https://docs.google.com/document/d/..."
-              className="w-full rounded-lg px-3 py-2.5 text-sm outline-none border"
-              style={{ background: 'var(--foot-color)', borderColor: 'var(--border-color)', color: 'var(--text-color)' }} />
+              className="w-full rounded-lg px-3 py-2.5 text-sm outline-none border theme-select theme-border" />
             <div className="flex gap-2">
               <PrimaryBtn onClick={saveDocUrl} loading={savingDoc} className="text-sm py-1.5 px-3">
                 <Save className="h-3.5 w-3.5" />{savingDoc ? 'Saving…' : 'Save Link'}
@@ -151,8 +149,8 @@ export default function LearnerRoadmapDetail() {
           const done = isStepDone(step);
           const stepCompleted = step.todos.filter(t => isTodoDone(t.id)).length;
           return (
-            <div key={step.id} className="rounded-xl border overflow-hidden transition-colors"
-              style={{ background: 'var(--croma-wall)', borderColor: done ? 'rgba(52,211,153,0.3)' : 'var(--border-color)' }}>
+            <div key={step.id} className="theme-card-bg rounded-xl border overflow-hidden transition-colors"
+              style={{ borderColor: done ? 'rgba(52,211,153,0.3)' : 'var(--border-color)' }}>
               {/* Step trigger */}
               <button type="button"
                 onClick={() => setOpenSteps(p => ({ ...p, [si]: !p[si] }))}
@@ -161,24 +159,24 @@ export default function LearnerRoadmapDetail() {
                   style={{ background: done ? 'rgba(52,211,153,0.15)' : 'var(--foot-color)', border: `1.5px solid ${done ? 'rgba(52,211,153,0.4)' : 'var(--border-color)'}` }}>
                   {done
                     ? <CheckCircle className="h-4 w-4" style={{ color: '#34d399' }} />
-                    : <span className="text-xs font-bold" style={{ color: 'var(--circle)' }}>{si + 1}</span>}
+                    : <span className="text-xs font-bold theme-text-subtle">{si + 1}</span>}
                 </div>
                 <div className="flex-1 text-left min-w-0">
                   <p className="text-sm font-semibold truncate" style={{ color: done ? '#34d399' : 'var(--text-color)' }}>{step.title}</p>
-                  <p className="text-xs" style={{ color: 'var(--circle)' }}>{stepCompleted}/{step.todos.length} completed · {step.estimatedHours}h</p>
+                  <p className="text-xs theme-text-subtle">{stepCompleted}/{step.todos.length} completed · {step.estimatedHours}h</p>
                 </div>
                 {openSteps[si]
-                  ? <ChevronUp className="h-4 w-4 flex-shrink-0" style={{ color: 'var(--circle)' }} />
-                  : <ChevronDown className="h-4 w-4 flex-shrink-0" style={{ color: 'var(--circle)' }} />}
+                  ? <ChevronUp className="h-4 w-4 flex-shrink-0 theme-text-subtle" />
+                  : <ChevronDown className="h-4 w-4 flex-shrink-0 theme-text-subtle" />}
               </button>
 
               {/* Step body */}
               {openSteps[si] && (
-                <div className="border-t px-4 py-4 space-y-4" style={{ borderColor: 'var(--border-color)' }}>
-                  {step.description && <p className="text-sm" style={{ color: 'var(--old-price)' }}>{step.description}</p>}
+                <div className="border-t px-4 py-4 space-y-4 theme-border">
+                  {step.description && <p className="text-sm theme-text-muted">{step.description}</p>}
                   {step.resources.length > 0 && (
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{ color: 'var(--circle)' }}>Resources</p>
+                      <p className="text-xs font-bold uppercase tracking-wide mb-2 theme-text-subtle">Resources</p>
                       <div className="space-y-1">
                         {step.resources.map((url, i) => (
                           <a key={i} href={url} target="_blank" rel="noopener noreferrer"
@@ -193,7 +191,7 @@ export default function LearnerRoadmapDetail() {
                   )}
                   {/* Todos */}
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{ color: 'var(--circle)' }}>Tasks</p>
+                    <p className="text-xs font-bold uppercase tracking-wide mb-2 theme-text-subtle">Tasks</p>
                     <div className="space-y-2">
                       {step.todos.map(todo => {
                         const isDone = isTodoDone(todo.id);

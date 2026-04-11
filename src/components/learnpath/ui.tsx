@@ -41,7 +41,7 @@ export function CardHeader({ title, icon, action }: { title: string; icon?: Reac
 
 export function StatCard({ label, value, icon: Icon, color, loading }: { label: string; value: string | number; icon: React.ElementType; color: string; loading?: boolean }) {
   return (
-    <div className="theme-card-bg rounded-xl border p-5">
+    <div className="dg-card p-5">
       <div className="rounded-lg p-2.5 w-fit mb-3" style={{ background: `${color}20` }}>
         <Icon className="h-5 w-5" style={{ color }} />
       </div>
@@ -54,19 +54,20 @@ export function StatCard({ label, value, icon: Icon, color, loading }: { label: 
 export function LevelBadge({ level }: { level: string }) {
   const lc = LEVEL_COLORS[level] ?? LEVEL_COLORS.BEGINNER;
   return (
-    <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
-      style={{ background: lc.bg, color: lc.color, border: `1px solid ${lc.border}` }}>
+    <span className="text-xs px-2 py-0.5 rounded-full font-semibold border"
+      style={{ background: lc.bg, color: lc.color, borderColor: lc.border }}>
       {level}
     </span>
   );
 }
 
 export function PublishedBadge({ published }: { published: boolean }) {
+  const styles = published
+    ? { background: 'rgba(52,211,153,0.1)', color: '#34d399', borderColor: 'rgba(52,211,153,0.2)' }
+    : { background: 'rgba(251,191,36,0.1)', color: '#fbbf24', borderColor: 'rgba(251,191,36,0.2)' };
+
   return (
-    <span className="text-xs px-2 py-0.5 rounded-full"
-      style={published
-        ? { background: 'rgba(52,211,153,0.1)', color: '#34d399', border: '1px solid rgba(52,211,153,0.2)' }
-        : { background: 'rgba(251,191,36,0.1)', color: '#fbbf24', border: '1px solid rgba(251,191,36,0.2)' }}>
+    <span className="text-xs px-2 py-0.5 rounded-full border" style={styles}>
       {published ? 'Published' : 'Draft'}
     </span>
   );
@@ -143,12 +144,12 @@ export function DangerBtn({ children, loading, disabled, className = '', ...prop
 
 export function ErrorAlert({ message }: { message: string }) {
   if (!message) return null;
-  return <div className="rounded-xl p-3 text-sm" style={{ background: 'rgba(248,113,113,0.1)', color: '#f87171', border: '1px solid rgba(248,113,113,0.2)' }}>{message}</div>;
+  return <div className="dg-alert-error">{message}</div>;
 }
 
 export function SuccessAlert({ message }: { message: string }) {
   if (!message) return null;
-  return <div className="rounded-xl p-3 text-sm" style={{ background: 'rgba(52,211,153,0.1)', color: '#34d399', border: '1px solid rgba(52,211,153,0.2)' }}>{message}</div>;
+  return <div className="dg-alert-success">{message}</div>;
 }
 
 export function EmptyState({ icon: Icon, title, action }: { icon: React.ElementType; title: string; action?: React.ReactNode }) {
@@ -172,10 +173,10 @@ export function SkeletonList({ rows = 5, height = 'h-14' }: { rows?: number; hei
 interface Column<T> { key: string; label: string; align?: 'left' | 'right'; render: (row: T) => React.ReactNode; }
 export function DataTable<T>({ columns, rows, rowKey }: { columns: Column<T>[]; rows: T[]; rowKey: (row: T) => string }) {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full border-collapse">
+    <div className="dg-table-wrapper">
+      <table className="dg-table">
         <thead>
-          <tr className="theme-border border-b">
+          <tr className="dg-table-header-row">
             {columns.map(col => (
               <th key={col.key} className="theme-text-subtle px-4 py-3 text-xs font-semibold uppercase tracking-wider"
                 style={{ textAlign: col.align ?? 'left' }}>{col.label}</th>
@@ -184,7 +185,7 @@ export function DataTable<T>({ columns, rows, rowKey }: { columns: Column<T>[]; 
         </thead>
         <tbody>
           {rows.map(row => (
-            <tr key={rowKey(row)} className="theme-border border-b hover:bg-white/5 transition-colors">
+            <tr key={rowKey(row)} className="dg-table-row hover:bg-white/5">
               {columns.map(col => (
                 <td key={col.key} className="px-4 py-3" style={{ textAlign: col.align ?? 'left' }}>{col.render(row)}</td>
               ))}
@@ -234,13 +235,14 @@ export function LevelSelector({ value, onChange }: { value: string; onChange: (l
       <div className="flex gap-2">
         {LEVELS.map(l => {
           const lc = LEVEL_COLORS[l];
+          const active = value === l;
           return (
             <button key={l} type="button" onClick={() => onChange(l)}
               className="flex-1 rounded-lg py-2.5 text-xs font-bold transition-all border"
               style={{
-                background: value === l ? lc.bg : 'var(--foot-color)',
-                color: value === l ? lc.color : 'var(--circle)',
-                borderColor: value === l ? lc.border : 'var(--border-color)',
+                background: active ? lc.bg : 'var(--foot-color)',
+                color: active ? lc.color : 'var(--circle)',
+                borderColor: active ? lc.border : 'var(--border-color)',
               }}>
               {l.slice(0, 3)}
             </button>

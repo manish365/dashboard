@@ -34,12 +34,12 @@ export default function InventoryPage() {
   );
 
   const cols = [
-    { key: 'product', label: 'Product ID', render: (i: InventoryItem) => <span className="text-sm font-mono" style={{ color: 'var(--text-color)' }}>{i.productId?.slice(0, 12)}...</span> },
-    { key: 'variant', label: 'Variant', render: (i: InventoryItem) => <span className="text-sm font-mono" style={{ color: 'var(--circle)' }}>{i.variantId ? `${i.variantId.slice(0, 8)}...` : '—'}</span> },
-    { key: 'warehouse', label: 'Warehouse', render: (i: InventoryItem) => <span className="text-sm" style={{ color: 'var(--old-price)' }}>{whName(i.warehouseId)}</span> },
+    { key: 'product', label: 'Product ID', render: (i: InventoryItem) => <span className="text-sm font-mono theme-text">{i.productId?.slice(0, 12)}...</span> },
+    { key: 'variant', label: 'Variant', render: (i: InventoryItem) => <span className="text-sm font-mono theme-text-subtle">{i.variantId ? `${i.variantId.slice(0, 8)}...` : '—'}</span> },
+    { key: 'warehouse', label: 'Warehouse', render: (i: InventoryItem) => <span className="text-sm theme-text-muted">{whName(i.warehouseId)}</span> },
     { key: 'available', label: 'Available', render: (i: InventoryItem) => <span className="text-sm font-semibold" style={{ color: i.availableQuantity <= (i.minimumStockLevel || 10) ? '#fbbf24' : 'var(--text-color)' }}>{i.availableQuantity}</span> },
-    { key: 'reserved', label: 'Reserved', render: (i: InventoryItem) => <span className="text-sm" style={{ color: 'var(--circle)' }}>{i.reservedQuantity || 0}</span> },
-    { key: 'min', label: 'Min Level', render: (i: InventoryItem) => <span className="text-sm" style={{ color: 'var(--circle)' }}>{i.minimumStockLevel || 10}</span> },
+    { key: 'reserved', label: 'Reserved', render: (i: InventoryItem) => <span className="text-sm theme-text-subtle">{i.reservedQuantity || 0}</span> },
+    { key: 'min', label: 'Min Level', render: (i: InventoryItem) => <span className="text-sm theme-text-subtle">{i.minimumStockLevel || 10}</span> },
     { key: 'status', label: 'Status', render: (i: InventoryItem) => <KpBadge label={i.availableQuantity <= (i.minimumStockLevel || 10) ? 'Low Stock' : 'In Stock'} variant={i.availableQuantity <= (i.minimumStockLevel || 10) ? 'warning' : 'active'} /> },
   ];
 
@@ -54,10 +54,10 @@ export default function InventoryPage() {
       <div className="flex flex-wrap gap-3">
         <KpSearch value={search} onChange={setSearch} placeholder="Search by product or warehouse..." className="flex-1 max-w-sm" />
         <KpSelect value={warehouseFilter} onChange={setWarehouseFilter}>
-          <option value="" style={{ background: 'var(--navbar-carousel-color)' }}>All Warehouses</option>
-          {warehouses.map(w => <option key={w.warehouseId} value={w.warehouseId} style={{ background: 'var(--navbar-carousel-color)' }}>{w.warehouseName}</option>)}
+          <option value="" className="theme-option">All Warehouses</option>
+          {warehouses.map(w => <option key={w.warehouseId} value={w.warehouseId} className="theme-option">{w.warehouseName}</option>)}
         </KpSelect>
-        <label className="flex items-center gap-2 rounded-xl px-3 py-2 border cursor-pointer hover:bg-white/5 text-sm" style={{ borderColor: 'var(--border-color)', color: 'var(--old-price)' }}>
+        <label className="flex items-center gap-2 rounded-xl px-3 py-2 border cursor-pointer hover:bg-white/5 text-sm theme-btn-cancel">
           <input type="checkbox" checked={lowStockOnly} onChange={e => setLowStockOnly(e.target.checked)} className="rounded" />
           <AlertTriangle className="h-3.5 w-3.5" style={{ color: '#fbbf24' }} /> Low Stock Only
         </label>

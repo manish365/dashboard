@@ -25,13 +25,13 @@ export default function PincodesPage() {
   const filtered = items.filter(p => p.pincode?.includes(search) || p.city?.toLowerCase().includes(search.toLowerCase()) || p.state?.toLowerCase().includes(search.toLowerCase()));
 
   const cols = [
-    { key: 'pincode', label: 'Pincode', render: (p: Pincode) => <span className="text-sm font-bold" style={{ color: 'var(--text-color)' }}>{p.pincode}</span> },
-    { key: 'location', label: 'Location', render: (p: Pincode) => <div><p className="text-sm" style={{ color: 'var(--text-color)' }}>{p.city}</p><p className="text-xs" style={{ color: 'var(--circle)' }}>{p.state}</p></div> },
-    { key: 'delivery', label: 'Delivery Days', render: (p: Pincode) => <span className="text-sm flex items-center gap-1" style={{ color: 'var(--old-price)' }}><Truck className="h-3.5 w-3.5" />{p.deliveryDaysMin}–{p.deliveryDaysMax}d</span> },
-    { key: 'charges', label: 'Charges', render: (p: Pincode) => <span className="text-sm" style={{ color: 'var(--old-price)' }}>₹{p.deliveryCharges?.standard || 0}</span> },
-    { key: 'cod', label: 'COD', render: (p: Pincode) => p.isCodAvailable ? <CheckCircle className="h-5 w-5" style={{ color: '#34d399' }} /> : <XCircle className="h-5 w-5" style={{ color: 'var(--circle)' }} /> },
+    { key: 'pincode', label: 'Pincode', render: (p: Pincode) => <span className="text-sm font-bold theme-text">{p.pincode}</span> },
+    { key: 'location', label: 'Location', render: (p: Pincode) => <div><p className="text-sm theme-text">{p.city}</p><p className="text-xs theme-text-subtle">{p.state}</p></div> },
+    { key: 'delivery', label: 'Delivery Days', render: (p: Pincode) => <span className="text-sm flex items-center gap-1 theme-text-muted"><Truck className="h-3.5 w-3.5" />{p.deliveryDaysMin}–{p.deliveryDaysMax}d</span> },
+    { key: 'charges', label: 'Charges', render: (p: Pincode) => <span className="text-sm theme-text-muted">₹{p.deliveryCharges?.standard || 0}</span> },
+    { key: 'cod', label: 'COD', render: (p: Pincode) => p.isCodAvailable ? <CheckCircle className="h-5 w-5" style={{ color: '#34d399' }} /> : <XCircle className="h-5 w-5 theme-text-subtle" /> },
     { key: 'status', label: 'Status', render: (p: Pincode) => <KpBadge label={p.isActive ? 'Active' : 'Inactive'} variant={p.isActive ? 'active' : 'inactive'} /> },
-    { key: 'actions', label: 'Actions', align: 'right' as const, render: (p: Pincode) => <div className="flex items-center justify-end gap-1"><button onClick={() => { setSelected(p); setForm({ pincode: p.pincode, city: p.city, state: p.state }); setShowModal(true); }} className="p-1.5 rounded-lg hover:bg-white/10" style={{ color: 'var(--circle)' }}><Edit className="h-4 w-4" /></button><button onClick={() => handleDelete(p.pincodeId)} className="p-1.5 rounded-lg hover:bg-red-500/10" style={{ color: '#f87171' }}><Trash2 className="h-4 w-4" /></button></div> },
+    { key: 'actions', label: 'Actions', align: 'right' as const, render: (p: Pincode) => <div className="flex items-center justify-end gap-1"><button onClick={() => { setSelected(p); setForm({ pincode: p.pincode, city: p.city, state: p.state }); setShowModal(true); }} className="p-1.5 rounded-lg hover:bg-white/10 theme-text-subtle"><Edit className="h-4 w-4" /></button><button onClick={() => handleDelete(p.pincodeId)} className="p-1.5 rounded-lg hover:bg-red-500/10 theme-text-danger"><Trash2 className="h-4 w-4" /></button></div> },
   ];
 
   return (
@@ -40,13 +40,13 @@ export default function PincodesPage() {
       <div className="flex gap-3">
         <KpSearch value={search} onChange={setSearch} placeholder="Search by pincode, city, or state..." className="flex-1 max-w-sm" />
         <KpSelect value={activeFilter} onChange={setActiveFilter}>
-          <option value="" style={{ background: 'var(--navbar-carousel-color)' }}>All Pincodes</option>
-          <option value="true" style={{ background: 'var(--navbar-carousel-color)' }}>Active Only</option>
-          <option value="false" style={{ background: 'var(--navbar-carousel-color)' }}>Inactive Only</option>
+          <option value="" className="theme-option">All Pincodes</option>
+          <option value="true" className="theme-option">Active Only</option>
+          <option value="false" className="theme-option">Inactive Only</option>
         </KpSelect>
       </div>
       <KpCard>{loading ? <KpSkeleton /> : <KpTable cols={cols} rows={filtered} rowKey={p => p.pincodeId} emptyMsg="No pincodes found." />}</KpCard>
-      {showModal && <KpModal title={selected ? 'Edit Pincode' : 'Add Pincode'} onClose={() => setShowModal(false)}><div className="space-y-4"><KpField label="Pincode" value={form.pincode} onChange={e => setForm(f => ({ ...f, pincode: e.target.value }))} placeholder="e.g. 400001" /><KpField label="City" value={form.city} onChange={e => setForm(f => ({ ...f, city: e.target.value }))} placeholder="e.g. Mumbai" /><KpField label="State" value={form.state} onChange={e => setForm(f => ({ ...f, state: e.target.value }))} placeholder="e.g. Maharashtra" /><div className="flex gap-3 pt-1"><button onClick={() => setShowModal(false)} className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5" style={{ borderColor: 'var(--border-color)', color: 'var(--old-price)' }}>Cancel</button><KpBtn onClick={handleSave} loading={saving} className="flex-1 justify-center">Save</KpBtn></div></div></KpModal>}
+      {showModal && <KpModal title={selected ? 'Edit Pincode' : 'Add Pincode'} onClose={() => setShowModal(false)}><div className="space-y-4"><KpField label="Pincode" value={form.pincode} onChange={e => setForm(f => ({ ...f, pincode: e.target.value }))} placeholder="e.g. 400001" /><KpField label="City" value={form.city} onChange={e => setForm(f => ({ ...f, city: e.target.value }))} placeholder="e.g. Mumbai" /><KpField label="State" value={form.state} onChange={e => setForm(f => ({ ...f, state: e.target.value }))} placeholder="e.g. Maharashtra" /><div className="flex gap-3 pt-1"><button onClick={() => setShowModal(false)} className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5 theme-btn-cancel">Cancel</button><KpBtn onClick={handleSave} loading={saving} className="flex-1 justify-center">Save</KpBtn></div></div></KpModal>}
     </div>
   );
 }

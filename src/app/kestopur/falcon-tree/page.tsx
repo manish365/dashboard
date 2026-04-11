@@ -83,7 +83,7 @@ function Node({ node, focus, isKpi, onClick }: { node: any; focus: boolean; isKp
           ))}
         </div>
       )}
-      {!focus && <div className="flex items-center gap-1 text-xs font-semibold mt-2" style={{ color: 'var(--neon-green)' }}>Explore <ChevronRight className="h-3.5 w-3.5" /></div>}
+      {!focus && <div className="flex items-center gap-1 text-xs font-semibold mt-2 theme-text-neon">Explore <ChevronRight className="h-3.5 w-3.5" /></div>}
     </motion.div>
   );
 }
@@ -117,21 +117,20 @@ export default function FalconTreePage() {
   const cy = size.h / 2;
 
   return (
-    <div className="flex flex-col rounded-xl border overflow-hidden" style={{ height: 'calc(100vh - 8rem)', background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}>
+    <div className="flex flex-col rounded-xl border overflow-hidden theme-card-bg" style={{ height: 'calc(100vh - 8rem)' }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b flex-shrink-0" style={{ borderColor: 'var(--border-color)' }}>
+      <div className="flex items-center justify-between px-6 py-4 border-b flex-shrink-0 theme-border">
         <div className="flex items-center gap-3">
           <div className="rounded-xl p-2.5" style={{ background: 'rgba(0,233,191,0.1)' }}>
-            <Network className="h-5 w-5" style={{ color: 'var(--neon-green)' }} />
+            <Network className="h-5 w-5 theme-text-neon" />
           </div>
           <div>
-            <h1 className="text-lg font-black" style={{ color: 'var(--text-color)' }}>Falcon <span style={{ color: 'var(--neon-green)' }}>Ecosystem</span></h1>
-            <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--circle)' }}>Multi-Parent Dependency Map</p>
+            <h1 className="text-lg font-black theme-text">Falcon <span className="theme-text-neon">Ecosystem</span></h1>
+            <p className="text-[10px] font-bold uppercase tracking-widest theme-text-subtle">Multi-Parent Dependency Map</p>
           </div>
         </div>
         <button onClick={() => setCurrent({ node: DATA.verticals[0], type: 'vertical' })}
-          className="flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold border hover:bg-white/5 transition-colors"
-          style={{ borderColor: 'var(--border-color)', color: 'var(--old-price)' }}>
+          className="flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold border hover:bg-white/5 transition-colors theme-btn-cancel">
           <RefreshCcw className="h-3.5 w-3.5" /> Reset
         </button>
       </div>
@@ -159,12 +158,12 @@ export default function FalconTreePage() {
             {layers.parents.length > 0 ? layers.parents.map(p => (
               <Node key={p.id} node={p} focus={false} onClick={() => click(p)} />
             )) : (
-              <div className="rounded-2xl border-2 border-dashed p-8 text-center opacity-20" style={{ borderColor: 'var(--border-color)' }}>
-                <p className="text-[9px] font-black uppercase tracking-widest" style={{ color: 'var(--circle)' }}>Root Domain</p>
+              <div className="rounded-2xl border-2 border-dashed p-8 text-center opacity-20 theme-border">
+                <p className="text-[9px] font-black uppercase tracking-widest theme-text-subtle">Root Domain</p>
               </div>
             )}
           </AnimatePresence>
-          {layers.parents.length > 0 && <p className="text-[9px] font-black uppercase tracking-widest flex items-center gap-1 opacity-40" style={{ color: 'var(--neon-green)' }}><ArrowLeft className="h-3 w-3" /> Source</p>}
+          {layers.parents.length > 0 && <p className="text-[9px] font-black uppercase tracking-widest flex items-center gap-1 opacity-40 theme-text-neon"><ArrowLeft className="h-3 w-3" /> Source</p>}
         </div>
 
         {/* Focus col */}
@@ -180,21 +179,21 @@ export default function FalconTreePage() {
             {layers.children.length > 0 ? layers.children.map(c => (
               <Node key={c.id} node={c} focus={false} onClick={() => click(c)} />
             )) : (
-              <div className="rounded-2xl border-2 border-dashed p-8 text-center opacity-20" style={{ borderColor: 'var(--border-color)' }}>
-                <p className="text-[9px] font-black uppercase tracking-widest" style={{ color: 'var(--circle)' }}>{current.type === 'kpi' ? 'Terminal' : 'End of Stream'}</p>
+              <div className="rounded-2xl border-2 border-dashed p-8 text-center opacity-20 theme-border">
+                <p className="text-[9px] font-black uppercase tracking-widest theme-text-subtle">{current.type === 'kpi' ? 'Terminal' : 'End of Stream'}</p>
               </div>
             )}
           </AnimatePresence>
-          {layers.children.length > 0 && <p className="text-[9px] font-black uppercase tracking-widest flex items-center gap-1 opacity-40" style={{ color: 'var(--neon-green)' }}>Impact <ArrowRight className="h-3 w-3" /></p>}
+          {layers.children.length > 0 && <p className="text-[9px] font-black uppercase tracking-widest flex items-center gap-1 opacity-40 theme-text-neon">Impact <ArrowRight className="h-3 w-3" /></p>}
         </div>
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between px-6 py-3 border-t flex-shrink-0" style={{ borderColor: 'var(--border-color)' }}>
-        <p className="text-[10px] font-bold flex items-center gap-2" style={{ color: 'var(--circle)' }}>
+      <div className="flex items-center justify-between px-6 py-3 border-t flex-shrink-0 theme-border">
+        <p className="text-[10px] font-bold flex items-center gap-2 theme-text-subtle">
           <MousePointer2 className="h-3.5 w-3.5" /> Click any node to drill into context
         </p>
-        <button className="rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-widest" style={{ background: 'var(--neon-green)', color: 'var(--text-color-black)' }}>
+        <button className="rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-widest theme-btn-neon">
           Analyze Shared Impact
         </button>
       </div>

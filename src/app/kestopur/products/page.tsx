@@ -64,15 +64,15 @@ export default function ProductsPage() {
   const filtered = products.filter(p => p.name?.toLowerCase().includes(search.toLowerCase()));
 
   const cols = [
-    { key: 'name', label: 'Product Name', render: (p: Product) => <span className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>{p.name}</span> },
-    { key: 'type', label: 'Type', render: (p: Product) => <span className="text-sm" style={{ color: 'var(--old-price)' }}>{p.product_type}</span> },
+    { key: 'name', label: 'Product Name', render: (p: Product) => <span className="text-sm font-medium theme-text">{p.name}</span> },
+    { key: 'type', label: 'Type', render: (p: Product) => <span className="text-sm theme-text-muted">{p.product_type}</span> },
     { key: 'status', label: 'Status', render: (p: Product) => <KpBadge label={p.status} variant={p.status} /> },
-    { key: 'created', label: 'Created', render: (p: Product) => <span className="text-sm" style={{ color: 'var(--circle)' }}>{new Date(p.created_at).toLocaleDateString()}</span> },
+    { key: 'created', label: 'Created', render: (p: Product) => <span className="text-sm theme-text-subtle">{new Date(p.created_at).toLocaleDateString()}</span> },
     {
       key: 'actions', label: 'Actions', align: 'right' as const, render: (p: Product) => (
         <div className="flex items-center justify-end gap-2">
-          <button onClick={() => openEdit(p)} className="p-1.5 rounded-lg hover:bg-white/10 transition-colors" style={{ color: 'var(--circle)' }}><Edit className="h-4 w-4" /></button>
-          <button onClick={() => handleDelete(p.product_id)} className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors" style={{ color: '#f87171' }}><Trash2 className="h-4 w-4" /></button>
+          <button onClick={() => openEdit(p)} className="p-1.5 rounded-lg hover:bg-white/10 transition-colors theme-text-subtle"><Edit className="h-4 w-4" /></button>
+          <button onClick={() => handleDelete(p.product_id)} className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors theme-text-danger"><Trash2 className="h-4 w-4" /></button>
         </div>
       ),
     },
@@ -92,24 +92,21 @@ export default function ProductsPage() {
           <div className="space-y-4">
             <KpField label="Product Name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="e.g. Wireless Headphones" />
             <div className="space-y-1">
-              <label className="block text-xs font-semibold" style={{ color: 'var(--old-price)' }}>Type</label>
+              <label className="block text-xs font-semibold theme-text-muted">Type</label>
               <select value={form.product_type} onChange={e => setForm(f => ({ ...f, product_type: e.target.value }))}
-                className="w-full rounded-lg px-3 py-2.5 text-sm outline-none border"
-                style={{ background: 'var(--foot-color)', borderColor: 'var(--border-color)', color: 'var(--text-color)' }}>
-                {['simple', 'variable', 'bundle', 'digital'].map(t => <option key={t} value={t} style={{ background: 'var(--navbar-carousel-color)' }}>{t}</option>)}
+                className="w-full rounded-lg px-3 py-2.5 text-sm outline-none border theme-select theme-border">
+                {['simple', 'variable', 'bundle', 'digital'].map(t => <option key={t} value={t} className="theme-option">{t}</option>)}
               </select>
             </div>
             <div className="space-y-1">
-              <label className="block text-xs font-semibold" style={{ color: 'var(--old-price)' }}>Status</label>
+              <label className="block text-xs font-semibold theme-text-muted">Status</label>
               <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
-                className="w-full rounded-lg px-3 py-2.5 text-sm outline-none border"
-                style={{ background: 'var(--foot-color)', borderColor: 'var(--border-color)', color: 'var(--text-color)' }}>
-                {['active', 'draft', 'inactive'].map(s => <option key={s} value={s} style={{ background: 'var(--navbar-carousel-color)' }}>{s}</option>)}
+                className="w-full rounded-lg px-3 py-2.5 text-sm outline-none border theme-select theme-border">
+                {['active', 'draft', 'inactive'].map(s => <option key={s} value={s} className="theme-option">{s}</option>)}
               </select>
             </div>
             <div className="flex gap-3 pt-1">
-              <button onClick={() => setShowModal(false)} className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5 transition-colors"
-                style={{ borderColor: 'var(--border-color)', color: 'var(--old-price)' }}>Cancel</button>
+              <button onClick={() => setShowModal(false)} className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5 transition-colors theme-btn-cancel">Cancel</button>
               <KpBtn onClick={handleSave} loading={saving} className="flex-1 justify-center">Save</KpBtn>
             </div>
           </div>

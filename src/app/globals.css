@@ -29,6 +29,9 @@
 
 /* ── Neon accent ── */
 .theme-neon-bg        { background-color: var(--neon-green); }
+.theme-neon-gradient  { background: linear-gradient(90deg, var(--neon-green), transparent); }
+.theme-neon-gradient  { background: linear-gradient(90deg, var(--neon-green), transparent); }
+.theme-neon-gradient  { background: linear-gradient(90deg, var(--neon-green), transparent); }
 .theme-neon-bg-subtle { background-color: rgba(0, 233, 191, 0.08); }
 .theme-neon-tag {
   background-color: rgba(0, 233, 191, 0.08);
@@ -401,4 +404,195 @@
 
 .excel-mode-grid .ag-header-cell-label {
   justify-content: center;
+}
+/* ── DataGrid & Legacy Component Migration ── */
+.dg-page-container {
+  font-family: 'Inter', system-ui, sans-serif;
+  padding-bottom: 40px;
+}
+
+.dg-section-header {
+  margin-bottom: 18px;
+}
+
+.dg-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.dg-subtitle {
+  font-size: .78rem;
+  color: var(--old-price);
+  margin-top: 2px;
+}
+
+.dg-card {
+  background: var(--croma-wall);
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.05);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+body.light-theme .dg-card {
+  background: #fff;
+}
+
+.dg-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-color);
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dg-btn {
+  height: 32px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 6px;
+  font-size: .775rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  background: var(--foot-color);
+  color: var(--text-color);
+  transition: all 0.2s;
+}
+
+.dg-btn:hover {
+  opacity: 0.9;
+  background: var(--toolbar-bg);
+}
+
+.dg-btn-primary {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.dg-btn-ghost {
+  background: transparent;
+  border-color: var(--border-color);
+}
+
+.dg-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--toolbar-bg);
+  flex-wrap: wrap;
+}
+
+.dg-stats-bar {
+  display: flex;
+  gap: 12px;
+  padding: 7px 16px;
+  border-bottom: 1px solid var(--border-color);
+  background: linear-gradient(90deg, var(--toolbar-bg), transparent);
+  flex-wrap: wrap;
+}
+
+.dg-table-wrapper {
+  overflow-x: auto;
+}
+
+.dg-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1100px;
+  font-size: .8rem;
+}
+
+.dg-table-header-cell {
+  background: var(--toolbar-bg);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.dg-table-row {
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s;
+}
+
+.dg-table-cell {
+  height: 48px;
+  padding: 0 10px;
+  vertical-align: middle;
+  border-right: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+.dg-input {
+  width: 100%;
+  height: 26px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0 6px;
+  font-size: .72rem;
+  outline: none;
+  background: var(--input-bg);
+  color: var(--text-color);
+}
+
+.dg-select {
+  width: 100%;
+  height: 26px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0 18px 0 6px;
+  font-size: .72rem;
+  outline: none;
+  background: var(--input-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%238b93ac' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 5px center;
+}
+
+.dg-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: .68rem;
+  font-weight: 700;
+}
+
+.dg-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: .7rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.dg-alert-error {
+  background: rgba(248, 113, 113, 0.1);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 0.875rem;
+}
+
+.dg-alert-success {
+  background: rgba(52, 211, 153, 0.1);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.2);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 0.875rem;
 }

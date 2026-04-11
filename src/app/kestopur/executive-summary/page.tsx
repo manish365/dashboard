@@ -25,8 +25,7 @@ const MetricCard = ({ label, value, trend, icon: Icon, color, delay }: any) => (
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5, delay }}
-    className="relative group overflow-hidden rounded-2xl border p-6 transition-all hover:shadow-2xl hover:shadow-neon-green/5"
-    style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}
+    className="relative group overflow-hidden rounded-2xl border p-6 transition-all hover:shadow-2xl hover:shadow-neon-green/5 theme-card-bg"
   >
     <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
       <Icon size={80} style={{ color }} />
@@ -44,8 +43,8 @@ const MetricCard = ({ label, value, trend, icon: Icon, color, delay }: any) => (
       )}
     </div>
 
-    <h3 className="text-sm font-medium mb-1" style={{ color: 'var(--old-price)' }}>{label}</h3>
-    <div className="text-3xl font-bold tracking-tight" style={{ color: 'var(--text-color)' }}>{value}</div>
+    <h3 className="text-sm font-medium mb-1 theme-text-muted">{label}</h3>
+    <div className="text-3xl font-bold tracking-tight theme-text">{value}</div>
     
     <div className="mt-4 h-1 w-full bg-white/5 rounded-full overflow-hidden">
       <motion.div 
@@ -62,8 +61,8 @@ const MetricCard = ({ label, value, trend, icon: Icon, color, delay }: any) => (
 const PerformanceBar = ({ label, value, percentage, color, delay }: any) => (
   <div className="space-y-2">
     <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider">
-      <span style={{ color: 'var(--old-price)' }}>{label}</span>
-      <span style={{ color: 'var(--text-color)' }}>{value}</span>
+      <span className="theme-text-muted">{label}</span>
+      <span className="theme-text">{value}</span>
     </div>
     <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
       <motion.div 
@@ -123,7 +122,7 @@ export default function ExecutiveSummary() {
             className="flex items-center gap-2 mb-2"
           >
             <div className="h-1 w-8 rounded-full bg-[var(--neon-green)]" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: 'var(--neon-green)' }}>
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] theme-text-neon">
               Board Level Intelligence
             </span>
           </motion.div>
@@ -131,8 +130,7 @@ export default function ExecutiveSummary() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl font-extrabold tracking-tight sm:text-5xl" 
-            style={{ color: 'var(--text-color)' }}
+            className="text-4xl font-extrabold tracking-tight sm:text-5xl theme-text"
           >
             Executive Summary
           </motion.h1>
@@ -140,8 +138,7 @@ export default function ExecutiveSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-sm mt-3 max-w-xl leading-relaxed" 
-            style={{ color: 'var(--old-price)' }}
+            className="text-sm mt-3 max-w-xl leading-relaxed theme-text-muted"
           >
             Real-time strategic performance indicators for the Kestopur ecosystem. 
             Aggregated diagnostics and growth trajectories for Croma stakeholders.
@@ -152,15 +149,14 @@ export default function ExecutiveSummary() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3 }}
-          className="flex items-center gap-4 p-4 rounded-2xl border"
-          style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}
+          className="flex items-center gap-4 p-4 rounded-2xl border theme-card-bg"
         >
           <div className="text-right">
-            <p className="text-[10px] font-bold uppercase" style={{ color: 'var(--circle)' }}>Reporting Period</p>
-            <p className="text-sm font-semibold" style={{ color: 'var(--text-color)' }}>Q1 FY 2026-27</p>
+            <p className="text-[10px] font-bold uppercase theme-text-subtle">Reporting Period</p>
+            <p className="text-sm font-semibold theme-text">Q1 FY 2026-27</p>
           </div>
           <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-white/5">
-            <Calendar size={20} style={{ color: 'var(--neon-green)' }} />
+            <Calendar size={20} className="theme-text-neon" />
           </div>
         </motion.div>
       </div>
@@ -181,19 +177,18 @@ export default function ExecutiveSummary() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.5 }}
-          className="lg:col-span-2 rounded-3xl border p-8 relative overflow-hidden"
-          style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}
+          className="lg:col-span-2 rounded-3xl border p-8 relative overflow-hidden theme-card-bg"
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--neon-green)]/5 blur-[100px] rounded-full -mr-20 -mt-20" />
           
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-xl bg-white/5">
-                <Target size={20} style={{ color: 'var(--neon-green)' }} />
+                <Target size={20} className="theme-text-neon" />
               </div>
-              <h2 className="text-xl font-bold" style={{ color: 'var(--text-color)' }}>Strategic Growth Targets</h2>
+              <h2 className="text-xl font-bold theme-text">Strategic Growth Targets</h2>
             </div>
-            <BarChart3 size={20} style={{ color: 'var(--circle)' }} />
+            <BarChart3 size={20} className="theme-text-subtle" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
@@ -207,8 +202,8 @@ export default function ExecutiveSummary() {
               <TrendingUp size={14} className="text-green-400" />
             </div>
             <div>
-              <p className="text-xs font-bold uppercase mb-1" style={{ color: 'var(--neon-green)' }}>Executive Insight</p>
-              <p className="text-sm leading-relaxed" style={{ color: 'var(--old-price)' }}>
+              <p className="text-xs font-bold uppercase mb-1 theme-text-neon">Executive Insight</p>
+              <p className="text-sm leading-relaxed theme-text-muted">
                 Overall performance is trending **18% above benchmark**. B2B integration has significantly boosted corporate loyalty metrics. 
                 Fulfillment remains stable despite a **15% increase** in order volume.
               </p>
@@ -221,14 +216,13 @@ export default function ExecutiveSummary() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.6 }}
-          className="rounded-3xl border p-8 flex flex-col"
-          style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}
+          className="rounded-3xl border p-8 flex flex-col theme-card-bg"
         >
           <div className="flex items-center gap-3 mb-8">
             <div className="p-2 rounded-xl bg-white/5">
               <Shield size={20} style={{ color: '#60a5fa' }} />
             </div>
-            <h2 className="text-xl font-bold" style={{ color: 'var(--text-color)' }}>Governance Health</h2>
+            <h2 className="text-xl font-bold theme-text">Governance Health</h2>
           </div>
 
           <div className="flex-1 space-y-6">
@@ -239,18 +233,17 @@ export default function ExecutiveSummary() {
               { label: 'API Latency', value: '42ms', status: 'success' },
             ].map((s, i) => (
               <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors">
-                <span className="text-sm font-medium" style={{ color: 'var(--old-price)' }}>{s.label}</span>
+                <span className="text-sm font-medium theme-text-muted">{s.label}</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold" style={{ color: 'var(--text-color)' }}>{s.value}</span>
-                  <div className="h-2 w-2 rounded-full animate-pulse" style={{ background: 'var(--neon-green)' }} />
+                  <span className="text-sm font-bold theme-text">{s.value}</span>
+                  <div className="h-2 w-2 rounded-full animate-pulse theme-neon-bg" />
                 </div>
               </div>
             ))}
           </div>
 
           <div className="mt-8">
-            <button className="w-full rounded-2xl py-3 text-sm font-bold border hover:bg-white/5 transition-all"
-              style={{ borderColor: 'var(--border-color)', color: 'var(--text-color)' }}>
+            <button className="w-full rounded-2xl py-3 text-sm font-bold border hover:bg-white/5 transition-all theme-text theme-border">
               Download Full Report (PDF)
             </button>
           </div>

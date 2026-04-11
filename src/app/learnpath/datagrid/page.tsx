@@ -22,30 +22,46 @@ const STATUS_STYLE: Record<string, { bg: string; color: string; border: string }
 function Sparkline({ vals }: { vals: number[] }) {
   const max = Math.max(...vals);
   return (
-    <div style={{ display: "flex", alignItems: "flex-end", gap: 2, height: 22 }}>
-      {vals.map((v, i) => <div key={i} style={{ width: 4, height: Math.round((v / max) * 20) + 2, borderRadius: "2px 2px 0 0", background: "#3b82f6", opacity: 0.45 }} />)}
+    <div className="flex items-end gap-0.5 h-[22px]">
+      {vals.map((v, i) => <div key={i} style={{ height: Math.round((v / max) * 20) + 2 }} className="w-1 rounded-t-sm bg-blue-500 opacity-45" />)}
     </div>
   );
 }
 
 function PriBadge({ p }: { p: string }) {
   const s = PRIORITY_STYLE[p] ?? PRIORITY_STYLE.Low;
-  return <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "2px 8px", borderRadius: 99, fontSize: ".68rem", fontWeight: 700, background: s.bg, color: s.color }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: PRIORITY_DOT[p] ?? "#22c55e", flexShrink: 0, display: "inline-block" }} />{p}</span>;
+  return (
+    <span className="dg-badge" style={{ background: s.bg, color: s.color }}>
+      <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 inline-block" style={{ background: PRIORITY_DOT[p] ?? "#22c55e" }} />
+      {p}
+    </span>
+  );
 }
 
 function StatusPill({ s }: { s: string }) {
   const st = STATUS_STYLE[s] ?? STATUS_STYLE.Pending;
   const icons: Record<string, string> = { Approved: "✓", Pending: "⏱", Review: "◉", Blocked: "⚠", Completed: "✔" };
-  return <span style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: 99, fontSize: ".7rem", fontWeight: 600, background: st.bg, color: st.color, border: `1px solid ${st.border}` }}><span style={{ fontSize: ".65rem" }}>{icons[s] ?? "·"}</span>{s}</span>;
+  return (
+    <span className="dg-status-pill" style={{ background: st.bg, color: st.color, borderColor: st.border }}>
+      <span className="text-[0.65rem]">{icons[s] ?? "·"}</span>
+      {s}
+    </span>
+  );
 }
 
 function ProgressCell({ pct }: { pct: number }) {
   const c = progColor(pct);
-  return <div style={{ display: "flex", alignItems: "center", gap: 7, minWidth: 110 }}><div style={{ flex: 1, height: 6, borderRadius: 99, background: "#e5e7eb", overflow: "hidden" }}><div style={{ height: "100%", width: `${pct}%`, borderRadius: 99, background: c }} /></div><span style={{ fontSize: ".7rem", fontWeight: 700, color: c, width: 32, textAlign: "right" }}>{pct}%</span></div>;
+  return (
+    <div className="flex items-center gap-[7px] min-w-[110px]">
+      <div className="flex-1 h-1.5 rounded-full bg-gray-200 overflow-hidden">
+        <div className="h-full rounded-full transition-all duration-300" style={{ width: `${pct}%`, background: c }} />
+      </div>
+      <span className="text-[0.7rem] font-bold w-[32px] text-right" style={{ color: c }}>{pct}%</span>
+    </div>
+  );
 }
 
-const ffInput: React.CSSProperties = { width: "100%", height: 26, border: "1px solid #c8cedf", borderRadius: 4, padding: "0 6px", fontSize: ".72rem", fontFamily: "inherit", outline: "none", background: "#fff", color: "#1e2a45" };
-const ffSelect: React.CSSProperties = { ...ffInput, padding: "0 18px 0 6px", cursor: "pointer", backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%238b93ac' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\")", backgroundRepeat: "no-repeat", backgroundPosition: "right 5px center", appearance: "none" as const };
+// Form styles moved to globals.css (.dg-input, .dg-select)
 
 export default function DataGridPage() {
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
@@ -110,12 +126,8 @@ export default function DataGridPage() {
   const someOnPage = pageRows.some(r => selected.has(r.id));
 
   const S = {
-    shell: { background: "#fff", borderRadius: 10, boxShadow: "0 1px 4px rgba(0,0,0,.07),0 4px 16px rgba(0,0,0,.05)", border: "1px solid #dde1ec", overflow: "hidden" } as React.CSSProperties,
-    toolbar: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", borderBottom: "1px solid #dde1ec", gap: 10, flexWrap: "wrap" } as React.CSSProperties,
-    btn: { height: 32, padding: "0 12px", display: "inline-flex", alignItems: "center", gap: 5, borderRadius: 6, fontSize: ".775rem", fontWeight: 500, fontFamily: "inherit", cursor: "pointer", border: "1px solid #c8cdde", background: "#fff", color: "#4b5775" } as React.CSSProperties,
-    hdrRow: { background: "#f4f6fb", borderBottom: "2px solid #c8cdde" } as React.CSSProperties,
-    td: { height: 48, padding: "0 10px", verticalAlign: "middle", borderRight: "1px solid #dde1ec", borderBottom: "1px solid #dde1ec", color: "#1e2a45" } as React.CSSProperties,
-    footer: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", borderTop: "1px solid #dde1ec", background: "#f4f6fb", flexWrap: "wrap", gap: 8 } as React.CSSProperties,
+    // Styles moved to globals.css (.dg-card, .dg-toolbar, .dg-btn, .dg-table-cell, etc)
+    btnActive: { background: "#f0f0ff", borderColor: "#a5b4fc", color: "#6366f1" } as React.CSSProperties,
   } as const;
 
   const pgs: (number | "…")[] = [];
@@ -140,65 +152,65 @@ export default function DataGridPage() {
   ];
 
   return (
-    <div style={{ fontFamily: "'Inter',system-ui,sans-serif", paddingBottom: 40 }}>
-      <div style={{ marginBottom: 18 }}>
-        <h1 style={{ fontSize: "1.2rem", fontWeight: 700, color: "var(--text-color)" }}>Project Invoice Management</h1>
-        <p style={{ fontSize: ".78rem", color: "var(--old-price)", marginTop: 2 }}>Advanced filtering · Column sorting · Row selection · Aggregations</p>
+    <div className="dg-page-container">
+      <div className="dg-section-header">
+        <h1 className="dg-title">Project Invoice Management</h1>
+        <p className="dg-subtitle">Advanced filtering · Column sorting · Row selection · Aggregations</p>
       </div>
 
-      <div style={S.shell}>
-        <div style={S.toolbar}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-            <span style={{ fontSize: ".9375rem", fontWeight: 700, color: "#1e2a45" }}>Invoices <span style={{ fontSize: ".7rem", background: "#eff4ff", color: "#2563eb", border: "1px solid #c7d7fd", padding: "2px 8px", borderRadius: 99, fontWeight: 700 }}>{filtered.length} records</span></span>
-            <button style={{ ...S.btn, ...(hasActiveFilters ? { background: "#f0f0ff", borderColor: "#a5b4fc", color: "#6366f1" } : {}) }} onClick={clearAll}>✕ Clear Filters</button>
+      <div className="dg-card">
+        <div className="dg-toolbar">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[0.9375rem] font-bold text-[#1e2a45]">Invoices <span className="dg-badge bg-[#eff4ff] text-[#2563eb] border border-[#c7d7fd]">{filtered.length} records</span></span>
+            <button className={`dg-btn ${hasActiveFilters ? 'bg-[#f0f0ff] border-[#a5b4fc] text-[#6366f1]' : ''}`} onClick={clearAll}>✕ Clear Filters</button>
           </div>
-          <div style={{ display: "flex", gap: 6 }}>
-            <button style={{ ...S.btn, background: "#2563eb", color: "#fff", borderColor: "#2563eb" }}>+ New Invoice</button>
+          <div className="flex gap-1.5">
+            <button className="dg-btn dg-btn-primary">+ New Invoice</button>
           </div>
         </div>
 
         {hasActiveFilters && (
-          <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 16px", borderBottom: "1px solid #dde1ec", background: "#fafbff", flexWrap: "wrap" }}>
-            <span style={{ fontSize: ".7rem", color: "#8b93ac", fontWeight: 500 }}>Filtered by:</span>
-            {filters.status && <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 8px", borderRadius: 99, fontSize: ".7rem", fontWeight: 600, background: "#f0f0ff", border: "1px solid #c7c7fd", color: "#6366f1" }}>Status: {filters.status} <span onClick={() => setFI("status", "")} style={{ cursor: "pointer", marginLeft: 3, fontWeight: 700, opacity: .6 }}>×</span></span>}
-            {filters.team && <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 8px", borderRadius: 99, fontSize: ".7rem", fontWeight: 600, background: "#f0f0ff", border: "1px solid #c7c7fd", color: "#6366f1" }}>Team: {filters.team} <span onClick={() => setFI("team", "")} style={{ cursor: "pointer", marginLeft: 3, fontWeight: 700, opacity: .6 }}>×</span></span>}
+          <div className="dg-filter-bar">
+            <span className="text-[0.7rem] text-[#8b93ac] font-medium">Filtered by:</span>
+            {filters.status && <span className="dg-badge bg-[#f0f0ff] border-[#c7c7fd] text-[#6366f1]">Status: {filters.status} <span onClick={() => setFI("status", "")} className="cursor-pointer ml-1 font-bold opacity-60">×</span></span>}
+            {filters.team && <span className="dg-badge bg-[#f0f0ff] border-[#c7c7fd] text-[#6366f1]">Team: {filters.team} <span onClick={() => setFI("team", "")} className="cursor-pointer ml-1 font-bold opacity-60">×</span></span>}
           </div>
         )}
 
-        <div style={{ display: "flex", gap: 12, padding: "7px 16px", borderBottom: "1px solid #dde1ec", background: "linear-gradient(90deg,#f8f9ff,#fff)", flexWrap: "wrap" }}>
+        <div className="dg-stats-bar">
           {[{ label: "Total Budget", val: `$${aggregBudget.toLocaleString()}` }, { label: "Total Hours", val: aggregHours.toLocaleString() + "h" }, { label: "Avg Completion", val: `${aggregPct}%` }].map(({ label, val }) => (
-            <span key={label} style={{ fontSize: ".72rem", color: "#4b5775" }}>{label}: <strong style={{ color: "#1e2a45" }}>{val}</strong></span>
+            <span key={label} className="text-[0.72rem] text-[#4b5775]">{label}: <strong className="text-[#1e2a45]">{val}</strong></span>
           ))}
         </div>
 
-        <div style={{ overflowX: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 1100, fontSize: ".8rem" }}>
+        <div className="dg-table-wrapper">
+          <table className="dg-table">
             <thead>
-              <tr style={S.hdrRow}>
-                <th style={{ width: 44, padding: 0, borderRight: "1px solid #dde1ec" }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 42 }}>
-                    <input type="checkbox" checked={allOnPage} ref={el => { if (el) el.indeterminate = someOnPage && !allOnPage; }} onChange={e => toggleAll(e.target.checked)} style={{ width: 14, height: 14, accentColor: "#2563eb", cursor: "pointer" }} />
+              <tr className="dg-table-header-row">
+                <th className="w-[44px] p-0 border-r border-var(--border-color)">
+                  <div className="flex items-center justify-center h-[42px]">
+                    <input type="checkbox" checked={allOnPage} ref={el => { if (el) el.indeterminate = someOnPage && !allOnPage; }} onChange={e => toggleAll(e.target.checked)} className="w-3.5 h-3.5 accent-[#2563eb] cursor-pointer" />
                   </div>
-                  <div style={{ height: 36, background: "#eef1fb", borderTop: "1px solid #dde1ec" }} />
+                  <div className="h-[36px] bg-[#eef1fb] border-t border-var(--border-color)" />
                 </th>
                 {COLS.map(({ col, label, fa, mw }) => (
-                  <th key={col} style={{ minWidth: mw, padding: 0, position: "relative", border: "none" }}>
-                    <div onClick={() => onSort(col)} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 10px", height: 42, cursor: "pointer", userSelect: "none" }}>
-                      <span style={{ fontSize: ".7rem", fontWeight: 700, color: fa ? "#6366f1" : "#4b5775", textTransform: "uppercase", letterSpacing: ".04em" }}>{label}</span>
-                      <span style={{ fontSize: 10, color: fa ? "#6366f1" : "#9ca3af" }}>▼</span>
+                  <th key={col} style={{ minWidth: mw }} className="p-0 relative border-none">
+                    <div onClick={() => onSort(col)} className="flex items-center justify-between px-[10px] h-[42px] cursor-pointer select-none">
+                      <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${fa ? 'text-[#6366f1]' : 'text-[#4b5775]'}`}>{label}</span>
+                      <span className={`text-[10px] ${fa ? 'text-[#6366f1]' : 'text-[#9ca3af]'}`}>▼</span>
                     </div>
-                    <div style={{ padding: "3px 6px", background: "#eef1fb", borderTop: "1px solid #dde1ec" }}>
-                      {col === "id" && <input style={ffInput} defaultValue={filters.id} placeholder="Search ID…" onChange={e => setF("id", e.target.value)} />}
-                      {col === "company" && <input style={ffInput} defaultValue={filters.company} placeholder="Contains…" onChange={e => setF("company", e.target.value)} />}
-                      {col === "project" && <input style={ffInput} defaultValue={filters.project} placeholder="Contains…" onChange={e => setF("project", e.target.value)} />}
-                      {col === "team" && <select style={ffSelect} value={filters.team} onChange={e => setFI("team", e.target.value)}><option value="">All Teams</option>{["Alpha", "Beta", "Gamma", "Delta", "Epsilon"].map(t => <option key={t} value={t}>{t}</option>)}</select>}
-                      {col === "budget" && <div style={{ display: "flex", gap: 4 }}><input type="number" style={{ ...ffInput, width: 62, textAlign: "center" }} defaultValue={filters.bmin} placeholder="Min" onChange={e => setF("bmin", e.target.value)} /><span style={{ color: "#8b93ac", fontSize: ".65rem" }}>–</span><input type="number" style={{ ...ffInput, width: 62, textAlign: "center" }} defaultValue={filters.bmax} placeholder="Max" onChange={e => setF("bmax", e.target.value)} /></div>}
-                      {col === "hours" && <div style={{ display: "flex", gap: 4 }}><input type="number" style={{ ...ffInput, width: 56, textAlign: "center" }} placeholder="≥" onChange={e => setF("hmin", e.target.value)} /><span style={{ color: "#8b93ac", fontSize: ".65rem" }}>–</span><input type="number" style={{ ...ffInput, width: 56, textAlign: "center" }} placeholder="≤" onChange={e => setF("hmax", e.target.value)} /></div>}
-                      {col === "start" && <input type="date" style={ffInput} onChange={e => setFI("startAfter", e.target.value)} />}
-                      {col === "deadline" && <input type="date" style={{ ...ffInput, borderColor: filters.deadlineBefore ? "#6366f1" : "#c8cedf" }} defaultValue={filters.deadlineBefore} onChange={e => setFI("deadlineBefore", e.target.value)} />}
-                      {col === "pct" && <div style={{ display: "flex", gap: 4 }}><input type="number" style={{ ...ffInput, width: 52, textAlign: "center" }} placeholder="≥%" onChange={e => setF("pmin", e.target.value)} /><span style={{ color: "#8b93ac", fontSize: ".65rem" }}>–</span><input type="number" style={{ ...ffInput, width: 52, textAlign: "center" }} placeholder="≤%" onChange={e => setF("pmax", e.target.value)} /></div>}
-                      {col === "priority" && <select style={ffSelect} value={filters.priority} onChange={e => setFI("priority", e.target.value)}><option value="">All</option>{["Critical", "High", "Medium", "Low"].map(p => <option key={p} value={p}>{p}</option>)}</select>}
-                      {col === "status" && <select style={{ ...ffSelect, borderColor: filters.status ? "#6366f1" : "#c8cedf" }} value={filters.status} onChange={e => setFI("status", e.target.value)}><option value="">All</option>{["Approved", "Pending", "Review", "Blocked", "Completed"].map(s => <option key={s} value={s}>{s}</option>)}</select>}
+                    <div className="p-[3px_6px] bg-[#eef1fb] border-t border-var(--border-color)">
+                      {col === "id" && <input className="dg-input" defaultValue={filters.id} placeholder="Search ID…" onChange={e => setF("id", e.target.value)} />}
+                      {col === "company" && <input className="dg-input" defaultValue={filters.company} placeholder="Contains…" onChange={e => setF("company", e.target.value)} />}
+                      {col === "project" && <input className="dg-input" defaultValue={filters.project} placeholder="Contains…" onChange={e => setF("project", e.target.value)} />}
+                      {col === "team" && <select className="dg-select" value={filters.team} onChange={e => setFI("team", e.target.value)}><option value="">All Teams</option>{["Alpha", "Beta", "Gamma", "Delta", "Epsilon"].map(t => <option key={t} value={t}>{t}</option>)}</select>}
+                      {col === "budget" && <div className="flex gap-1"><input type="number" className="dg-input w-[62px] text-center" defaultValue={filters.bmin} placeholder="Min" onChange={e => setF("bmin", e.target.value)} /><span className="text-[#8b93ac] text-[0.65rem]">–</span><input type="number" className="dg-input w-[62px] text-center" defaultValue={filters.bmax} placeholder="Max" onChange={e => setF("bmax", e.target.value)} /></div>}
+                      {col === "hours" && <div className="flex gap-1"><input type="number" className="dg-input w-[56px] text-center" placeholder="≥" onChange={e => setF("hmin", e.target.value)} /><span className="text-[#8b93ac] text-[0.65rem]">–</span><input type="number" className="dg-input w-[56px] text-center" placeholder="≤" onChange={e => setF("hmax", e.target.value)} /></div>}
+                      {col === "start" && <input type="date" className="dg-input" onChange={e => setFI("startAfter", e.target.value)} />}
+                      {col === "deadline" && <input type="date" className="dg-input" style={{ borderColor: filters.deadlineBefore ? "#6366f1" : "var(--border-color)" }} defaultValue={filters.deadlineBefore} onChange={e => setFI("deadlineBefore", e.target.value)} />}
+                      {col === "pct" && <div className="flex gap-1"><input type="number" className="dg-input w-[52px] text-center" placeholder="≥%" onChange={e => setF("pmin", e.target.value)} /><span className="text-[#8b93ac] text-[0.65rem]">–</span><input type="number" className="dg-input w-[52px] text-center" placeholder="≤%" onChange={e => setF("pmax", e.target.value)} /></div>}
+                      {col === "priority" && <select className="dg-select" value={filters.priority} onChange={e => setFI("priority", e.target.value)}><option value="">All</option>{["Critical", "High", "Medium", "Low"].map(p => <option key={p} value={p}>{p}</option>)}</select>}
+                      {col === "status" && <select className="dg-select" style={{ borderColor: filters.status ? "#6366f1" : "var(--border-color)" }} value={filters.status} onChange={e => setFI("status", e.target.value)}><option value="">All</option>{["Approved", "Pending", "Review", "Blocked", "Completed"].map(s => <option key={s} value={s}>{s}</option>)}</select>}
                     </div>
                   </th>
                 ))}
@@ -206,26 +218,32 @@ export default function DataGridPage() {
             </thead>
             <tbody>
               {pageRows.length === 0 ? (
-                <tr><td colSpan={12} style={{ textAlign: "center", padding: "3rem", color: "#8b93ac" }}>No records match. <button onClick={clearAll} style={{ color: "#2563eb", background: "none", border: "none", cursor: "pointer", fontWeight: 600 }}>Clear filters</button></td></tr>
+                <tr><td colSpan={12} className="text-center p-12 text-[#8b93ac]">No records match. <button onClick={clearAll} className="bg-none border-none cursor-pointer font-semibold text-[#2563eb]">Clear filters</button></td></tr>
               ) : pageRows.map((row, ri) => {
                 const sel = selected.has(row.id);
                 const pastDue = row.deadline < new Date("2026-03-01");
                 return (
-                  <tr key={row.id} onClick={() => toggleSel(row.id)} style={{ background: sel ? "#e8effe" : ri % 2 ? "#f9fafd" : "#fff", borderLeft: sel ? "3px solid #3b82f6" : "3px solid transparent", cursor: "pointer" }}
+                  <tr key={row.id} onClick={() => toggleSel(row.id)} className="dg-table-row cursor-pointer"
+                    style={{ background: sel ? "#e8effe" : ri % 2 ? "#f9fafd" : "#fff", borderLeft: sel ? "3px solid #3b82f6" : "3px solid transparent" }}
                     onMouseEnter={e => { if (!sel) e.currentTarget.style.background = "#eef2fd"; }}
                     onMouseLeave={e => { e.currentTarget.style.background = sel ? "#e8effe" : ri % 2 ? "#f9fafd" : "#fff"; }}>
-                    <td style={{ ...S.td, width: 44, padding: 0 }}><div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 48 }}><input type="checkbox" checked={sel} onChange={() => toggleSel(row.id)} onClick={e => e.stopPropagation()} style={{ width: 14, height: 14, accentColor: "#2563eb", cursor: "pointer" }} /></div></td>
-                    <td style={S.td}><span style={{ fontFamily: "monospace", fontSize: ".74rem", color: "#2563eb", fontWeight: 700 }}>{row.id}</span></td>
-                    <td style={S.td}><div style={{ display: "flex", alignItems: "center", gap: 8 }}><div style={{ width: 26, height: 26, borderRadius: 6, background: row.avatarColor, fontSize: ".6rem", fontWeight: 800, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{row.initials}</div><div><div style={{ fontWeight: 600, fontSize: ".8rem" }}>{row.company}</div><div style={{ fontSize: ".66rem", color: "#8b93ac" }}>{row.team} Team</div></div></div></td>
-                    <td style={S.td}><span style={{ fontWeight: 500 }}>{row.project}</span></td>
-                    <td style={S.td}><span style={{ fontSize: ".75rem", padding: "2px 8px", borderRadius: 4, background: "#f1f3f9", color: "#4b5775", fontWeight: 600 }}>{row.team}</span></td>
-                    <td style={S.td}><span style={{ fontWeight: 600 }}>${row.budget.toLocaleString()}</span></td>
-                    <td style={S.td}><div style={{ display: "flex", alignItems: "center", gap: 6 }}><span style={{ color: "#4b5775", fontWeight: 500 }}>{row.hours.toLocaleString()}h</span><Sparkline vals={row.spark} /></div></td>
-                    <td style={S.td}><span style={{ color: "#4b5775", fontSize: ".775rem" }}>{fmt(row.start)}</span></td>
-                    <td style={S.td}><span style={{ color: pastDue ? "#dc2626" : "#4b5775", fontWeight: pastDue ? 600 : 400, fontSize: ".775rem" }}>{fmt(row.deadline)}</span></td>
-                    <td style={S.td}><ProgressCell pct={row.pct} /></td>
-                    <td style={S.td}><PriBadge p={row.priority} /></td>
-                    <td style={{ ...S.td, borderRight: "none" }}><StatusPill s={row.status} /></td>
+                    <td className="dg-table-cell w-[44px] p-0"><div className="flex items-center justify-center h-[48px]"><input type="checkbox" checked={sel} onChange={() => toggleSel(row.id)} onClick={e => e.stopPropagation()} className="w-3.5 h-3.5 accent-[#2563eb] cursor-pointer" /></div></td>
+                    <td className="dg-table-cell"><span className="font-mono text-[.74rem] text-[#2563eb] font-bold">{row.id}</span></td>
+                    <td className="dg-table-cell">
+                      <div className="flex items-center gap-2">
+                        <div className="w-[26px] h-[26px] rounded-md text-[0.6rem] font-extrabold text-white flex items-center justify-center flex-shrink-0" style={{ background: row.avatarColor }}>{row.initials}</div>
+                        <div><div className="font-semibold text-[0.8rem]">{row.company}</div><div className="text-[.66rem] text-[#8b93ac]">{row.team} Team</div></div>
+                      </div>
+                    </td>
+                    <td className="dg-table-cell"><span className="font-medium">{row.project}</span></td>
+                    <td className="dg-table-cell"><span className="text-[.75rem] px-2 py-0.5 rounded bg-[#f1f3f9] text-[#4b5775] font-semibold">{row.team}</span></td>
+                    <td className="dg-table-cell"><span className="font-bold">${row.budget.toLocaleString()}</span></td>
+                    <td className="dg-table-cell"><div className="flex items-center gap-1.5"><span className="text-[#4b5775] font-medium">{row.hours.toLocaleString()}h</span><Sparkline vals={row.spark} /></div></td>
+                    <td className="dg-table-cell"><span className="text-[#4b5775] text-[.775rem]">{fmt(row.start)}</span></td>
+                    <td className="dg-table-cell"><span className={`text-[.775rem] ${pastDue ? 'text-[#dc2626] font-semibold' : 'text-[#4b5775]'}`}>{fmt(row.deadline)}</span></td>
+                    <td className="dg-table-cell"><ProgressCell pct={row.pct} /></td>
+                    <td className="dg-table-cell"><PriBadge p={row.priority} /></td>
+                    <td className="dg-table-cell !border-r-0"><StatusPill s={row.status} /></td>
                   </tr>
                 );
               })}
@@ -233,12 +251,12 @@ export default function DataGridPage() {
           </table>
         </div>
 
-        <div style={S.footer}>
-          <span style={{ fontSize: ".775rem", color: "#4b5775" }}>Showing <strong>{sorted.length === 0 ? 0 : (safePage - 1) * rpp + 1}–{Math.min(safePage * rpp, sorted.length)}</strong> of <strong>{sorted.length}</strong> records</span>
-          <div style={{ display: "flex", gap: 3 }}>
+        <div className="dg-toolbar !border-t border-var(--border-color) bg-[#f4f6fb]">
+          <span className="text-[.775rem] text-[#4b5775]">Showing <strong>{sorted.length === 0 ? 0 : (safePage - 1) * rpp + 1}–{Math.min(safePage * rpp, sorted.length)}</strong> of <strong>{sorted.length}</strong> records</span>
+          <div className="flex gap-1">
             {[{ label: "‹", pg: safePage - 1, disabled: safePage <= 1 }, ...dedupedPgs.map(p => ({ label: String(p), pg: typeof p === "number" ? p : -1, disabled: p === "…" })), { label: "›", pg: safePage + 1, disabled: safePage >= totalPages }].map(({ label, pg: p, disabled }, i) => (
-              disabled && label !== "‹" && label !== "›" ? <span key={i} style={{ width: 28, textAlign: "center", color: "#8b93ac" }}>…</span> :
-                <button key={i} disabled={disabled} onClick={() => !disabled && setPage(p)} style={{ width: 28, height: 28, borderRadius: 5, border: "1px solid #c8cdde", background: p === safePage ? "#2563eb" : "#fff", color: p === safePage ? "#fff" : "#4b5775", fontWeight: p === safePage ? 700 : 500, fontSize: ".755rem", cursor: disabled ? "default" : "pointer", fontFamily: "inherit", opacity: disabled ? .35 : 1 }}>{label}</button>
+              disabled && label !== "‹" && label !== "›" ? <span key={i} className="w-7 text-center text-[#8b93ac]">…</span> :
+                <button key={i} disabled={disabled} onClick={() => !disabled && setPage(p)} className="dg-btn w-7 h-7 !p-0 justify-center" style={{ background: p === safePage ? "#2563eb" : "#fff", color: p === safePage ? "#fff" : "#4b5775", fontWeight: p === safePage ? 700 : 500, opacity: disabled ? .35 : 1 }}>{label}</button>
             ))}
           </div>
         </div>

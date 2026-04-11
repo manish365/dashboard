@@ -44,15 +44,15 @@ export default function AttributesPage() {
   );
 
   const cols = [
-    { key: 'name', label: 'Code / Name', render: (a: Attr) => <div><p className="text-sm font-semibold" style={{ color: 'var(--text-color)' }}>{a.attribute_name}</p><p className="text-xs font-mono" style={{ color: 'var(--circle)' }}>{a.attribute_code}</p></div> },
+    { key: 'name', label: 'Code / Name', render: (a: Attr) => <div><p className="text-sm font-semibold theme-text">{a.attribute_name}</p><p className="text-xs font-mono theme-text-subtle">{a.attribute_code}</p></div> },
     { key: 'type', label: 'Type', render: (a: Attr) => <span className="text-xs px-2 py-0.5 rounded font-medium" style={{ background: 'rgba(96,165,250,0.1)', color: '#60a5fa' }}>{a.attribute_type}</span> },
-    { key: 'group', label: 'Group', render: (a: Attr) => <span className="text-sm" style={{ color: 'var(--old-price)' }}>{a.attribute_group || '—'}</span> },
+    { key: 'group', label: 'Group', render: (a: Attr) => <span className="text-sm theme-text-muted">{a.attribute_group || '—'}</span> },
     { key: 'required', label: 'Required', render: (a: Attr) => <KpBadge label={a.is_required ? 'Required' : 'Optional'} variant={a.is_required ? 'active' : 'default'} /> },
     {
       key: 'actions', label: 'Actions', align: 'right' as const, render: (a: Attr) => (
         <div className="flex items-center justify-end gap-1">
-          <button onClick={() => { setSelected(a); setForm({ attribute_name: a.attribute_name, attribute_code: a.attribute_code, attribute_type: a.attribute_type, attribute_group: a.attribute_group || '' }); setShowModal(true); }} className="p-1.5 rounded-lg hover:bg-white/10" style={{ color: 'var(--circle)' }}><Edit className="h-4 w-4" /></button>
-          <button onClick={() => handleDelete(a.attribute_id)} className="p-1.5 rounded-lg hover:bg-red-500/10" style={{ color: '#f87171' }}><Trash2 className="h-4 w-4" /></button>
+          <button onClick={() => { setSelected(a); setForm({ attribute_name: a.attribute_name, attribute_code: a.attribute_code, attribute_type: a.attribute_type, attribute_group: a.attribute_group || '' }); setShowModal(true); }} className="p-1.5 rounded-lg hover:bg-white/10 theme-text-subtle"><Edit className="h-4 w-4" /></button>
+          <button onClick={() => handleDelete(a.attribute_id)} className="p-1.5 rounded-lg hover:bg-red-500/10 theme-text-danger"><Trash2 className="h-4 w-4" /></button>
         </div>
       ),
     },
@@ -65,8 +65,8 @@ export default function AttributesPage() {
       <div className="flex flex-wrap gap-3">
         <KpSearch value={search} onChange={setSearch} placeholder="Search code or name..." className="flex-1 max-w-sm" />
         <KpSelect value={typeFilter} onChange={setTypeFilter}>
-          <option value="all" style={{ background: 'var(--navbar-carousel-color)' }}>All Types</option>
-          {uniqueTypes.map(t => <option key={t} value={t} style={{ background: 'var(--navbar-carousel-color)' }}>{t}</option>)}
+          <option value="all" className="theme-option">All Types</option>
+          {uniqueTypes.map(t => <option key={t} value={t} className="theme-option">{t}</option>)}
         </KpSelect>
       </div>
       <KpCard>{loading ? <KpSkeleton /> : <KpTable cols={cols} rows={filtered} rowKey={a => a.attribute_id} emptyMsg="No attributes found." />}</KpCard>
@@ -77,7 +77,7 @@ export default function AttributesPage() {
             <KpField label="Attribute Code" value={form.attribute_code} onChange={e => setForm(f => ({ ...f, attribute_code: e.target.value }))} placeholder="e.g. color" />
             <KpField label="Group" value={form.attribute_group} onChange={e => setForm(f => ({ ...f, attribute_group: e.target.value }))} placeholder="e.g. Physical" />
             <div className="flex gap-3 pt-1">
-              <button onClick={() => setShowModal(false)} className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5" style={{ borderColor: 'var(--border-color)', color: 'var(--old-price)' }}>Cancel</button>
+              <button onClick={() => setShowModal(false)} className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5 theme-btn-cancel">Cancel</button>
               <KpBtn onClick={handleSave} loading={saving} className="flex-1 justify-center">Save</KpBtn>
             </div>
           </div>

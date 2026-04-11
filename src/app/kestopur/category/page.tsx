@@ -50,12 +50,12 @@ export default function CategoryPage() {
     { 
       key: 'name', 
       label: 'Category Name', 
-      render: (c: Category) => <span className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>{c.name}</span> 
+      render: (c: Category) => <span className="text-sm font-medium theme-text">{c.name}</span> 
     },
     { 
       key: 'slug', 
       label: 'Slug', 
-      render: (c: Category) => <span className="text-xs font-mono" style={{ color: 'var(--circle)' }}>{c.slug}</span> 
+      render: (c: Category) => <span className="text-xs font-mono theme-text-subtle">{c.slug}</span> 
     },
     { 
       key: 'status', 
@@ -69,9 +69,9 @@ export default function CategoryPage() {
       render: (c: Category) => (
         <div className="flex items-center justify-end gap-1">
           <button onClick={() => { setSelected(c); setForm({ name: c.name, slug: c.slug }); setShowModal(true); }} 
-            className="p-1.5 rounded-lg hover:bg-white/10" style={{ color: 'var(--circle)' }}><Edit className="h-4 w-4" /></button>
+            className="p-1.5 rounded-lg hover:bg-white/10 theme-text-subtle"><Edit className="h-4 w-4" /></button>
           <button onClick={() => handleDelete(c.category_id)} 
-            className="p-1.5 rounded-lg hover:bg-red-500/10" style={{ color: '#f87171' }}><Trash2 className="h-4 w-4" /></button>
+            className="p-1.5 rounded-lg hover:bg-red-500/10 theme-text-danger"><Trash2 className="h-4 w-4" /></button>
         </div>
       ) 
     },
@@ -100,8 +100,7 @@ export default function CategoryPage() {
             <KpField label="Name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="e.g. Electronics" />
             <KpField label="Slug" value={form.slug} onChange={e => setForm(f => ({ ...f, slug: e.target.value }))} placeholder="e.g. electronics" />
             <div className="flex gap-3 pt-1">
-              <button onClick={() => setShowModal(false)} className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5" 
-                style={{ borderColor: 'var(--border-color)', color: 'var(--old-price)' }}>Cancel</button>
+              <button onClick={() => setShowModal(false)} className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5 theme-btn-cancel">Cancel</button>
               <KpBtn onClick={handleSave} loading={saving} className="flex-1 justify-center">Save</KpBtn>
             </div>
           </div>

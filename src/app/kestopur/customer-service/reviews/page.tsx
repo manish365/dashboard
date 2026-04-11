@@ -13,7 +13,7 @@ function StarRating({ n }: { n: number }) {
       {[1, 2, 3, 4, 5].map(i => (
         <Star key={i} className="h-3.5 w-3.5" fill={i <= n ? '#fbbf24' : 'none'} style={{ color: i <= n ? '#fbbf24' : 'var(--circle)' }} />
       ))}
-      <span className="text-xs ml-1" style={{ color: 'var(--circle)' }}>{n}/5</span>
+      <span className="text-xs ml-1 theme-text-subtle">{n}/5</span>
     </div>
   );
 }
@@ -47,11 +47,11 @@ export default function ReviewsPage() {
   );
 
   const cols = [
-    { key: 'product', label: 'Product', render: (r: Review) => <span className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>{r.productName || 'Unknown'}</span> },
+    { key: 'product', label: 'Product', render: (r: Review) => <span className="text-sm font-medium theme-text">{r.productName || 'Unknown'}</span> },
     { key: 'rating', label: 'Rating', render: (r: Review) => <StarRating n={r.rating} /> },
-    { key: 'comment', label: 'Comment', render: (r: Review) => <span className="text-sm line-clamp-2 max-w-xs" style={{ color: 'var(--old-price)' }}>{r.comment}</span> },
+    { key: 'comment', label: 'Comment', render: (r: Review) => <span className="text-sm line-clamp-2 max-w-xs theme-text-muted">{r.comment}</span> },
     { key: 'status', label: 'Status', render: (r: Review) => <KpBadge label={r.status} variant={r.status === 'approved' ? 'active' : r.status === 'rejected' ? 'cancelled' : 'pending'} /> },
-    { key: 'date', label: 'Date', render: (r: Review) => <span className="text-sm" style={{ color: 'var(--circle)' }}>{new Date(r.createdAt).toLocaleDateString()}</span> },
+    { key: 'date', label: 'Date', render: (r: Review) => <span className="text-sm theme-text-subtle">{new Date(r.createdAt).toLocaleDateString()}</span> },
     {
       key: 'actions', label: 'Actions', align: 'right' as const, render: (r: Review) => (
         <div className="flex items-center justify-end gap-1">
@@ -60,7 +60,7 @@ export default function ReviewsPage() {
               <ThumbsUp className="h-4 w-4" />
             </button>
           )}
-          <button onClick={() => handleDelete(r.id)} className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors" style={{ color: '#f87171' }} title="Delete">
+          <button onClick={() => handleDelete(r.id)} className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors theme-text-danger" title="Delete">
             <Trash2 className="h-4 w-4" />
           </button>
         </div>
@@ -70,7 +70,7 @@ export default function ReviewsPage() {
 
   return (
     <div className="space-y-6">
-      <Link href="/kestopur/customer-service" className="inline-flex items-center gap-1.5 text-sm hover:opacity-80" style={{ color: 'var(--circle)' }}>
+      <Link href="/kestopur/customer-service" className="inline-flex items-center gap-1.5 text-sm hover:opacity-80 theme-text-subtle">
         <ArrowLeft className="h-4 w-4" /> Customer Service
       </Link>
       <KpPageHeader title="Product Reviews" subtitle="Moderate and manage product reviews"

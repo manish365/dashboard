@@ -30,8 +30,7 @@ export default function KpiCard({
 
   return (
     <div 
-      className="group rounded-2xl border p-5 transition-all hover:translate-y-[-2px] hover:shadow-xl"
-      className="theme-card-bg group rounded-2xl border p-5 transition-all hover:translate-y-[-2px] hover:shadow-xl"
+      className="group rounded-2xl border p-5 transition-all hover:translate-y-[-2px] hover:shadow-xl theme-card-bg group rounded-2xl border p-5 transition-all hover:translate-y-[-2px] hover:shadow-xl"
     >
       <div className="flex items-center justify-between">
         <div className={`rounded-lg p-2.5 ${colorMap[color]}`}>

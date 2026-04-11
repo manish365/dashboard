@@ -28,13 +28,13 @@ export default function PaymentsPage() {
   const filtered = items.filter(p => p.transactionId?.toLowerCase().includes(search.toLowerCase()) || p.orderId?.toLowerCase().includes(search.toLowerCase()));
 
   const cols = [
-    { key: 'txn', label: 'Transaction', render: (p: Payment) => <span className="text-sm font-mono" style={{ color: 'var(--text-color)' }}>{p.transactionId?.slice(0, 14)}...</span> },
-    { key: 'order', label: 'Order', render: (p: Payment) => <span className="text-sm font-mono" style={{ color: 'var(--old-price)' }}>{p.orderId?.slice(0, 10)}...</span> },
-    { key: 'gateway', label: 'Gateway', render: (p: Payment) => <span className="text-sm capitalize" style={{ color: 'var(--old-price)' }}>{p.paymentGateway}</span> },
-    { key: 'amount', label: 'Amount', render: (p: Payment) => <span className="text-sm font-semibold flex items-center gap-1" style={{ color: 'var(--text-color)' }}><DollarSign className="h-3.5 w-3.5" style={{ color: 'var(--circle)' }} />{fmt(p.amount)}</span> },
+    { key: 'txn', label: 'Transaction', render: (p: Payment) => <span className="text-sm font-mono theme-text">{p.transactionId?.slice(0, 14)}...</span> },
+    { key: 'order', label: 'Order', render: (p: Payment) => <span className="text-sm font-mono theme-text-muted">{p.orderId?.slice(0, 10)}...</span> },
+    { key: 'gateway', label: 'Gateway', render: (p: Payment) => <span className="text-sm capitalize theme-text-muted">{p.paymentGateway}</span> },
+    { key: 'amount', label: 'Amount', render: (p: Payment) => <span className="text-sm font-semibold flex items-center gap-1 theme-text"><DollarSign className="h-3.5 w-3.5 theme-text-subtle" />{fmt(p.amount)}</span> },
     { key: 'status', label: 'Status', render: (p: Payment) => <KpBadge label={p.paymentStatus} variant={p.paymentStatus === 'succeeded' ? 'active' : p.paymentStatus === 'failed' ? 'cancelled' : 'pending'} /> },
-    { key: 'date', label: 'Date', render: (p: Payment) => <span className="text-sm flex items-center gap-1" style={{ color: 'var(--circle)' }}><Calendar className="h-3.5 w-3.5" />{new Date(p.createdAt).toLocaleDateString()}</span> },
-    { key: 'actions', label: '', align: 'right' as const, render: (p: Payment) => p.paymentStatus === 'succeeded' ? <button className="flex items-center gap-1 text-xs hover:opacity-80" style={{ color: '#f87171' }}><RefreshCw className="h-3.5 w-3.5" /> Refund</button> : null },
+    { key: 'date', label: 'Date', render: (p: Payment) => <span className="text-sm flex items-center gap-1 theme-text-subtle"><Calendar className="h-3.5 w-3.5" />{new Date(p.createdAt).toLocaleDateString()}</span> },
+    { key: 'actions', label: '', align: 'right' as const, render: (p: Payment) => p.paymentStatus === 'succeeded' ? <button className="flex items-center gap-1 text-xs hover:opacity-80 theme-text-danger"><RefreshCw className="h-3.5 w-3.5" /> Refund</button> : null },
   ];
 
   return (
@@ -49,10 +49,10 @@ export default function PaymentsPage() {
       <div className="flex flex-wrap gap-3">
         <KpSearch value={search} onChange={setSearch} placeholder="Search by transaction or order ID..." className="flex-1 max-w-sm" />
         <KpSelect value={statusFilter} onChange={setStatusFilter}>
-          {['', 'pending', 'processing', 'succeeded', 'failed', 'refunded'].map(s => <option key={s} value={s} style={{ background: 'var(--navbar-carousel-color)' }}>{s || 'All Statuses'}</option>)}
+          {['', 'pending', 'processing', 'succeeded', 'failed', 'refunded'].map(s => <option key={s} value={s} className="theme-option">{s || 'All Statuses'}</option>)}
         </KpSelect>
         <KpSelect value={gatewayFilter} onChange={setGatewayFilter}>
-          {['', 'razorpay', 'stripe', 'phonepe', 'payu'].map(g => <option key={g} value={g} style={{ background: 'var(--navbar-carousel-color)' }}>{g || 'All Gateways'}</option>)}
+          {['', 'razorpay', 'stripe', 'phonepe', 'payu'].map(g => <option key={g} value={g} className="theme-option">{g || 'All Gateways'}</option>)}
         </KpSelect>
       </div>
       <KpCard>{loading ? <KpSkeleton /> : <KpTable cols={cols} rows={filtered} rowKey={p => p.transactionId} emptyMsg="No transactions found." />}</KpCard>

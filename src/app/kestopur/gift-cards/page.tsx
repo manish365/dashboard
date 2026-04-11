@@ -18,12 +18,12 @@ export default function GiftCardsPage() {
   const filtered = items.filter(g => g.giftCardCode?.toLowerCase().includes(search.toLowerCase()) || g.customerId?.toLowerCase().includes(search.toLowerCase()));
 
   const cols = [
-    { key: 'code', label: 'Code', render: (g: GiftCard) => <div className="flex items-center gap-2"><Gift className="h-4 w-4" style={{ color: '#f97316' }} /><span className="text-sm font-mono font-medium" style={{ color: 'var(--text-color)' }}>{g.giftCardCode}</span></div> },
-    { key: 'customer', label: 'Customer', render: (g: GiftCard) => <span className="text-sm flex items-center gap-1" style={{ color: 'var(--old-price)' }}><User className="h-3.5 w-3.5" />{g.customerId?.slice(0, 12) || '—'}...</span> },
-    { key: 'initial', label: 'Initial', render: (g: GiftCard) => <span className="text-sm" style={{ color: 'var(--old-price)' }}>{fmt(g.initialBalance)}</span> },
-    { key: 'balance', label: 'Balance', render: (g: GiftCard) => <span className="text-sm font-semibold" style={{ color: 'var(--neon-green)' }}>{fmt(g.currentBalance)}</span> },
-    { key: 'issued', label: 'Issued', render: (g: GiftCard) => <span className="text-sm flex items-center gap-1" style={{ color: 'var(--circle)' }}><Calendar className="h-3.5 w-3.5" />{new Date(g.issuedAt).toLocaleDateString()}</span> },
-    { key: 'expires', label: 'Expires', render: (g: GiftCard) => <span className="text-sm" style={{ color: 'var(--circle)' }}>{g.expiresAt ? new Date(g.expiresAt).toLocaleDateString() : 'No expiry'}</span> },
+    { key: 'code', label: 'Code', render: (g: GiftCard) => <div className="flex items-center gap-2"><Gift className="h-4 w-4" style={{ color: '#f97316' }} /><span className="text-sm font-mono font-medium theme-text">{g.giftCardCode}</span></div> },
+    { key: 'customer', label: 'Customer', render: (g: GiftCard) => <span className="text-sm flex items-center gap-1 theme-text-muted"><User className="h-3.5 w-3.5" />{g.customerId?.slice(0, 12) || '—'}...</span> },
+    { key: 'initial', label: 'Initial', render: (g: GiftCard) => <span className="text-sm theme-text-muted">{fmt(g.initialBalance)}</span> },
+    { key: 'balance', label: 'Balance', render: (g: GiftCard) => <span className="text-sm font-semibold theme-text-neon">{fmt(g.currentBalance)}</span> },
+    { key: 'issued', label: 'Issued', render: (g: GiftCard) => <span className="text-sm flex items-center gap-1 theme-text-subtle"><Calendar className="h-3.5 w-3.5" />{new Date(g.issuedAt).toLocaleDateString()}</span> },
+    { key: 'expires', label: 'Expires', render: (g: GiftCard) => <span className="text-sm theme-text-subtle">{g.expiresAt ? new Date(g.expiresAt).toLocaleDateString() : 'No expiry'}</span> },
     { key: 'status', label: 'Status', render: (g: GiftCard) => <KpBadge label={g.isActive && g.currentBalance > 0 ? 'Active' : 'Inactive'} variant={g.isActive && g.currentBalance > 0 ? 'active' : 'inactive'} /> },
   ];
 
@@ -39,8 +39,8 @@ export default function GiftCardsPage() {
       <KpCard>
         {loading ? <KpSkeleton /> : items.length === 0 ? (
           <div className="p-12 text-center">
-            <Gift className="h-12 w-12 mx-auto mb-3 opacity-20" style={{ color: 'var(--circle)' }} />
-            <p className="text-sm mb-3" style={{ color: 'var(--old-price)' }}>No gift cards issued yet.</p>
+            <Gift className="h-12 w-12 mx-auto mb-3 opacity-20 theme-text-subtle" />
+            <p className="text-sm mb-3 theme-text-muted">No gift cards issued yet.</p>
             <KpBtn><Plus className="h-4 w-4" /> Issue First Gift Card</KpBtn>
           </div>
         ) : <KpTable cols={cols} rows={filtered} rowKey={g => g.giftCardId} emptyMsg="No gift cards found." />}

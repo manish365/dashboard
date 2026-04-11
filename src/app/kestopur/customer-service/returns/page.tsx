@@ -22,15 +22,15 @@ export default function ReturnsPage() {
   const filtered = items.filter(i => i.orderId?.toLowerCase().includes(search.toLowerCase()) || i.reason?.toLowerCase().includes(search.toLowerCase()));
 
   const cols = [
-    { key: 'order', label: 'Order ID', render: (r: ReturnReq) => <span className="text-sm font-mono" style={{ color: 'var(--neon-green)' }}>{r.orderId}</span> },
-    { key: 'reason', label: 'Reason', render: (r: ReturnReq) => <span className="text-sm" style={{ color: 'var(--old-price)' }}>{r.reason}</span> },
+    { key: 'order', label: 'Order ID', render: (r: ReturnReq) => <span className="text-sm font-mono theme-text-neon">{r.orderId}</span> },
+    { key: 'reason', label: 'Reason', render: (r: ReturnReq) => <span className="text-sm theme-text-muted">{r.reason}</span> },
     { key: 'status', label: 'Status', render: (r: ReturnReq) => <KpBadge label={r.status} variant={r.status} /> },
-    { key: 'date', label: 'Date', render: (r: ReturnReq) => <span className="text-sm" style={{ color: 'var(--circle)' }}>{new Date(r.createdAt).toLocaleDateString()}</span> },
+    { key: 'date', label: 'Date', render: (r: ReturnReq) => <span className="text-sm theme-text-subtle">{new Date(r.createdAt).toLocaleDateString()}</span> },
   ];
 
   return (
     <div className="space-y-6">
-      <Link href="/kestopur/customer-service" className="inline-flex items-center gap-1.5 text-sm hover:opacity-80" style={{ color: 'var(--circle)' }}>
+      <Link href="/kestopur/customer-service" className="inline-flex items-center gap-1.5 text-sm hover:opacity-80 theme-text-subtle">
         <ArrowLeft className="h-4 w-4" /> Customer Service
       </Link>
       <KpPageHeader title="Returns" subtitle="Manage product return requests"

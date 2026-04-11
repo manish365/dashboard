@@ -22,15 +22,15 @@ export default function RefundsPage() {
   const filtered = items.filter(i => i.orderId?.toLowerCase().includes(search.toLowerCase()));
 
   const cols = [
-    { key: 'order', label: 'Order ID', render: (r: Refund) => <span className="text-sm font-mono" style={{ color: 'var(--neon-green)' }}>{r.orderId}</span> },
-    { key: 'amount', label: 'Amount', render: (r: Refund) => <span className="text-sm font-semibold" style={{ color: 'var(--text-color)' }}>₹{r.amount?.toLocaleString()}</span> },
+    { key: 'order', label: 'Order ID', render: (r: Refund) => <span className="text-sm font-mono theme-text-neon">{r.orderId}</span> },
+    { key: 'amount', label: 'Amount', render: (r: Refund) => <span className="text-sm font-semibold theme-text">₹{r.amount?.toLocaleString()}</span> },
     { key: 'status', label: 'Status', render: (r: Refund) => <KpBadge label={r.status} variant={r.status} /> },
-    { key: 'date', label: 'Date', render: (r: Refund) => <span className="text-sm" style={{ color: 'var(--circle)' }}>{new Date(r.createdAt).toLocaleDateString()}</span> },
+    { key: 'date', label: 'Date', render: (r: Refund) => <span className="text-sm theme-text-subtle">{new Date(r.createdAt).toLocaleDateString()}</span> },
   ];
 
   return (
     <div className="space-y-6">
-      <Link href="/kestopur/customer-service" className="inline-flex items-center gap-1.5 text-sm hover:opacity-80" style={{ color: 'var(--circle)' }}>
+      <Link href="/kestopur/customer-service" className="inline-flex items-center gap-1.5 text-sm hover:opacity-80 theme-text-subtle">
         <ArrowLeft className="h-4 w-4" /> Customer Service
       </Link>
       <KpPageHeader title="Refunds" subtitle="Process customer refunds"

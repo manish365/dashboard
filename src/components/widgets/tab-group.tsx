@@ -21,7 +21,7 @@ export default function TabGroup({
   ].filter(t => t.label);
 
   return (
-    <div className="theme-card-bg flex w-full flex-col rounded-2xl border overflow-hidden">
+    <div className="dg-card flex w-full flex-col">
       <div className="theme-panel theme-border flex border-b">
         {tabs.map((tab, idx) => (
           <button key={idx} onClick={() => setActiveTab(idx)}
@@ -31,7 +31,7 @@ export default function TabGroup({
           </button>
         ))}
       </div>
-      <div className="theme-text p-6 text-sm leading-relaxed opacity-80" style={{ minHeight: '120px' }}>
+      <div className="theme-text p-6 text-sm leading-relaxed opacity-80 min-h-[120px]">
         {tabs[activeTab]?.content}
       </div>
     </div>

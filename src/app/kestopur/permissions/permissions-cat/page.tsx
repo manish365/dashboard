@@ -54,12 +54,12 @@ export default function PermissionsCatPage() {
     {
       key: 'name',
       label: 'Category Name',
-      render: (c: PermissionCategory) => <span className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>{c.name}</span>,
+      render: (c: PermissionCategory) => <span className="text-sm font-medium theme-text">{c.name}</span>,
     },
     {
       key: 'desc',
       label: 'Description',
-      render: (c: PermissionCategory) => <span className="text-sm" style={{ color: 'var(--old-price)' }}>{c.description || '—'}</span>,
+      render: (c: PermissionCategory) => <span className="text-sm theme-text-muted">{c.description || '—'}</span>,
     },
     {
       key: 'status',
@@ -73,7 +73,7 @@ export default function PermissionsCatPage() {
       render: (c: PermissionCategory) => (
         <div className="flex items-center justify-end gap-2">
           <button onClick={() => { setSelected(c); setForm({ name: c.name, description: c.description || '' }); setShowModal(true); }}
-            className="p-1.5 rounded-lg hover:bg-white/10 transition-colors" style={{ color: 'var(--circle)' }}><Edit className="h-4 w-4" /></button>
+            className="p-1.5 rounded-lg hover:bg-white/10 transition-colors theme-text-subtle"><Edit className="h-4 w-4" /></button>
         </div>
       ),
     },
@@ -109,18 +109,16 @@ export default function PermissionsCatPage() {
           <div className="space-y-4">
             <KpField label="Category Name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="e.g. Sales Management" />
             <div className="space-y-1">
-              <label className="block text-xs font-semibold" style={{ color: 'var(--old-price)' }}>Description</label>
+              <label className="block text-xs font-semibold theme-text-muted">Description</label>
               <textarea
                 value={form.description}
                 onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                 placeholder="Briefly describe the category usage..."
-                className="w-full rounded-lg px-3 py-2.5 text-sm outline-none border min-h-[100px]"
-                style={{ background: 'var(--foot-color)', borderColor: 'var(--border-color)', color: 'var(--text-color)' }}
+                className="w-full rounded-lg px-3 py-2.5 text-sm outline-none border min-h-[100px] theme-select theme-border"
               />
             </div>
             <div className="flex gap-3 pt-1">
-              <button onClick={() => setShowModal(false)} className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5 transition-colors"
-                style={{ borderColor: 'var(--border-color)', color: 'var(--old-price)' }}>Cancel</button>
+              <button onClick={() => setShowModal(false)} className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5 transition-colors theme-btn-cancel">Cancel</button>
               <KpBtn onClick={handleSave} loading={saving} className="flex-1 justify-center">Save</KpBtn>
             </div>
           </div>

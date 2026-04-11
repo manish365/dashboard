@@ -17,13 +17,12 @@ export default function CustomerServicePage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {SECTIONS.map(({ href, label, desc, icon: Icon, color }) => (
           <Link key={href} href={href}>
-            <div className="rounded-xl border p-6 transition-all hover:border-[var(--neon-green)]/30 cursor-pointer group"
-              style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}>
+            <div className="rounded-xl border p-6 transition-all hover:border-[var(--neon-green)]/30 cursor-pointer group theme-card-bg">
               <div className="rounded-xl p-3 w-fit mb-4" style={{ background: `${color}15` }}>
                 <Icon className="h-6 w-6" style={{ color }} />
               </div>
-              <h3 className="font-semibold" style={{ color: 'var(--text-color)' }}>{label}</h3>
-              <p className="text-sm mt-1" style={{ color: 'var(--old-price)' }}>{desc}</p>
+              <h3 className="font-semibold theme-text">{label}</h3>
+              <p className="text-sm mt-1 theme-text-muted">{desc}</p>
             </div>
           </Link>
         ))}

@@ -24,9 +24,9 @@ export default function EmailTemplatesPage() {
   const filtered = items.filter(t => t.name?.toLowerCase().includes(search.toLowerCase()) || t.subject?.toLowerCase().includes(search.toLowerCase()));
 
   const cols = [
-    { key: 'name', label: 'Name', render: (t: Template) => <div className="flex items-center gap-2"><Mail className="h-4 w-4" style={{ color: 'var(--neon-green)' }} /><span className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>{t.name}</span></div> },
-    { key: 'subject', label: 'Subject', render: (t: Template) => <span className="text-sm" style={{ color: 'var(--old-price)' }}>{t.subject}</span> },
-    { key: 'actions', label: 'Actions', align: 'right' as const, render: (t: Template) => <div className="flex items-center justify-end gap-1"><button onClick={() => { setSelected(t); setForm({ name: t.name, subject: t.subject, body: '' }); setShowModal(true); }} className="p-1.5 rounded-lg hover:bg-white/10" style={{ color: 'var(--circle)' }}><Edit className="h-4 w-4" /></button><button onClick={() => handleDelete(t.id)} className="p-1.5 rounded-lg hover:bg-red-500/10" style={{ color: '#f87171' }}><Trash2 className="h-4 w-4" /></button></div> },
+    { key: 'name', label: 'Name', render: (t: Template) => <div className="flex items-center gap-2"><Mail className="h-4 w-4 theme-text-neon" /><span className="text-sm font-medium theme-text">{t.name}</span></div> },
+    { key: 'subject', label: 'Subject', render: (t: Template) => <span className="text-sm theme-text-muted">{t.subject}</span> },
+    { key: 'actions', label: 'Actions', align: 'right' as const, render: (t: Template) => <div className="flex items-center justify-end gap-1"><button onClick={() => { setSelected(t); setForm({ name: t.name, subject: t.subject, body: '' }); setShowModal(true); }} className="p-1.5 rounded-lg hover:bg-white/10 theme-text-subtle"><Edit className="h-4 w-4" /></button><button onClick={() => handleDelete(t.id)} className="p-1.5 rounded-lg hover:bg-red-500/10 theme-text-danger"><Trash2 className="h-4 w-4" /></button></div> },
   ];
 
   return (
@@ -34,7 +34,7 @@ export default function EmailTemplatesPage() {
       <KpPageHeader title="Email Templates" subtitle="Manage system email templates" action={<KpBtn onClick={() => { setSelected(null); setForm({ name: '', subject: '', body: '' }); setShowModal(true); }}><Plus className="h-4 w-4" /> Add Template</KpBtn>} />
       <KpSearch value={search} onChange={setSearch} placeholder="Search templates..." className="max-w-md" />
       <KpCard>{loading ? <KpSkeleton /> : <KpTable cols={cols} rows={filtered} rowKey={t => t.id} emptyMsg="No email templates found." />}</KpCard>
-      {showModal && <KpModal title={selected ? 'Edit Template' : 'Add Template'} onClose={() => setShowModal(false)}><div className="space-y-4"><KpField label="Name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="e.g. Welcome Email" /><KpField label="Subject" value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))} placeholder="e.g. Welcome to Kestopur!" /><div className="flex gap-3 pt-1"><button onClick={() => setShowModal(false)} className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5" style={{ borderColor: 'var(--border-color)', color: 'var(--old-price)' }}>Cancel</button><KpBtn onClick={handleSave} loading={saving} className="flex-1 justify-center">Save</KpBtn></div></div></KpModal>}
+      {showModal && <KpModal title={selected ? 'Edit Template' : 'Add Template'} onClose={() => setShowModal(false)}><div className="space-y-4"><KpField label="Name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="e.g. Welcome Email" /><KpField label="Subject" value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))} placeholder="e.g. Welcome to Kestopur!" /><div className="flex gap-3 pt-1"><button onClick={() => setShowModal(false)} className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5 theme-btn-cancel">Cancel</button><KpBtn onClick={handleSave} loading={saving} className="flex-1 justify-center">Save</KpBtn></div></div></KpModal>}
     </div>
   );
 }

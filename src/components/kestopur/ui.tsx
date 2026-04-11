@@ -17,7 +17,7 @@ export function KpPageHeader({ title, subtitle, action }: { title: string; subti
 
 export function KpStatCard({ label, value, icon: Icon, color, loading }: { label: string; value: string | number; icon: React.ElementType; color: string; loading?: boolean }) {
   return (
-    <div className="theme-card-bg rounded-xl border p-5">
+    <div className="dg-card p-5">
       <div className="rounded-lg p-2.5 w-fit mb-3" style={{ background: `${color}20` }}>
         <Icon className="h-5 w-5" style={{ color }} />
       </div>
@@ -92,8 +92,8 @@ const BADGE_STYLES: Record<string, { bg: string; color: string }> = {
 export function KpBadge({ label, variant = 'default' }: { label: string; variant?: string }) {
   const s = BADGE_STYLES[variant?.toLowerCase()] ?? BADGE_STYLES.default;
   return (
-    <span className="text-xs px-2 py-0.5 rounded-full font-semibold capitalize"
-      style={{ background: s.bg, color: s.color }}>
+    <span className="text-xs px-2 py-0.5 rounded-full font-semibold capitalize border"
+      style={{ background: s.bg, color: s.color, borderColor: s.color + '33' }}>
       {label}
     </span>
   );
@@ -102,10 +102,10 @@ export function KpBadge({ label, variant = 'default' }: { label: string; variant
 interface Col<T> { key: string; label: string; align?: 'left' | 'right'; render: (row: T) => React.ReactNode; }
 export function KpTable<T>({ cols, rows, rowKey, loading, emptyMsg = 'No data found.' }: { cols: Col<T>[]; rows: T[]; rowKey: (r: T) => string; loading?: boolean; emptyMsg?: string }) {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full border-collapse">
+    <div className="dg-table-wrapper">
+      <table className="dg-table">
         <thead>
-          <tr className="theme-border border-b">
+          <tr className="dg-table-header-row">
             {cols.map(c => (
               <th key={c.key} className="theme-text-subtle px-4 py-3 text-xs font-semibold uppercase tracking-wider"
                 style={{ textAlign: c.align ?? 'left' }}>
@@ -122,7 +122,7 @@ export function KpTable<T>({ cols, rows, rowKey, loading, emptyMsg = 'No data fo
           ) : rows.length === 0 ? (
             <tr><td colSpan={cols.length} className="theme-text-muted px-4 py-10 text-center text-sm">{emptyMsg}</td></tr>
           ) : rows.map(row => (
-            <tr key={rowKey(row)} className="theme-border border-b hover:bg-white/5 transition-colors">
+            <tr key={rowKey(row)} className="dg-table-row hover:bg-white/5">
               {cols.map(c => (
                 <td key={c.key} className="px-4 py-3" style={{ textAlign: c.align ?? 'left' }}>
                   {c.render(row)}
@@ -182,17 +182,17 @@ export function KpDataPage<T>({
 export function KpPagination({ page, totalPages, total, limit, onPage }: { page: number; totalPages: number; total: number; limit: number; onPage: (p: number) => void }) {
   if (totalPages <= 1) return null;
   return (
-    <div className="theme-border flex items-center justify-between px-4 py-3 border-t">
+    <div className="dg-toolbar !border-t border-var(--border-color) bg-[#f4f6fb]/5">
       <span className="theme-text-muted text-sm">
         Showing {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
       </span>
       <div className="flex gap-2">
         <button onClick={() => onPage(page - 1)} disabled={page <= 1}
-          className="theme-btn-cancel p-1.5 rounded-lg border hover:bg-white/5 disabled:opacity-40 transition-colors">
+          className="dg-btn p-1.5 rounded-lg disabled:opacity-40">
           <ChevronLeft className="h-4 w-4" />
         </button>
         <button onClick={() => onPage(page + 1)} disabled={page >= totalPages}
-          className="theme-btn-cancel p-1.5 rounded-lg border hover:bg-white/5 disabled:opacity-40 transition-colors">
+          className="dg-btn p-1.5 rounded-lg disabled:opacity-40">
           <ChevronRight className="h-4 w-4" />
         </button>
       </div>
@@ -221,7 +221,7 @@ export function KpField({ label, error, ...props }: React.InputHTMLAttributes<HT
   return (
     <div className="space-y-1">
       <label className="theme-text-muted block text-xs font-semibold">{label}</label>
-      <input className="theme-input-field w-full rounded-lg px-3 py-2.5 text-sm outline-none border"
+      <input className="theme-input-field w-full rounded-lg px-3 py-2.5 text-sm outline-none border transition-colors"
         style={{ borderColor: error ? '#f87171' : 'var(--border-color)' }}
         {...props} />
       {error && <p className="theme-text-danger text-xs">{error}</p>}

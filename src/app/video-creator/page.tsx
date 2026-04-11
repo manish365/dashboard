@@ -130,7 +130,7 @@ function ScriptSection({ initialTitle }: { initialTitle: string }) {
           <p className="theme-text-subtle text-xs font-semibold uppercase tracking-wide">Scene Editor</p>
           {scenes.map((scene, idx) => (
             /* borderLeft neon accent is intentional design — kept as style */
-            <div key={idx} className="theme-footer-bg theme-border rounded-xl border p-4 space-y-3" style={{ borderLeft: '4px solid var(--neon-green)' }}>
+            <div key={idx} className="theme-footer-bg theme-border rounded-xl border p-4 space-y-3 border-l-4 border-l-[var(--neon-green)]">
               <div className="flex items-center justify-between">
                 <h4 className="theme-text font-semibold text-sm">Scene {scene.scene_number}</h4>
                 <span className="theme-text-subtle text-xs">{scene.duration}s</span>

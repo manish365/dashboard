@@ -98,14 +98,14 @@ export default function UIShowcasePage() {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Enterprise Data Analysis">
         <div className="space-y-4">
           <p className="theme-text text-sm opacity-80">This modal demonstrates the premium backdrop blur and theme-aware surface colors.</p>
-          <div className="theme-input theme-border rounded-xl border p-4">
+          <div className="dg-input border-none !h-auto p-4">
             <div className="flex items-center justify-between mb-2">
               <span className="theme-text text-xs font-bold uppercase tracking-wider opacity-50">Monthly Growth</span>
               <span className="text-xs font-bold text-[var(--neon-green)]">+12.4%</span>
             </div>
             <div className="h-2 w-full rounded-full bg-slate-800">
               {/* width is dynamic value — stays as style */}
-              <div className="theme-neon-bg h-2 rounded-full" style={{ width: '70%', boxShadow: '0 0 10px rgba(0, 233, 191, 0.5)' }} />
+              <div className="dg-progress-fill h-2 rounded-full" style={{ width: '70%', boxShadow: '0 0 10px rgba(0, 233, 191, 0.5)' }} />
             </div>
           </div>
           <div className="flex justify-end gap-2 pt-4">

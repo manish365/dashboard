@@ -24,34 +24,34 @@ export default function OrderDetailPage() {
 
   if (loading) return (
     <div className="flex items-center justify-center h-64">
-      <Loader2 className="h-8 w-8 animate-spin" style={{ color: 'var(--neon-green)' }} />
+      <Loader2 className="h-8 w-8 animate-spin theme-text-neon" />
     </div>
   );
 
   if (!order) return (
     <div className="space-y-4">
-      <Link href="/kestopur/orders" className="inline-flex items-center gap-1.5 text-sm hover:opacity-80" style={{ color: 'var(--circle)' }}>
+      <Link href="/kestopur/orders" className="inline-flex items-center gap-1.5 text-sm hover:opacity-80 theme-text-subtle">
         <ArrowLeft className="h-4 w-4" /> Back to Orders
       </Link>
-      <div className="text-center py-20" style={{ color: 'var(--old-price)' }}>
-        <Package className="h-12 w-12 mx-auto mb-3 opacity-20" style={{ color: 'var(--circle)' }} />
+      <div className="text-center py-20 theme-text-muted">
+        <Package className="h-12 w-12 mx-auto mb-3 opacity-20 theme-text-subtle" />
         <p>Order not found or backend unavailable.</p>
-        <p className="text-xs mt-1" style={{ color: 'var(--circle)' }}>Order ID: {orderId}</p>
+        <p className="text-xs mt-1 theme-text-subtle">Order ID: {orderId}</p>
       </div>
     </div>
   );
 
   return (
     <div className="space-y-6 max-w-4xl">
-      <Link href="/kestopur/orders" className="inline-flex items-center gap-1.5 text-sm hover:opacity-80 transition-opacity" style={{ color: 'var(--circle)' }}>
+      <Link href="/kestopur/orders" className="inline-flex items-center gap-1.5 text-sm hover:opacity-80 transition-opacity theme-text-subtle">
         <ArrowLeft className="h-4 w-4" /> Back to Orders
       </Link>
 
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: 'var(--text-color)' }}>Order {order.orderNumber}</h1>
-          <p className="text-sm mt-0.5 flex items-center gap-1" style={{ color: 'var(--old-price)' }}>
+          <h1 className="text-2xl font-bold theme-text">Order {order.orderNumber}</h1>
+          <p className="text-sm mt-0.5 flex items-center gap-1 theme-text-muted">
             <Calendar className="h-3.5 w-3.5" /> {fmt(order.createdAt)}
           </p>
         </div>
@@ -65,22 +65,22 @@ export default function OrderDetailPage() {
         {/* Order Items */}
         <div className="lg:col-span-2 space-y-4">
           <KpCard>
-            <div className="px-5 py-4 border-b" style={{ borderColor: 'var(--border-color)' }}>
-              <span className="font-semibold text-sm" style={{ color: 'var(--text-color)' }}>Order Items</span>
+            <div className="px-5 py-4 border-b theme-border">
+              <span className="font-semibold text-sm theme-text">Order Items</span>
             </div>
-            <div className="divide-y" style={{ borderColor: 'var(--border-color)' }}>
+            <div className="divide-y theme-border">
               {(order.items || []).length === 0 ? (
-                <p className="px-5 py-8 text-center text-sm" style={{ color: 'var(--old-price)' }}>No items data available.</p>
+                <p className="px-5 py-8 text-center text-sm theme-text-muted">No items data available.</p>
               ) : (order.items || []).map((item: any, i: number) => (
                 <div key={i} className="flex items-center gap-4 px-5 py-4">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'var(--foot-color)' }}>
-                    <Package className="h-5 w-5" style={{ color: 'var(--circle)' }} />
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 theme-footer-bg">
+                    <Package className="h-5 w-5 theme-text-subtle" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate" style={{ color: 'var(--text-color)' }}>{item.name || item.productName || 'Product'}</p>
-                    <p className="text-xs" style={{ color: 'var(--old-price)' }}>Qty: {item.quantity || 1}</p>
+                    <p className="text-sm font-medium truncate theme-text">{item.name || item.productName || 'Product'}</p>
+                    <p className="text-xs theme-text-muted">Qty: {item.quantity || 1}</p>
                   </div>
-                  <p className="text-sm font-semibold flex-shrink-0" style={{ color: 'var(--text-color)' }}>{fmtCurrency(item.price || item.total || 0)}</p>
+                  <p className="text-sm font-semibold flex-shrink-0 theme-text">{fmtCurrency(item.price || item.total || 0)}</p>
                 </div>
               ))}
             </div>
@@ -90,8 +90,8 @@ export default function OrderDetailPage() {
         {/* Summary */}
         <div className="space-y-4">
           <KpCard>
-            <div className="px-5 py-4 border-b" style={{ borderColor: 'var(--border-color)' }}>
-              <span className="font-semibold text-sm" style={{ color: 'var(--text-color)' }}>Order Summary</span>
+            <div className="px-5 py-4 border-b theme-border">
+              <span className="font-semibold text-sm theme-text">Order Summary</span>
             </div>
             <div className="p-5 space-y-3">
               {[
@@ -101,31 +101,31 @@ export default function OrderDetailPage() {
                 { label: 'Tax', value: fmtCurrency(order.tax || 0) },
               ].map(({ label, value }) => (
                 <div key={label} className="flex justify-between text-sm">
-                  <span style={{ color: 'var(--old-price)' }}>{label}</span>
-                  <span style={{ color: 'var(--text-color)' }}>{value}</span>
+                  <span className="theme-text-muted">{label}</span>
+                  <span className="theme-text">{value}</span>
                 </div>
               ))}
-              <div className="border-t pt-3 flex justify-between font-bold" style={{ borderColor: 'var(--border-color)' }}>
-                <span style={{ color: 'var(--text-color)' }}>Total</span>
-                <span style={{ color: 'var(--neon-green)' }}>{fmtCurrency(order.finalAmount)}</span>
+              <div className="border-t pt-3 flex justify-between font-bold theme-border">
+                <span className="theme-text">Total</span>
+                <span className="theme-text-neon">{fmtCurrency(order.finalAmount)}</span>
               </div>
             </div>
           </KpCard>
 
           {/* Customer */}
           <KpCard>
-            <div className="px-5 py-4 border-b" style={{ borderColor: 'var(--border-color)' }}>
-              <span className="font-semibold text-sm" style={{ color: 'var(--text-color)' }}>Customer</span>
+            <div className="px-5 py-4 border-b theme-border">
+              <span className="font-semibold text-sm theme-text">Customer</span>
             </div>
             <div className="p-5 space-y-2">
               <div className="flex items-center gap-2">
-                <User className="h-4 w-4 flex-shrink-0" style={{ color: 'var(--circle)' }} />
-                <span className="text-sm" style={{ color: 'var(--old-price)' }}>{order.customerId || 'N/A'}</span>
+                <User className="h-4 w-4 flex-shrink-0 theme-text-subtle" />
+                <span className="text-sm theme-text-muted">{order.customerId || 'N/A'}</span>
               </div>
               {order.shippingAddress && (
                 <div className="flex items-start gap-2">
-                  <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--circle)' }} />
-                  <span className="text-sm" style={{ color: 'var(--old-price)' }}>{typeof order.shippingAddress === 'string' ? order.shippingAddress : JSON.stringify(order.shippingAddress)}</span>
+                  <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5 theme-text-subtle" />
+                  <span className="text-sm theme-text-muted">{typeof order.shippingAddress === 'string' ? order.shippingAddress : JSON.stringify(order.shippingAddress)}</span>
                 </div>
               )}
             </div>
