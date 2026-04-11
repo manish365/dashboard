@@ -1,8 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Activity } from 'lucide-react';
 import { kpFetch } from '@/lib/kestopur/api';
-import { KpPageHeader, KpCard, KpTable, KpBadge, KpSearch, KpField, KpSkeleton, KpPagination } from '@/components/kestopur/ui';
+import { KpPageHeader, KpCard, KpTable, KpBadge, KpField, KpSkeleton, KpPagination } from '@/components/kestopur/ui';
 
 interface Log { id: string; action: string; resource: string; actorId: string; createdAt: string; status?: string; }
 
@@ -25,11 +24,11 @@ export default function AuditLogsPage() {
   useEffect(() => { fetchLogs(); }, [page, resource, actorId]);
 
   const cols = [
-    { key: 'action', label: 'Action', render: (l: Log) => <span className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>{l.action}</span> },
-    { key: 'resource', label: 'Resource', render: (l: Log) => <span className="text-sm" style={{ color: 'var(--old-price)' }}>{l.resource}</span> },
-    { key: 'actor', label: 'Actor', render: (l: Log) => <span className="text-xs font-mono" style={{ color: 'var(--circle)' }}>{l.actorId?.slice(0, 8)}...</span> },
-    { key: 'date', label: 'Date', render: (l: Log) => <span className="text-sm" style={{ color: 'var(--circle)' }}>{new Date(l.createdAt).toLocaleString()}</span> },
-    { key: 'status', label: 'Status', render: (l: Log) => <KpBadge label={l.status || 'success'} variant={l.status || 'active'} /> },
+    { key: 'action',   label: 'Action',   render: (l: Log) => <span className="theme-text text-sm font-medium">{l.action}</span> },
+    { key: 'resource', label: 'Resource', render: (l: Log) => <span className="theme-text-muted text-sm">{l.resource}</span> },
+    { key: 'actor',    label: 'Actor',    render: (l: Log) => <span className="theme-text-subtle text-xs font-mono">{l.actorId?.slice(0, 8)}...</span> },
+    { key: 'date',     label: 'Date',     render: (l: Log) => <span className="theme-text-subtle text-sm">{new Date(l.createdAt).toLocaleString()}</span> },
+    { key: 'status',   label: 'Status',   render: (l: Log) => <KpBadge label={l.status || 'success'} variant={l.status || 'active'} /> },
   ];
 
   return (
@@ -39,10 +38,10 @@ export default function AuditLogsPage() {
         <KpField label="Resource" value={resource} onChange={e => setResource(e.target.value)} placeholder="e.g. User, Role" />
         <KpField label="Actor ID" value={actorId} onChange={e => setActorId(e.target.value)} placeholder="UUID" />
       </div>
-      <div className="rounded-xl border overflow-hidden" style={{ background: 'var(--croma-wall)', borderColor: 'var(--border-color)' }}>
+      <KpCard>
         {loading ? <KpSkeleton /> : <KpTable cols={cols} rows={logs} rowKey={l => l.id} emptyMsg="No audit logs found." />}
         <KpPagination page={page} totalPages={totalPages} total={logs.length} limit={20} onPage={setPage} />
-      </div>
+      </KpCard>
     </div>
   );
 }

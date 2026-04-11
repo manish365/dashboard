@@ -282,8 +282,7 @@ export default function EditableDataGrid({
   const editableFields = columnDefs.filter((c) => c.field && c.field !== 'id').map((c) => c.field!);
 
   return (
-    <div className="flex flex-col gap-1.5 rounded-xl p-2 border"
-      style={{ background: 'var(--toolbar-bg)', borderColor: 'var(--border-color)' }}>
+    <div className="theme-toolbar-bg theme-border flex flex-col gap-1.5 rounded-xl p-2 border">
       {/* 1. Header Toolbar */}
       <div className="flex flex-wrap items-center gap-2 px-1">
         {leftContent && (
@@ -300,12 +299,8 @@ export default function EditableDataGrid({
             placeholder="Go to..."
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            className="w-full rounded-md border py-1 pl-8 pr-3 text-[11px] outline-none transition-colors focus:border-blue-500/50"
-            style={{
-              background: 'var(--input-bg)',
-              borderColor: 'var(--input-border)',
-              color: 'var(--text-color)'
-            }}
+            className="theme-input theme-border w-full rounded-md border py-1 pl-8 pr-3 text-[11px] outline-none transition-colors focus:border-blue-500/50"
+            style={undefined}
           />
         </div>
 
@@ -360,16 +355,14 @@ export default function EditableDataGrid({
             <div className="flex items-center gap-0.5 ml-1">
               <button
                 onClick={handleExportCSV}
-                className="rounded-md border p-1 hover:bg-white/10"
-                style={{ background: 'var(--input-bg)', borderColor: 'var(--border-color)', color: 'var(--old-price)' }}
+                className="theme-input theme-border rounded-md border p-1 hover:bg-white/10"
                 title="CSV"
               >
                 <Download className="h-3 w-3" />
               </button>
               <button
                 onClick={handleExportExcel}
-                className="rounded-md border p-1 hover:bg-white/10"
-                style={{ background: 'var(--input-bg)', borderColor: 'var(--border-color)', color: 'var(--old-price)' }}
+                className="theme-input theme-border rounded-md border p-1 hover:bg-white/10"
                 title="Excel"
               >
                 <FileSpreadsheet className="h-3 w-3" />
@@ -386,14 +379,11 @@ export default function EditableDataGrid({
           <select
             value={bulkEditField}
             onChange={(e) => setBulkEditField(e.target.value)}
-            className="rounded border px-2 py-1 text-[10px] outline-none"
-            style={{ background: 'var(--input-bg)', borderColor: 'var(--input-border)', color: 'var(--text-color)' }}
+            className="theme-select theme-border rounded border px-2 py-1 text-[10px] outline-none"
           >
-            <option value="" style={{ background: 'var(--croma-wall)' }}>Field...</option>
+            <option value="" className="theme-option">Field...</option>
             {editableFields.map((f) => (
-              <option key={f} value={f} style={{ background: 'var(--croma-wall)' }}>
-                {f}
-              </option>
+              <option key={f} value={f} className="theme-option">{f}</option>
             ))}
           </select>
           <input
@@ -401,8 +391,7 @@ export default function EditableDataGrid({
             placeholder="Value"
             value={bulkEditValue}
             onChange={(e) => setBulkEditValue(e.target.value)}
-            className="rounded border px-2 py-1 text-[10px] outline-none focus:border-blue-500/50"
-            style={{ background: 'var(--input-bg)', borderColor: 'var(--input-border)', color: 'var(--text-color)' }}
+            className="theme-input theme-border rounded border px-2 py-1 text-[10px] outline-none focus:border-blue-500/50"
           />
           <button
             onClick={handleBulkEdit}
@@ -413,8 +402,7 @@ export default function EditableDataGrid({
           </button>
           <button
             onClick={() => setShowBulkEditPanel(false)}
-            className="rounded px-2 py-1 text-[10px]"
-            style={{ background: 'var(--input-bg)', color: 'var(--old-price)' }}
+            className="theme-input theme-text-muted rounded px-2 py-1 text-[10px]"
           >
             Cancel
           </button>
@@ -422,8 +410,8 @@ export default function EditableDataGrid({
       )}
 
       {/* 2. Grid */}
-      <div className={`${state.theme === 'light' ? 'ag-theme-alpine' : 'ag-theme-alpine-dark'} rounded-md border overflow-hidden`}
-        style={{ height: 480, borderColor: 'var(--border-color)' }}>
+      <div className={`${state.theme === 'light' ? 'ag-theme-alpine' : 'ag-theme-alpine-dark'} theme-border rounded-md border overflow-hidden`}
+        style={{ height: 480 }}>
         <AgGridReact
           ref={gridRef}
           rowData={rowData}

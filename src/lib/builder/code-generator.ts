@@ -83,8 +83,8 @@ ${imports}
 export default function ${kebabToPascal(schema.slug)}() {
   return (
     <div className="p-6">
-      <div className="mb-6 border-b pb-4" style={{ borderColor: 'var(--border-color)' }}>
-        <h1 className="text-2xl font-bold" style={{ color: 'var(--text-color)' }}>${schema.pageName}</h1>
+      <div className="theme-border mb-6 border-b pb-4">
+        <h1 className="theme-text text-2xl font-bold">${schema.pageName}</h1>
       </div>
 
       <div ${wrapperClass}>
