@@ -65,7 +65,7 @@ type Action =
   | { type: 'SET_DATASET_META'; payload: { key: string; meta: DatasetMeta } }
   | { type: 'ADD_UPLOADED_FILE'; payload: UploadedFile }
   | { type: 'REMOVE_UPLOADED_FILE'; payload: string }
-  | { type: 'TOGGLE_SIDEBAR' }
+  | { type: 'TOGGLE_SIDEBAR', payload: boolean }
   | { type: 'SET_ROLE'; payload: UserRole }
   | { type: 'TOGGLE_THEME' }
   | { type: 'SET_THEME'; payload: 'light' | 'dark' }
@@ -114,7 +114,10 @@ export function reducer(state: AppState, action: Action): AppState {
         uploadedFiles: state.uploadedFiles.filter((f) => f.id !== action.payload),
       };
     case 'TOGGLE_SIDEBAR':
-      return { ...state, sidebarOpen: !state.sidebarOpen };
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('store-sidebar-open', action.payload.toString());
+      }
+      return { ...state, sidebarOpen: action.payload };
     case 'SET_ROLE':
       return {
         ...state,
@@ -171,6 +174,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const savedTheme = localStorage.getItem('store-theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {
       dispatch({ type: 'SET_THEME', payload: savedTheme });
+    }
+    // 2. sidebar
+    const savedSidebarOpen = localStorage.getItem('store-sidebar-open');
+    if (savedSidebarOpen === 'true' || savedSidebarOpen === 'false') {
+      dispatch({ type: 'TOGGLE_SIDEBAR', payload: savedSidebarOpen === 'true' });
     }
 
     // Theme initialization is enough here; session is handled by AuthWrapper

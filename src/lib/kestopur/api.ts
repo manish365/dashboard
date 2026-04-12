@@ -26,7 +26,7 @@ export interface KpFetchOptions extends RequestInit {
 export async function kpFetch(url: string, options: KpFetchOptions = {}) {
   const isGet = !options.method || options.method.toUpperCase() === 'GET';
   const cacheKey = `${url}${options.body ? JSON.stringify(options.body) : ''}`;
-  
+
   // Check cache for GET requests
   if (isGet && options.useCache !== false) {
     const cached = apiCache.get(cacheKey);

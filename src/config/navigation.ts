@@ -44,10 +44,59 @@ export const NAV_SECTIONS = [
   {
     title: 'Executive',
     items: [
-      { href: '/dashboard', label: 'Incentive Dashboard', icon: LayoutDashboard },
-      { href: '/kestopur/executive-summary', label: 'Board Summary', icon: Zap, highlight: true },
-      { href: '/analytics', label: 'Global Analytics', icon: BarChart3 },
-      { href: '/approvals', label: 'Pending Approvals', icon: CheckSquare },
+      { href: '/dashboard', label: 'Board Summary', icon: LayoutDashboard },
+      // { href: '/ecom/executive-summary', label: 'Board Summary', icon: Zap, highlight: true },
+      // { href: '/analytics', label: 'Global Analytics', icon: BarChart3 },
+      // { href: '/approvals', label: 'Pending Approvals', icon: CheckSquare },
+    ],
+  },
+  {
+    title: 'Ecom: Intelligence',
+    items: [
+      { href: '/ecom/dashboard', label: 'Commerce Stats', icon: Store },
+      { href: '/ecom/kpi-tree', label: 'KPI Ecosystem', icon: TreePalm },
+      { href: '/ecom/falcon-tree', label: 'Falcon Graph', icon: GitBranch },
+      { href: '/ecom/audit-logs', label: 'Audit Trail', icon: History },
+    ],
+  },
+  {
+    title: 'Ecom: Operations',
+    items: [
+      { href: '/ecom/orders', label: 'Order Pipeline', icon: ShoppingCart },
+      { href: '/ecom/payments', label: 'Revenue/Payments', icon: CreditCard },
+      { href: '/ecom/business-accounts', label: 'B2B Accounts', icon: Building2 },
+      { href: '/ecom/pincodes', label: 'Service Areas', icon: MapPin },
+      { href: '/ecom/carts', label: 'Abandoned Carts', icon: ShoppingCart },
+    ],
+  },
+  {
+    title: 'Ecom: Catalog',
+    items: [
+      { href: '/ecom/products', label: 'All Products', icon: Package },
+      { href: '/ecom/category', label: 'Categories', icon: Layers },
+      { href: '/ecom/inventory', label: 'Stock Levels', icon: Archive },
+      { href: '/ecom/product-status', label: 'Publish Workflows', icon: Settings2 },
+      { href: '/ecom/attributes', label: 'Spec Attributes', icon: Tag },
+      { href: '/ecom/brands', label: 'Brand Registry', icon: Star },
+      { href: '/ecom/warehouses', label: 'Warehouses', icon: Truck },
+      { href: '/ecom/manufacturers', label: 'Vendors', icon: Store },
+    ],
+  },
+  {
+    title: 'Ecom: Engagement',
+    items: [
+      { href: '/ecom/customer-service', label: 'Support Hub', icon: Headphones },
+      { href: '/ecom/submissions', label: 'Form Leads', icon: FileText },
+      { href: '/ecom/email-templates', label: 'CRM Templates', icon: Mail },
+      { href: '/ecom/customers', label: 'Customer Directory', icon: Users },
+    ],
+  },
+  {
+    title: 'Ecom: Admin',
+    items: [
+      { href: '/ecom/users', label: 'System Users', icon: UserPlus },
+      { href: '/ecom/roles', label: 'Access Roles', icon: ShieldCheck },
+      { href: '/ecom/permissions', label: 'Permissions', icon: Settings },
     ],
   },
   {
@@ -59,63 +108,9 @@ export const NAV_SECTIONS = [
       { href: '/data/sm-mo-mapping', label: 'SM MO Mapping', icon: MapPin },
       { href: '/data/csat', label: 'CSAT Analytics', icon: Star },
       { href: '/data/employee-master', label: 'Employee Master', icon: Users },
-    ],
-  },
-  {
-    title: 'Reference Data',
-    items: [
       { href: '/reference/stores', label: 'Store Directory', icon: MapPin },
       { href: '/reference/groups', label: 'Groups & Categories', icon: FileSpreadsheet },
       { href: '/reference/employees', label: 'Employee Registry', icon: Users },
-    ],
-  },
-  {
-    title: 'Kestopur: Intelligence',
-    items: [
-      { href: '/kestopur/dashboard', label: 'Commerce Stats', icon: Store },
-      { href: '/kestopur/kpi-tree', label: 'KPI Ecosystem', icon: TreePalm },
-      { href: '/kestopur/falcon-tree', label: 'Falcon Graph', icon: GitBranch },
-      { href: '/kestopur/audit-logs', label: 'Audit Trail', icon: History },
-    ],
-  },
-  {
-    title: 'Kestopur: Operations',
-    items: [
-      { href: '/kestopur/orders', label: 'Order Pipeline', icon: ShoppingCart },
-      { href: '/kestopur/payments', label: 'Revenue/Payments', icon: CreditCard },
-      { href: '/kestopur/business-accounts', label: 'B2B Accounts', icon: Building2 },
-      { href: '/kestopur/pincodes', label: 'Service Areas', icon: MapPin },
-      { href: '/kestopur/carts', label: 'Abandoned Carts', icon: ShoppingCart },
-    ],
-  },
-  {
-    title: 'Kestopur: Catalog',
-    items: [
-      { href: '/kestopur/products', label: 'All Products', icon: Package },
-      { href: '/kestopur/category', label: 'Categories', icon: Layers },
-      { href: '/kestopur/inventory', label: 'Stock Levels', icon: Archive },
-      { href: '/kestopur/product-status', label: 'Publish Workflows', icon: Settings2 },
-      { href: '/kestopur/attributes', label: 'Spec Attributes', icon: Tag },
-      { href: '/kestopur/brands', label: 'Brand Registry', icon: Star },
-      { href: '/kestopur/warehouses', label: 'Warehouses', icon: Truck },
-      { href: '/kestopur/manufacturers', label: 'Vendors', icon: Store },
-    ],
-  },
-  {
-    title: 'Kestopur: Engagement',
-    items: [
-      { href: '/kestopur/customer-service', label: 'Support Hub', icon: Headphones },
-      { href: '/kestopur/submissions', label: 'Form Leads', icon: FileText },
-      { href: '/kestopur/email-templates', label: 'CRM Templates', icon: Mail },
-      { href: '/kestopur/customers', label: 'Customer Directory', icon: Users },
-    ],
-  },
-  {
-    title: 'Kestopur: Admin',
-    items: [
-      { href: '/kestopur/users', label: 'System Users', icon: UserPlus },
-      { href: '/kestopur/roles', label: 'Access Roles', icon: ShieldCheck },
-      { href: '/kestopur/permissions', label: 'Permissions', icon: Settings },
     ],
   },
   {

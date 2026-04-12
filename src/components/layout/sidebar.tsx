@@ -45,7 +45,7 @@ export default function Sidebar() {
       {state.sidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
-          onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}
+          onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR', payload: true })}
         />
       )}
 
@@ -55,7 +55,7 @@ export default function Sidebar() {
       >
         <div className="flex items-center justify-end p-3 lg:hidden">
           <button
-            onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}
+            onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR', payload: false })}
             className="theme-text-muted rounded-lg p-1.5 hover:bg-white/10"
           >
             <X className="h-5 w-5" />
@@ -76,7 +76,7 @@ export default function Sidebar() {
                   isOpen={state.sidebarOpen}
                   isActive={pathname === item.href || pathname?.startsWith(item.href + '/')}
                   onClick={() => {
-                    if (window.innerWidth < 1024) dispatch({ type: 'TOGGLE_SIDEBAR' });
+                    if (window.innerWidth < 1024) dispatch({ type: 'TOGGLE_SIDEBAR', payload: true });
                   }}
                 />
               ))}

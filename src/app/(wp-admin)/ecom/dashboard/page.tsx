@@ -7,12 +7,12 @@ import { useToast } from '@/providers/toast-context';
 import { KpPageHeader, KpStatCard, KpCard } from '@/components/kestopur/ui';
 
 const QUICK_ACTIONS = [
-  { href: '/kestopur/users', label: 'Manage Users', desc: 'View, create, edit, and delete users', icon: Users, tagCls: 'theme-tag-accent', textCls: 'theme-text-accent' },
-  { href: '/kestopur/roles', label: 'Manage Roles', desc: 'Create roles and assign permissions', icon: Shield, tagCls: 'theme-tag-success', textCls: 'theme-text-success' },
-  { href: '/kestopur/orders', label: 'View Orders', desc: 'Track and manage customer orders', icon: ShoppingCart, tagCls: 'theme-tag-warning', textCls: 'theme-text-warning' },
-  { href: '/kestopur/kpi-tree', label: 'KPI Explorer', desc: 'Explore operational drilldowns', icon: GitBranch, tagCls: 'theme-tag-info', textCls: 'theme-text-info' },
-  { href: '/kestopur/customers', label: 'B2B Management', desc: 'Manage corporate accounts', icon: Building2, tagCls: 'theme-tag-purple', textCls: 'theme-text-purple' },
-  { href: '/kestopur/products', label: 'Products', desc: 'Manage your product catalog', icon: Package, tagCls: 'theme-tag-danger', textCls: 'theme-text-danger' },
+  { href: '/ecom/users', label: 'Manage Users', desc: 'View, create, edit, and delete users', icon: Users, tagCls: 'theme-tag-accent', textCls: 'theme-text-accent' },
+  { href: '/ecom/roles', label: 'Manage Roles', desc: 'Create roles and assign permissions', icon: Shield, tagCls: 'theme-tag-success', textCls: 'theme-text-success' },
+  { href: '/ecom/orders', label: 'View Orders', desc: 'Track and manage customer orders', icon: ShoppingCart, tagCls: 'theme-tag-warning', textCls: 'theme-text-warning' },
+  { href: '/ecom/kpi-tree', label: 'KPI Explorer', desc: 'Explore operational drilldowns', icon: GitBranch, tagCls: 'theme-tag-info', textCls: 'theme-text-info' },
+  { href: '/ecom/customers', label: 'B2B Management', desc: 'Manage corporate accounts', icon: Building2, tagCls: 'theme-tag-purple', textCls: 'theme-text-purple' },
+  { href: '/ecom/products', label: 'Products', desc: 'Manage your product catalog', icon: Package, tagCls: 'theme-tag-danger', textCls: 'theme-text-danger' },
 ];
 
 export default function KestopurDashboard() {

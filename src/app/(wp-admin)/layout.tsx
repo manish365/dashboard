@@ -15,4 +15,3 @@ export default function KestopurLayout({
     </KestopurProvider>
   );
 }
-// wait, I made a typo in the tag name above. I'll correct it.

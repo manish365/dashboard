@@ -33,7 +33,7 @@ export default function TopNav() {
     <header className="theme-nav-bg sticky top-0 z-40 flex h-16 items-center justify-between theme-border border-b px-4 backdrop-blur-xl lg:px-6 shadow-sm">
       <div className="flex items-center gap-3">
         <button
-          onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}
+          onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR', payload: !state.sidebarOpen })}
           className="theme-text-muted rounded-lg p-2 transition-colors hover:bg-white/10"
         >
           <Menu className="h-5 w-5" />
