@@ -112,7 +112,7 @@ export default function TopNav() {
                   Switch to {user.role === UserRole.DATA_MANAGER ? 'Approver' : 'Data Manager'}
                 </button>
 
-                {isAuthEnabled && (
+                {user && (
                   <button
                     onClick={logout}
                     className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm theme-text-danger transition-colors hover:bg-white/10"

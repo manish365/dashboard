@@ -26,6 +26,7 @@ function RoleBadge({ role }: { role: 'ADMIN' | 'LEARNER' }) {
 function UserAvatar({ name, role }: { name: string; role: string }) {
   const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
   const isAdmin = role === 'ADMIN';
+  return (
     <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-white ${isAdmin ? 'bg-gradient-to-br from-indigo-500 to-purple-500' : 'bg-gradient-to-br from-emerald-500 to-green-600'}`}>
       {initials}
     </div>

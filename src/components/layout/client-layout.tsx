@@ -7,6 +7,7 @@ import AuthGuard from '@/components/auth/auth-guard';
 import TopNav from '@/components/layout/top-nav';
 import Sidebar from '@/components/layout/sidebar';
 import { ToastProvider } from '@/providers/toast-context';
+import { usePathname } from 'next/navigation';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -24,6 +25,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
 function LayoutShell({ children }: { children: React.ReactNode }) {
   const { state } = useAppStore();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (state.theme === 'light') {
@@ -32,6 +34,15 @@ function LayoutShell({ children }: { children: React.ReactNode }) {
       document.body.classList.remove('light-theme');
     }
   }, [state.theme]);
+
+  // Standalone pages (like Login) shouldn't show nav/sidebar
+  if (pathname === '/login') {
+    return (
+      <main className="theme-main-bg min-h-screen">
+        {children}
+      </main>
+    );
+  }
 
   return (
     <div className="flex h-screen flex-col">

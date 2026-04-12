@@ -60,7 +60,7 @@ export default function EditableDataGrid({
 
   // Excel-like selection aggregates
   const [aggregates, setAggregates] = useState({ sum: 0, avg: 0, count: 0 });
-  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const [isUpdating, setIsUpdating] = useState(false);
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
   const [lastApiCallTime, setLastApiCallTime] = useState<string | null>(null);
@@ -141,7 +141,7 @@ export default function EditableDataGrid({
           setSaveStatus('SYNC FAILED!');
         } finally {
           setIsUpdating(false);
-          debounceRef.current = null;
+          debounceRef.current = undefined;
         }
       }, 1000);
     },

@@ -1,3 +1,4 @@
+'use client';
 import { Loader2, Search, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import { useToast } from '@/providers/toast-context';
@@ -113,7 +114,7 @@ export function KpBadge({ label, variant = 'default' }: { label: string; variant
 }
 
 interface Col<T> { key: string; label: string; align?: 'left' | 'right'; render: (row: T) => React.ReactNode; }
-export function KpTable<T>({ cols, rows, rowKey, loading, emptyMsg = 'No data found.' }: { cols: Col<T>[]; rows: T[]; rowKey: (r: T) => string; loading?: boolean; emptyMsg?: string }) {
+export function KpTable<T>({ cols, rows, rowKey, loading, emptyMsg = 'No data found.' }: { cols: Col<T>[]; rows: T[]; rowKey: (r: T, index: number) => string; loading?: boolean; emptyMsg?: string }) {
   return (
     <div className="dg-table-wrapper">
       <table className="dg-table">
@@ -134,8 +135,8 @@ export function KpTable<T>({ cols, rows, rowKey, loading, emptyMsg = 'No data fo
             </td></tr>
           ) : rows.length === 0 ? (
             <tr><td colSpan={cols.length} className="theme-text-muted px-4 py-10 text-center text-sm">{emptyMsg}</td></tr>
-          ) : rows.map(row => (
-            <tr key={rowKey(row)} className="dg-table-row hover:bg-white/5">
+          ) : rows.map((row, idx) => (
+            <tr key={rowKey(row, idx)} className="dg-table-row hover:bg-white/5">
               {cols.map(c => (
                 <td key={c.key} className="px-4 py-3" style={{ textAlign: c.align ?? 'left' }}>
                   {c.render(row)}
@@ -153,7 +154,7 @@ export function KpDataPage<T>({
   title, subtitle, fetchUrl, cols, rowKey, action,
   searchPlaceholder = 'Search…', emptyMsg, filterFn,
 }: {
-  title: string; subtitle?: string; fetchUrl: string; cols: Col<T>[]; rowKey: (r: T) => string;
+  title: string; subtitle?: string; fetchUrl: string; cols: Col<T>[]; rowKey: (r: T, index: number) => string;
   action?: React.ReactNode; searchPlaceholder?: string; emptyMsg?: string;
   filterFn?: (item: T, search: string) => boolean;
 }) {

@@ -82,7 +82,7 @@ export default function DataGridPage() {
   const [page, setPage] = useState(1);
   const [rpp, setRpp] = useState(12);
   const [selected, setSelected] = useState<Set<string>>(new Set());
-  const debounce = useRef<ReturnType<typeof setTimeout>>(null);
+  const debounce = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const filtered = useMemo(() => INVOICE_DATA.filter(r => {
     if (filters.id && !r.id.toLowerCase().includes(filters.id.toLowerCase())) return false;
@@ -103,12 +103,12 @@ export default function DataGridPage() {
   }), [filters]);
 
   const sorted = useMemo(() => [...filtered].sort((a, b) => {
-    let va: string | number = a[sortCol as keyof Invoice] as string | number;
-    let vb: string | number = b[sortCol as keyof Invoice] as string | number;
-    if (va instanceof Date) va = (va as Date).getTime();
-    if (vb instanceof Date) vb = (vb as Date).getTime();
-    if (typeof va === "string") return (va as string).localeCompare(vb as string) * sortDir;
-    return ((va as number) - (vb as number)) * sortDir;
+    const va = a[sortCol as keyof Invoice];
+    const vb = b[sortCol as keyof Invoice];
+    const da = va instanceof Date ? va.getTime() : va;
+    const db = vb instanceof Date ? vb.getTime() : vb;
+    if (typeof da === "string" && typeof db === "string") return da.localeCompare(db) * sortDir;
+    return ((da as number) - (db as number)) * sortDir;
   }), [filtered, sortCol, sortDir]);
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / rpp));

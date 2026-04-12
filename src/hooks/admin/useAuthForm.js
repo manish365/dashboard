@@ -3,11 +3,12 @@ import { useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { loginUser } from "../../services/api/auth";
-import AuthContext from "../../context/admin/AuthContext";
+// import AuthContext from "../../context/admin/AuthContext";
 
 export const useAuthForm = (initialState) => {
   const router = useRouter();
-  const authContext = useContext(AuthContext);
+  // const authContext = useContext(AuthContext);
+  const authContext = null;
 
   const [formData, setFormData] = useState(initialState);
   const [errors, setErrors] = useState({});

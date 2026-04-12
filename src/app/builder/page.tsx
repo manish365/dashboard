@@ -107,6 +107,7 @@ export default function PageBuilder() {
           )}
           {viewMode === 'canvas' && (
             <div className={`relative min-h-full ${previewMode ? '' : 'p-4 rounded-xl border-2 border-dashed border-white/5 bg-white/[0.01]'}`}>
+              {!previewMode && schema.components.map(comp => (
                 <div key={comp.id} onClick={(e) => { e.stopPropagation(); setSelectedId(comp.id); }}
                   className={`group relative mb-4 transition-all ${selectedId === comp.id ? 'ring-2 ring-[var(--neon-green)] rounded-xl' : ''}`}>
                   <div className="pointer-events-none opacity-40 grayscale-[0.5] group-hover:grayscale-0 group-hover:opacity-100 transition-all">

@@ -105,7 +105,7 @@ export default function EmployeeGridPage() {
     const [selected, setSelected] = useState<Set<string>>(new Set());
     const [groupBy, setGroupBy] = useState<"" | "department" | "location" | "status">("");
     const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
-    const debRef = useRef<ReturnType<typeof setTimeout>>();
+    const debRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
     const setF = useCallback((k: keyof EmpFilters, v: string) => {
         clearTimeout(debRef.current);
@@ -246,7 +246,6 @@ export default function EmployeeGridPage() {
         );
     };
 
-    return (
     return (
         <div className="theme-main-bg min-h-screen p-5 sm:p-6 pb-12">
             {/* Page header */}
@@ -418,8 +417,6 @@ export default function EmployeeGridPage() {
                                 Array.from(grouped.entries()).map(([groupKey, rows]) => {
                                     const isOpen = expandedGroups.has(groupKey);
                                     const firstRow = rows[0];
-                                    const ss = STATUS_STYLE[groupKey as keyof typeof STATUS_STYLE];
-                                    const dc = DEPT_COLORS[groupKey as keyof typeof DEPT_COLORS];
                                     const groupCls = getGroupCls(groupKey);
                                     return [
                                         <tr key={`grp-${groupKey}`} onClick={() => toggleGroup(groupKey)} 

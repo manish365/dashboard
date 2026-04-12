@@ -160,12 +160,33 @@ const AppContext = createContext<AppContextValue | undefined>(undefined);
 export function AppProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Persistence: Load theme from localStorage on mount
+  // Persistence: Load theme and session on mount
   React.useEffect(() => {
+    // 1. Theme
     const savedTheme = localStorage.getItem('store-theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {
       dispatch({ type: 'SET_THEME', payload: savedTheme });
     }
+
+    // 2. Kestopur Session
+    import('@/lib/kestopur/api').then(({ getToken }) => {
+      const token = getToken();
+      if (token) {
+        import('@/lib/kestopur/auth').then(({ getProfile }) => {
+          getProfile().then(res => {
+            if (res.success && res.user) {
+              import('@/lib/roles').then(({ assignRole }) => {
+                dispatch({ 
+                  type: 'SET_USER', 
+                  payload: { ...res.user, role: assignRole(res.user.email) } 
+                });
+                dispatch({ type: 'SET_AUTHENTICATED', payload: true });
+              });
+            }
+          });
+        });
+      }
+    });
   }, []);
 
   return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;

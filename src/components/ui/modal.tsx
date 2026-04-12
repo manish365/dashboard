@@ -44,7 +44,6 @@ export default function Modal({
       
       {/* Modal Content */}
       <div 
-        className={`relative w-full ${maxWidth} overflow-hidden rounded-2xl border shadow-2xl animate-in zoom-in-95 duration-200`}
         className={`theme-card-bg relative w-full ${maxWidth} overflow-hidden rounded-2xl border shadow-2xl animate-in zoom-in-95 duration-200`}
       >
         {/* Header */}

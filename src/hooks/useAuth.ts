@@ -3,17 +3,28 @@
 import { useCallback, useMemo } from 'react';
 import { useMsal, useIsAuthenticated } from '@azure/msal-react';
 import { loginRequest, isAuthEnabled } from '@/lib/msal-config';
-import { UserInfo, UserRole, assignRole, MOCK_USER } from '@/lib/roles';
+import { UserInfo, UserRole, assignRole } from '@/lib/roles';
+import { useAppStore } from '@/stores/app-store';
+import { useRouter } from 'next/navigation';
+import { logout as kpLogout } from '@/lib/kestopur/auth';
 
 export function useAuth() {
-  // When auth is disabled, return mock user
+  const { state, dispatch } = useAppStore();
+  const router = useRouter();
+  
+  // When Microsoft Entra ID (MSAL) is disabled, use Kestopur JWT Auth
   if (!isAuthEnabled) {
     return {
-      isAuthenticated: true,
-      user: MOCK_USER,
-      login: () => Promise.resolve(),
-      logout: () => Promise.resolve(),
-      switchRole: null as unknown as (role: UserRole) => void,
+      isAuthenticated: state.isAuthenticated,
+      user: state.user,
+      login: () => router.push('/login'),
+      logout: () => {
+        kpLogout();
+        dispatch({ type: 'SET_USER', payload: null });
+        dispatch({ type: 'SET_AUTHENTICATED', payload: false });
+        router.push('/login');
+      },
+      switchRole: (role: UserRole) => dispatch({ type: 'SET_ROLE', payload: role }),
     };
   }
 
@@ -23,16 +34,17 @@ export function useAuth() {
 function useAuthMsal() {
   const { instance, accounts } = useMsal();
   const isAuthenticated = useIsAuthenticated();
+  const { state, dispatch } = useAppStore();
 
   const user: UserInfo | null = useMemo(() => {
-    if (accounts.length === 0) return null;
+    if (accounts.length === 0) return state.user; // Fallback to store if available
     const account = accounts[0];
     return {
       name: account.name || 'Unknown User',
       email: account.username || '',
       role: assignRole(account.username || ''),
     };
-  }, [accounts]);
+  }, [accounts, state.user]);
 
   const login = useCallback(async () => {
     try {
@@ -47,10 +59,12 @@ function useAuthMsal() {
       await instance.logoutRedirect({
         postLogoutRedirectUri: process.env.NEXT_PUBLIC_AZURE_REDIRECT_URI,
       });
+      dispatch({ type: 'SET_USER', payload: null });
+      dispatch({ type: 'SET_AUTHENTICATED', payload: false });
     } catch (error) {
       console.error('Logout failed:', error);
     }
-  }, [instance]);
+  }, [instance, dispatch]);
 
   return {
     isAuthenticated,
