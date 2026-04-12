@@ -48,8 +48,7 @@ export default function UsersPage() {
     { key: 'name', label: 'Name', render: (u: User) => <div><p className="text-sm font-medium theme-text">{getName(u)}</p><p className="text-xs theme-text-muted">{u.email}</p></div> },
     {
       key: 'type', label: 'Type', render: (u: User) => (
-        <span className="text-xs px-2 py-0.5 rounded-full font-semibold"
-          style={u.user_type === 'admin' ? { background: 'rgba(248,113,113,0.1)', color: '#f87171' } : { background: 'rgba(96,165,250,0.1)', color: '#60a5fa' }}>
+        <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${u.user_type === 'admin' ? 'theme-tag-danger' : 'theme-tag-info'}`}>
           {u.user_type}
         </span>
       ),
@@ -58,7 +57,7 @@ export default function UsersPage() {
       key: 'roles', label: 'Roles', render: (u: User) => (
         <div className="flex flex-wrap gap-1">
           {u.roles?.length ? u.roles.map(r => (
-            <span key={r.id} className="text-xs px-1.5 py-0.5 rounded" style={{ background: 'rgba(52,211,153,0.1)', color: '#34d399' }}>{r.name}</span>
+            <span key={r.id} className="text-xs px-1.5 py-0.5 rounded theme-tag-success">{r.name}</span>
           )) : <span className="text-xs theme-text-subtle">No roles</span>}
         </div>
       ),
@@ -69,8 +68,11 @@ export default function UsersPage() {
       key: 'actions', label: 'Actions', align: 'right' as const, render: (u: User) => (
         <div className="flex items-center justify-end gap-1">
           <button onClick={() => { setSelected(u); setForm({ email: u.email, password: '', user_type: u.user_type }); setShowModal(true); }}
+            suppressHydrationWarning
             className="p-1.5 rounded-lg hover:bg-white/10 transition-colors theme-text-subtle"><Edit className="h-4 w-4" /></button>
-          <button onClick={() => handleDelete(u.id)} className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors theme-text-danger"><Trash2 className="h-4 w-4" /></button>
+          <button onClick={() => handleDelete(u.id)}
+            suppressHydrationWarning
+            className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors theme-text-danger"><Trash2 className="h-4 w-4" /></button>
         </div>
       ),
     },
@@ -100,12 +102,15 @@ export default function UsersPage() {
             <div className="space-y-1">
               <label className="block text-xs font-semibold theme-text-muted">User Type</label>
               <select value={form.user_type} onChange={e => setForm(f => ({ ...f, user_type: e.target.value }))}
+                suppressHydrationWarning
                 className="w-full rounded-lg px-3 py-2.5 text-sm outline-none border theme-select theme-border">
                 {['admin', 'employee', 'customer'].map(t => <option key={t} value={t} className="theme-option">{t}</option>)}
               </select>
             </div>
             <div className="flex gap-3 pt-1">
-              <button onClick={() => setShowModal(false)} className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5 transition-colors theme-btn-cancel">Cancel</button>
+              <button onClick={() => setShowModal(false)}
+                suppressHydrationWarning
+                className="flex-1 rounded-xl py-2.5 text-sm border hover:bg-white/5 transition-colors theme-btn-cancel">Cancel</button>
               <KpBtn onClick={handleSave} loading={saving} className="flex-1 justify-center">Save</KpBtn>
             </div>
           </div>

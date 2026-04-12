@@ -18,10 +18,9 @@ export default function SwiperCarousel({
     <div className="theme-card-bg rounded-2xl border p-6">
       <h3 className="theme-text mb-4 text-base font-bold">{title}</h3>
       {/* scrollbarWidth/msOverflowStyle have no CSS class equivalent — kept as style */}
-      <div className="flex w-full gap-4 overflow-x-auto snap-x snap-mandatory pb-4"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+      <div className="flex w-full gap-4 overflow-x-auto snap-x snap-mandatory pb-4 no-scrollbar">
         {images.map((item: any, i: number) => (
-          <div key={i} className="group relative flex-none w-64 h-40 overflow-hidden rounded-xl bg-slate-800 snap-center transition-transform hover:scale-[1.02]">
+          <div key={i} className="group relative flex-none w-64 h-40 overflow-hidden rounded-xl theme-footer-bg snap-center transition-transform hover:scale-[1.02]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={item.url} alt={item.caption} className="w-full h-full object-cover opacity-80 transition-opacity group-hover:opacity-100" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-4 flex flex-col justify-end">

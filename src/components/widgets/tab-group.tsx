@@ -27,7 +27,7 @@ export default function TabGroup({
           <button key={idx} onClick={() => setActiveTab(idx)}
             className={`flex-1 px-4 py-3 text-sm font-bold transition-all relative ${activeTab === idx ? 'theme-text-neon' : 'theme-text opacity-60 hover:opacity-100 hover:bg-white/5'}`}>
             {tab.label}
-            {activeTab === idx && <div className="theme-neon-bg absolute bottom-0 left-0 w-full h-0.5" />}
+            {activeTab === idx && <div className="theme-neon-bg absolute bottom-0 left-0 w-full h-0.5 shadow-[0_0_8px_rgba(0,233,191,0.5)]" />}
           </button>
         ))}
       </div>

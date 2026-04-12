@@ -19,25 +19,25 @@ export default function KpiCard({
   color = 'blue',
 }: KpiCardProps) {
   const colorMap = {
-    blue: 'text-blue-500 bg-blue-500/10 border-blue-500/20',
-    emerald: 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20',
-    amber: 'text-amber-500 bg-amber-500/10 border-amber-500/20',
-    red: 'text-red-500 bg-red-500/10 border-red-500/20',
-    purple: 'text-purple-500 bg-purple-500/10 border-purple-500/20',
+    blue: 'theme-text-info theme-tag-info',
+    emerald: 'theme-text-success theme-tag-success',
+    amber: 'theme-text-warning theme-tag-warning',
+    red: 'theme-text-danger theme-tag-danger',
+    purple: 'theme-text-purple theme-tag-purple',
   };
 
   const TrendIcon = trend > 0 ? TrendingUp : trend < 0 ? TrendingDown : Minus;
 
   return (
     <div 
-      className="group rounded-2xl border p-5 transition-all hover:translate-y-[-2px] hover:shadow-xl theme-card-bg group rounded-2xl border p-5 transition-all hover:translate-y-[-2px] hover:shadow-xl"
+      className="theme-card-bg group rounded-2xl border p-5 transition-all hover:translate-y-[-2px] hover:shadow-xl"
     >
       <div className="flex items-center justify-between">
         <div className={`rounded-lg p-2.5 ${colorMap[color]}`}>
           <TrendIcon className="h-5 w-5" />
         </div>
         {trend !== 0 && (
-          <span className={`text-xs font-bold ${trend > 0 ? 'text-emerald-500' : 'text-red-500'}`}>
+          <span className={`text-xs font-bold ${trend > 0 ? 'theme-text-success' : 'theme-text-danger'}`}>
             {trend > 0 ? '+' : ''}{trend}%
           </span>
         )}

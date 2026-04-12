@@ -1,9 +1,9 @@
 import os
 
 replacements = [
-    ("Croma Incentive", "weboffice"),
-    ("Croma", "Store"),
-    ("croma", "store")
+    ("Store Incentive", "weboffice"),
+    ("Store", "Store"),
+    ("store", "store")
 ]
 
 extensions = [".tsx", ".ts", ".css", ".json", ".md", ".html"]

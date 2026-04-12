@@ -45,12 +45,12 @@ export const TableViewer: React.FC<TableViewerProps> = ({ tableName, tables = []
   );
 
   if (error) return (
-    <div className="rounded-xl bg-red-950/20 border border-red-900/50 p-6 text-red-500">
+    <div className="dg-alert-error p-6">
       <div className="font-bold flex items-center gap-2 uppercase tracking-tight text-sm">
         <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
         Query Execution Failed
       </div>
-      <div className="mt-4 text-xs font-mono bg-black/40 p-4 rounded-xl border border-red-900/20 leading-relaxed">{error}</div>
+      <div className="mt-4 text-xs font-mono bg-black/40 p-4 rounded-xl border border-red-900/20 leading-relaxed theme-text">{error}</div>
     </div>
   );
 
@@ -74,11 +74,11 @@ export const TableViewer: React.FC<TableViewerProps> = ({ tableName, tables = []
               {tables.length > 1 ? tables.join(' + ') : tableName}
             </h2>
             <div className="flex items-center gap-2">
-              <span className="de-neon bg-[#00e9bf]/10 border border-[#00e9bf]/20 px-1.5 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest">
+              <span className="de-neon de-neon-tag px-1.5 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest">
                 {tables.length > 1 ? 'MULTI-TABLE JOIN' : 'READ-ONLY'}
               </span>
               {filters.length > 0 && (
-                <span className="text-[8px] font-black text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-1.5 py-0.5 rounded-md border border-emerald-500/20">
+                <span className="text-[8px] font-black uppercase tracking-widest theme-tag-success px-1.5 py-0.5 rounded-md border">
                   {filters.length} FILTERS ACTIVE
                 </span>
               )}

@@ -1,42 +1,52 @@
 "use client";
 
 import { useState, useMemo, useRef, useCallback } from "react";
+import { Search, X } from "lucide-react";
 import { EMP_DATA, EMP_DEFAULT_FILTERS, type Employee, type EmpFilters } from "./data";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const fmt = (d: Date) => d.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" });
 const fmtSal = (n: number) => `$${Math.round(n / 1000)}k`;
 
-const DEPT_COLORS: Record<string, { bg: string; color: string }> = {
-    Engineering: { bg: "#eff6ff", color: "#1d4ed8" },
-    Design: { bg: "#fdf4ff", color: "#7e22ce" },
-    Marketing: { bg: "#fff7ed", color: "#c2410c" },
-    Sales: { bg: "#f0fdf4", color: "#15803d" },
-    Finance: { bg: "#fefce8", color: "#a16207" },
-    HR: { bg: "#fff1f2", color: "#9f1239" },
-    Operations: { bg: "#f0fdfa", color: "#0f766e" },
-    Legal: { bg: "#fafaf9", color: "#44403c" },
+const STATUS_MAP: Record<string, string> = {
+    Active: 'theme-tag-success theme-border',
+    'On Leave': 'theme-tag-info theme-border',
+    Probation: 'theme-tag-warning theme-border',
+    Contract: 'theme-tag-accent theme-border',
+    Terminated: 'theme-tag-danger theme-border',
 };
-const STATUS_STYLE: Record<string, { bg: string; color: string; border: string; dot: string }> = {
-    Active: { bg: "#ecfdf5", color: "#065f46", border: "#a7f3d0", dot: "#10b981" },
-    "On Leave": { bg: "#eff6ff", color: "#1e40af", border: "#bfdbfe", dot: "#3b82f6" },
-    Probation: { bg: "#fffbeb", color: "#92400e", border: "#fde68a", dot: "#f59e0b" },
-    Contract: { bg: "#f5f3ff", color: "#5b21b6", border: "#ddd6fe", dot: "#8b5cf6" },
-    Terminated: { bg: "#fff1f2", color: "#9f1239", border: "#fecdd3", dot: "#ef4444" },
+
+const PERF_MAP: Record<string, string> = {
+    Exceeds: 'theme-tag-success',
+    Meets: 'theme-tag-info',
+    Below: 'theme-tag-danger',
+    'N/A': 'theme-tag-subtle',
 };
-const PERF_STYLE: Record<string, { bg: string; color: string }> = {
-    Exceeds: { bg: "#ecfdf5", color: "#065f46" },
-    Meets: { bg: "#eff6ff", color: "#1e40af" },
-    Below: { bg: "#fff1f2", color: "#9f1239" },
-    "N/A": { bg: "#f9fafb", color: "#6b7280" },
+
+const DEPT_MAP: Record<string, string> = {
+    Engineering: 'theme-tag-info',
+    Design: 'theme-tag-accent',
+    Marketing: 'theme-tag-orange',
+    Sales: 'theme-tag-success',
+    Finance: 'theme-tag-warning',
+    HR: 'theme-tag-danger',
+    Operations: 'theme-tag-teal',
+    Legal: 'theme-tag-subtle',
+};
+
+const getGroupCls = (key: string) => {
+    if (STATUS_MAP[key]) return { text: 'theme-text-neon', border: 'theme-border-brand' };
+    if (DEPT_MAP[key])   return { text: 'theme-text-info', border: 'theme-border-info' };
+    return { text: 'theme-text', border: 'theme-border' };
 };
 
 function Sparkline({ vals }: { vals: number[] }) {
     const max = Math.max(...vals);
     return (
-        <div style={{ display: "flex", alignItems: "flex-end", gap: 2, height: 22 }}>
+        <div className="flex items-end gap-0.5 h-5.5">
             {vals.map((v, i) => (
-                <div key={i} style={{ width: 4, height: Math.round((v / max) * 20) + 2, borderRadius: "2px 2px 0 0", background: "#6366f1", opacity: 0.5 }} />
+                <div key={i} className="w-1 rounded-t theme-tag-info opacity-50" 
+                     style={{ height: Math.round((v / max) * 20) + 2 }} />
             ))}
         </div>
     );
@@ -44,42 +54,42 @@ function Sparkline({ vals }: { vals: number[] }) {
 
 function Stars({ n }: { n: number }) {
     return (
-        <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
+        <div className="flex items-center gap-0.5">
             {[1, 2, 3, 4, 5].map(i => (
-                <svg key={i} width="10" height="10" viewBox="0 0 24 24" fill={i <= Math.round(n / 2) ? "#f59e0b" : "#e5e7eb"}>
+                <svg key={i} width="10" height="10" viewBox="0 0 24 24" className={i <= Math.round(n / 2) ? 'fill-theme-neon' : 'fill-current theme-text-subtle opacity-40'}>
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                 </svg>
             ))}
-            <span style={{ fontSize: ".65rem", color: "#6b7280", marginLeft: 2 }}>{n}/10</span>
+            <span className="text-[10px] theme-text-subtle ml-0.5">{n}/10</span>
         </div>
     );
 }
 
 // ─── CSS constants ─────────────────────────────────────────────────────────────
-const TD: React.CSSProperties = { height: 46, padding: "0 10px", verticalAlign: "middle", borderRight: "1px solid #e2e5eb", borderBottom: "1px solid #e2e5eb", color: "#1e2a45", whiteSpace: "nowrap" };
-const BTN: React.CSSProperties = { height: 32, padding: "0 12px", display: "inline-flex", alignItems: "center", gap: 5, borderRadius: 6, fontSize: ".775rem", fontWeight: 500, fontFamily: "inherit", cursor: "pointer", border: "1px solid #c8cdde", background: "#fff", color: "#4b5775", transition: "all .15s" };
-const INPUT: React.CSSProperties = { width: "100%", height: 26, border: "1px solid #c8cedf", borderRadius: 4, padding: "0 6px", fontSize: ".72rem", fontFamily: "inherit", outline: "none", background: "#fff", color: "#1e2a45" };
-const SELECT: React.CSSProperties = { ...INPUT, paddingRight: 18, cursor: "pointer", backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%238b93ac' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\")", backgroundRepeat: "no-repeat", backgroundPosition: "right 5px center", appearance: "none" as const };
+const SELECT_CLS = "dg-select !h-6.5 text-[10px]";
+const INPUT_CLS = "dg-input !h-6.5 text-[10px]";
+const TD_CLS = "dg-table-cell !h-11";
+const BTN_CLS = "dg-btn !h-8";
 
 // ─── Header Cell ──────────────────────────────────────────────────────────────
 function ColHeader({ col, label, sort, dir, onSort, filterActive, children, mw = 100 }:
     { col: string; label: string; sort: string; dir: number; onSort: (c: string) => void; filterActive?: boolean; children?: React.ReactNode; mw?: number }) {
     const active = col === sort;
     return (
-        <th style={{ minWidth: mw, padding: 0, position: "relative", borderRight: "1px solid #dde1ec" }}>
-            <div onClick={() => onSort(col)} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 10px", height: 42, cursor: "pointer", userSelect: "none", background: "transparent", gap: 4 }}>
-                <span style={{ fontSize: ".7rem", fontWeight: 700, color: filterActive ? "#6366f1" : "#4b5775", textTransform: "uppercase", letterSpacing: ".04em", flex: 1, whiteSpace: "nowrap" }}>{label}</span>
-                <div style={{ display: "flex", alignItems: "center", gap: 3, flexShrink: 0 }}>
-                    <span style={{ display: "flex", flexDirection: "column", gap: 1, opacity: active ? 1 : 0.3 }}>
-                        <svg width="7" height="7" viewBox="0 0 24 24" fill={active && dir === 1 ? "#2563eb" : "currentColor"}><path d="M12 5l7 7H5z" /></svg>
-                        <svg width="7" height="7" viewBox="0 0 24 24" fill={active && dir === -1 ? "#2563eb" : "currentColor"}><path d="M12 19l7-7H5z" /></svg>
+        <th className="dg-table-header-cell !p-0 relative border-r theme-border" style={{ minWidth: mw }}>
+            <div onClick={() => onSort(col)} className="flex items-center justify-between px-2.5 h-10.5 cursor-pointer select-none gap-1">
+                <span className={`text-[11px] font-bold uppercase tracking-wider truncate transition-colors ${filterActive ? 'theme-text-neon' : 'theme-text-muted'}`}>{label}</span>
+                <div className="flex items-center gap-0.5 shrink-0">
+                    <span className={`flex flex-col gap-0.25 transition-opacity ${active ? 'opacity-100' : 'opacity-30'}`}>
+                        <svg width="7" height="7" viewBox="0 0 24 24" className={active && dir === 1 ? 'fill-theme-neon' : 'fill-current'}><path d="M12 5l7 7H5z" /></svg>
+                        <svg width="7" height="7" viewBox="0 0 24 24" className={active && dir === -1 ? 'fill-theme-neon' : 'fill-current'}><path d="M12 19l7-7H5z" /></svg>
                     </span>
-                    <span style={{ fontSize: 10, color: filterActive ? "#6366f1" : "#9ca3af" }}>▼</span>
-                    <span style={{ fontSize: ".68rem", color: "#c0c4d0" }}>⋮⋮</span>
+                    <span className={`text-[10px] ${filterActive ? 'theme-text-neon' : 'theme-text-subtle'}`}>▼</span>
+                    <span className="text-[11px] theme-text-subtle opacity-40 leading-none">⋮</span>
                 </div>
             </div>
             {children !== undefined && (
-                <div style={{ padding: "3px 6px", background: "#eef1fb", borderTop: "1px solid #dde1ec" }}>{children}</div>
+                <div className="px-1.5 py-1 theme-footer-bg border-t theme-border">{children}</div>
             )}
         </th>
     );
@@ -183,54 +193,52 @@ export default function EmployeeGridPage() {
     // Row renderer
     const renderRow = (r: Employee, ri: number) => {
         const sel = selected.has(r.id);
-        const ss = STATUS_STYLE[r.status] ?? STATUS_STYLE.Active;
-        const ps = PERF_STYLE[r.performance] ?? PERF_STYLE["N/A"];
-        const dc = DEPT_COLORS[r.department] ?? DEPT_COLORS.Engineering;
+        const statusCls = STATUS_MAP[r.status] || 'theme-tag-subtle';
+        const perfCls = PERF_MAP[r.performance] || 'theme-tag-subtle';
+        const deptCls = DEPT_MAP[r.department] || 'theme-tag-subtle';
+        
         return (
             <tr key={r.id} onClick={() => toggleSel(r.id)}
-                style={{ background: sel ? "#e8effe" : ri % 2 ? "#f9fafd" : "#fff", borderLeft: sel ? "3px solid #3b82f6" : "3px solid transparent", cursor: "pointer", transition: "background .1s" }}
-                onMouseEnter={e => { if (!sel) e.currentTarget.style.background = "#eff3ff"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = sel ? "#e8effe" : ri % 2 ? "#f9fafd" : "#fff"; }}
-            >
-                <td style={{ ...TD, width: 44, padding: 0 }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 46 }}>
-                        <input type="checkbox" checked={sel} onChange={() => toggleSel(r.id)} onClick={e => e.stopPropagation()} style={{ width: 14, height: 14, accentColor: "#2563eb", cursor: "pointer" }} />
+                className={`dg-table-row cursor-pointer transition-colors border-l-3 ${sel ? 'bg-blue-500/10 border-blue-500' : 'theme-border-transparent hover:theme-table-header'}`}>
+                <td className={`${TD_CLS} !w-11 !p-0`}>
+                    <div className="flex items-center justify-center h-full">
+                        <input type="checkbox" checked={sel} onChange={() => toggleSel(r.id)} onClick={e => e.stopPropagation()} className="w-3.5 h-3.5 accent-blue-600 cursor-pointer" />
                     </div>
                 </td>
-                <td style={TD}><span style={{ fontFamily: "monospace", fontSize: ".74rem", color: "#2563eb", fontWeight: 700 }}>{r.id}</span></td>
-                <td style={TD}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
-                        <div style={{ width: 30, height: 30, borderRadius: "50%", background: r.avatarColor, fontSize: ".68rem", fontWeight: 800, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{r.initials}</div>
-                        <div>
-                            <div style={{ fontWeight: 600, fontSize: ".825rem" }}>{r.firstName} {r.lastName}</div>
-                            <div style={{ fontSize: ".68rem", color: "#8b93ac" }}>{r.email}</div>
+                <td className={TD_CLS}><span className="theme-mono text-[11px] theme-text-neon font-bold">{r.id}</span></td>
+                <td className={TD_CLS}>
+                    <div className="flex items-center gap-2.5">
+                        <div className="w-7.5 h-7.5 rounded-full text-[10px] font-black theme-text-on-neon flex items-center justify-center shrink-0 shadow-sm" style={{ background: r.avatarColor }}>{r.initials}</div>
+                        <div className="truncate">
+                            <div className="font-semibold text-xs theme-text truncate">{r.firstName} {r.lastName}</div>
+                            <div className="text-[10px] theme-text-muted truncate">{r.email}</div>
                         </div>
                     </div>
                 </td>
-                <td style={TD}>
-                    <span style={{ ...dc, fontSize: ".72rem", fontWeight: 700, padding: "2px 8px", borderRadius: 4, display: "inline-block" }}>{r.department}</span>
+                <td className={TD_CLS}>
+                    <span className={`${deptCls} text-[11px] font-bold px-2 py-0.5 rounded`}>{r.department}</span>
                 </td>
-                <td style={TD}><span style={{ fontSize: ".8rem", color: "#374151" }}>{r.role}</span></td>
-                <td style={TD}><span style={{ fontSize: ".78rem", color: "#4b5775" }}>📍 {r.location}</span></td>
-                <td style={TD}><span style={{ fontWeight: 700, color: "#1e2a45" }}>{fmtSal(r.salary)}</span></td>
-                <td style={{ ...TD }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <span style={{ color: "#4b5775", fontSize: ".775rem", fontWeight: 500 }}>{r.projects}</span>
+                <td className={TD_CLS}><span className="text-xs theme-text">{r.role}</span></td>
+                <td className={TD_CLS}><span className="text-xs theme-text-muted">📍 {r.location}</span></td>
+                <td className={TD_CLS}><span className="font-bold theme-text">{fmtSal(r.salary)}</span></td>
+                <td className={TD_CLS}>
+                    <div className="flex items-center gap-1.5">
+                        <span className="theme-text-muted text-[11px] font-medium">{r.projects}</span>
                         <Sparkline vals={r.spark} />
                     </div>
                 </td>
-                <td style={TD}><span style={{ fontSize: ".775rem", color: "#4b5775" }}>{fmt(r.startDate)}</span></td>
-                <td style={TD}>
-                    <span style={{ ...ps, fontSize: ".7rem", fontWeight: 700, padding: "2px 10px", borderRadius: 99, display: "inline-block" }}>{r.performance}</span>
+                <td className={TD_CLS}><span className="text-xs theme-text-muted">{fmt(r.startDate)}</span></td>
+                <td className={TD_CLS}>
+                    <span className={`${perfCls} text-[11px] font-bold px-2 py-0.5 rounded-full`}>{r.performance}</span>
                 </td>
-                <td style={TD}><Stars n={r.satisfaction} /></td>
-                <td style={{ ...TD }}>
-                    <span style={{ marginRight: 4, fontSize: ".68rem", color: "#6b7280" }}>Mgr:</span>
-                    <span style={{ fontSize: ".775rem", fontWeight: 500 }}>{r.manager}</span>
+                <td className={TD_CLS}><Stars n={r.satisfaction} /></td>
+                <td className={TD_CLS}>
+                    <span className="text-[10px] theme-text-subtle mr-1">Mgr:</span>
+                    <span className="text-xs font-medium theme-text">{r.manager}</span>
                 </td>
-                <td style={{ ...TD, borderRight: "none" }}>
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 10px", borderRadius: 99, fontSize: ".7rem", fontWeight: 600, background: ss.bg, color: ss.color, border: `1px solid ${ss.border}` }}>
-                        <span style={{ width: 6, height: 6, borderRadius: "50%", background: ss.dot, display: "inline-block" }} />
+                <td className={`${TD_CLS} border-r-0`}>
+                    <span className={`dg-status-pill ${statusCls} !py-0.5`}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />
                         {r.status}
                     </span>
                 </td>
@@ -239,164 +247,162 @@ export default function EmployeeGridPage() {
     };
 
     return (
-        <div style={{ fontFamily: "'Inter',system-ui,sans-serif", padding: "24px 20px 48px", background: "#f0f2f8", minHeight: "100vh" }}>
+    return (
+        <div className="theme-main-bg min-h-screen p-5 sm:p-6 pb-12">
             {/* Page header */}
-            <div style={{ maxWidth: 1500, margin: "0 auto 18px", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+            <div className="max-w-[1500px] mx-auto mb-4.5 flex justify-between items-end flex-wrap gap-2">
                 <div>
-                    <h1 style={{ fontSize: "1.2rem", fontWeight: 700, color: "#1e2a45", display: "flex", alignItems: "center", gap: 8 }}>
+                    <h1 className="theme-text text-xl font-bold flex items-center gap-2">
                         Employee Directory
-                        <span style={{ fontSize: ".68rem", padding: "3px 8px", borderRadius: 99, background: "#fdf4ff", color: "#7e22ce", border: "1px solid #e9d5ff", fontWeight: 700 }}>HR Enterprise</span>
+                        <span className="text-[10px] theme-tag-purple px-2 py-0.5 rounded-full font-bold">HR Enterprise</span>
                     </h1>
-                    <p style={{ fontSize: ".78rem", color: "#8b93ac", marginTop: 2 }}>
+                    <p className="theme-text-muted text-xs mt-0.5">
                         2,400 employees · Multi-row grid · AG Grid style · Live filtering · Grouping
                     </p>
                 </div>
-                <div style={{ display: "flex", gap: 8, alignItems: "center", fontSize: ".775rem" }}>
-                    <span style={{ fontWeight: 600, color: "#4b5775" }}>{selected.size} selected</span>
-                    <span style={{ color: "#dde1ec" }}>|</span>
-                    <span style={{ color: "#8b93ac" }}>Showing <strong style={{ color: "#1e2a45" }}>{filtered.length.toLocaleString()}</strong> of <strong style={{ color: "#1e2a45" }}>2,400</strong></span>
+                <div className="flex gap-2 items-center text-[11px] font-medium">
+                    <span className="theme-text-muted"><strong className="theme-text">{selected.size}</strong> selected</span>
+                    <span className="theme-text-subtle opacity-30">|</span>
+                    <span className="theme-text-muted">Showing <strong className="theme-text">{filtered.length.toLocaleString()}</strong> of <strong className="theme-text">2,400</strong></span>
                 </div>
             </div>
 
-            <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 1px 4px rgba(0,0,0,.07),0 4px 16px rgba(0,0,0,.05)", border: "1px solid #dde1ec", overflow: "hidden", maxWidth: 1500, margin: "0 auto" }}>
+            <div className="dg-card max-w-[1500px] mx-auto shadow-xl">
 
                 {/* Toolbar */}
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", borderBottom: "1px solid #dde1ec", gap: 10, flexWrap: "wrap" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                        <span style={{ fontSize: ".9375rem", fontWeight: 700, color: "#1e2a45", display: "flex", alignItems: "center", gap: 8 }}>
+                <div className="dg-toolbar theme-footer-bg">
+                    <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-[14px] font-bold theme-text flex items-center gap-2">
                             Employees
-                            <span style={{ fontSize: ".7rem", background: "#eff4ff", color: "#2563eb", border: "1px solid #c7d7fd", padding: "2px 8px", borderRadius: 99, fontWeight: 700 }}>{filtered.length.toLocaleString()} records</span>
+                            <span className="dg-badge theme-tag-brand text-[10px] font-bold">{filtered.length.toLocaleString()} records</span>
                         </span>
-                        <div style={{ width: 1, height: 20, background: "#dde1ec" }} />
+                        <div className="w-[1px] h-5 theme-border border-r mx-1" />
                         {/* Global search */}
-                        <div style={{ position: "relative" }}>
-                            <svg style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", width: 13, height: 13, color: "#8b93ac", pointerEvents: "none" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
-                            </svg>
+                        <div className="relative">
+                            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 theme-text-subtle pointer-events-none" />
                             <input
-                                style={{ ...INPUT, width: 220, paddingLeft: 28, height: 32, borderRadius: 6 }}
+                                className={`${INPUT_CLS} !pl-7 !h-8 !w-55 !rounded-lg`}
                                 placeholder="Search name, ID, role…"
                                 defaultValue={filters.search}
                                 onChange={e => setF("search", e.target.value)}
                             />
                         </div>
-                        <button style={{ ...BTN, ...(hasFilters ? { background: "#f0f0ff", borderColor: "#a5b4fc", color: "#6366f1" } : {}) }} onClick={clearAll}>✕ Clear Filters</button>
+                        <button className={`${BTN_CLS} ${hasFilters ? 'theme-tag-info' : 'theme-footer-bg'}`} onClick={clearAll}>✕ Clear Filters</button>
                         {/* Group By */}
-                        <select style={{ ...BTN, padding: "0 24px 0 10px", backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%238b93ac' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\")", backgroundRepeat: "no-repeat", backgroundPosition: "right 8px center", appearance: "none", cursor: "pointer" }}
+                        <select className={`${BTN_CLS} !pr-6 !bg-right cursor-pointer dg-select`}
                             value={groupBy} onChange={e => { setGroupBy(e.target.value as "" | "department" | "location" | "status"); setExpandedGroups(new Set()); }}>
-                            <option value="">⊞ No Grouping</option>
-                            <option value="department">Group by Department</option>
-                            <option value="location">Group by Location</option>
-                            <option value="status">Group by Status</option>
+                            <option value="" className="theme-option">⊞ No Grouping</option>
+                            <option value="department" className="theme-option">Group by Department</option>
+                            <option value="location" className="theme-option">Group by Location</option>
+                            <option value="status" className="theme-option">Group by Status</option>
                         </select>
                     </div>
-                    <div style={{ display: "flex", gap: 6 }}>
-                        <button style={BTN}>↓ Export CSV</button>
-                        <button style={BTN}>📄 Export Excel</button>
-                        <button style={{ ...BTN, background: "#2563eb", color: "#fff", borderColor: "#2563eb" }}>+ Add Employee</button>
+                    <div className="flex gap-1.5">
+                        <button className={BTN_CLS}>↓ CSV</button>
+                        <button className={BTN_CLS}>📄 Excel</button>
+                        <button className={`${BTN_CLS} theme-btn-neon shadow-none !border-none`}>+ Add Employee</button>
                     </div>
                 </div>
 
                 {/* Active filter chips */}
                 {hasFilters && (
-                    <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 16px", borderBottom: "1px solid #dde1ec", background: "#fafbff", flexWrap: "wrap" }}>
-                        <span style={{ fontSize: ".7rem", color: "#8b93ac", fontWeight: 500 }}>Filtered by:</span>
-                        {filters.status && <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 8px", borderRadius: 99, fontSize: ".7rem", fontWeight: 600, background: "#f0f0ff", border: "1px solid #c7c7fd", color: "#6366f1" }}>Status: {filters.status} <span onClick={() => setFNow("status", "")} style={{ cursor: "pointer", marginLeft: 3, fontWeight: 700, opacity: .6 }}>×</span></span>}
-                        {filters.department && <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 8px", borderRadius: 99, fontSize: ".7rem", fontWeight: 600, background: "#f0f0ff", border: "1px solid #c7c7fd", color: "#6366f1" }}>Dept: {filters.department} <span onClick={() => setFNow("department", "")} style={{ cursor: "pointer", marginLeft: 3, fontWeight: 700, opacity: .6 }}>×</span></span>}
-                        {filters.location && <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 8px", borderRadius: 99, fontSize: ".7rem", fontWeight: 600, background: "#f0fdf4", border: "1px solid #bbf7d0", color: "#16a34a" }}>📍 {filters.location} <span onClick={() => setFNow("location", "")} style={{ cursor: "pointer", marginLeft: 3, fontWeight: 700, opacity: .6 }}>×</span></span>}
-                        {filters.performance && <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 8px", borderRadius: 99, fontSize: ".7rem", fontWeight: 600, background: "#fff7ed", border: "1px solid #fed7aa", color: "#ea580c" }}>Perf: {filters.performance} <span onClick={() => setFNow("performance", "")} style={{ cursor: "pointer", marginLeft: 3, fontWeight: 700, opacity: .6 }}>×</span></span>}
-                        {(filters.salMin || filters.salMax) && <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 8px", borderRadius: 99, fontSize: ".7rem", fontWeight: 600, background: "#fff7ed", border: "1px solid #fed7aa", color: "#ea580c" }}>${(+filters.salMin || 0) / 1000}k–${(+filters.salMax || 0) / 1000}k <span onClick={() => { setFNow("salMin", ""); setFNow("salMax", ""); }} style={{ cursor: "pointer", marginLeft: 3, fontWeight: 700, opacity: .6 }}>×</span></span>}
-                        {filters.search && <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 8px", borderRadius: 99, fontSize: ".7rem", fontWeight: 600, background: "#f0f0ff", border: "1px solid #c7c7fd", color: "#6366f1" }}>🔍 "{filters.search}" <span onClick={() => setFNow("search", "")} style={{ cursor: "pointer", marginLeft: 3, fontWeight: 700, opacity: .6 }}>×</span></span>}
+                    <div className="dg-filter-bar !bg-white/3">
+                        <span className="text-[11px] theme-text-muted font-bold mr-1">Filtered by:</span>
+                        {filters.status && <span className="dg-badge theme-tag-info">Status: {filters.status} <X onClick={() => setFNow("status", "")} className="w-3 h-3 cursor-pointer ml-1 opacity-60 hover:opacity-100" /></span>}
+                        {filters.department && <span className="dg-badge theme-tag-info">Dept: {filters.department} <X onClick={() => setFNow("department", "")} className="w-3 h-3 cursor-pointer ml-1 opacity-60 hover:opacity-100" /></span>}
+                        {filters.location && <span className="dg-badge theme-tag-teal">📍 {filters.location} <X onClick={() => setFNow("location", "")} className="w-3 h-3 cursor-pointer ml-1 opacity-60 hover:opacity-100" /></span>}
+                        {filters.performance && <span className="dg-badge theme-tag-orange">Perf: {filters.performance} <X onClick={() => setFNow("performance", "")} className="w-3 h-3 cursor-pointer ml-1 opacity-60 hover:opacity-100" /></span>}
+                        {(filters.salMin || filters.salMax) && <span className="dg-badge theme-tag-orange">${(+filters.salMin || 0) / 1000}k–${(+filters.salMax || 0) / 1000}k <X onClick={() => { setFNow("salMin", ""); setFNow("salMax", ""); }} className="w-3 h-3 cursor-pointer ml-1 opacity-60 hover:opacity-100" /></span>}
                     </div>
                 )}
 
                 {/* Aggregation bar */}
-                <div style={{ display: "flex", gap: 12, padding: "7px 16px", borderBottom: "1px solid #dde1ec", background: "linear-gradient(90deg,#f8f9ff,#fff)", flexWrap: "wrap" }}>
+                <div className="dg-stats-bar border-b theme-border !bg-black/5">
                     {[
                         { label: "Avg Salary", val: fmtSal(avgSal) },
-                        { label: "Active Employees", val: activeCount.toLocaleString() },
-                        { label: "Total Projects", val: totalProj.toLocaleString() },
-                        { label: "Avg Satisfaction", val: `${avgSat}/10` },
-                        { label: "Filtered", val: `${filtered.length.toLocaleString()} / 2,400` },
+                        { label: "Active", val: activeCount.toLocaleString() },
+                        { label: "Projects", val: totalProj.toLocaleString() },
+                        { label: "Satisfaction", val: `${avgSat}/10` },
+                        { label: "In View", val: `${filtered.length.toLocaleString()}` },
                     ].map(({ label, val }) => (
-                        <span key={label} style={{ fontSize: ".72rem", color: "#4b5775" }}>
-                            {label}: <strong style={{ color: "#1e2a45" }}>{val}</strong>
+                        <span key={label} className="text-[10px] theme-text-muted font-medium">
+                            {label}: <strong className="theme-text mx-1">{val}</strong>
                         </span>
                     ))}
                 </div>
 
                 {/* Table */}
-                <div style={{ overflowX: "auto" }}>
-                    <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 1300, fontSize: ".8rem" }}>
+                <div className="dg-table-wrapper">
+                    <table className="dg-table !min-w-[1400px]">
                         <thead>
                             {/* Multi-row group headers */}
-                            <tr style={{ background: "linear-gradient(180deg,#e8edf8,#dde3f0)" }}>
-                                <td colSpan={3} style={{ borderRight: "2px solid #c8cdde", height: 26 }} />
-                                <td colSpan={3} style={{ textAlign: "center", fontSize: ".63rem", fontWeight: 700, color: "#4b5775", textTransform: "uppercase", letterSpacing: ".05em", borderRight: "2px solid #c8cdde" }}>Identity & Role</td>
-                                <td colSpan={2} style={{ textAlign: "center", fontSize: ".63rem", fontWeight: 700, color: "#4b5775", textTransform: "uppercase", letterSpacing: ".05em", borderRight: "2px solid #c8cdde" }}>Compensation</td>
-                                <td colSpan={2} style={{ textAlign: "center", fontSize: ".63rem", fontWeight: 700, color: "#4b5775", textTransform: "uppercase", letterSpacing: ".05em", borderRight: "2px solid #c8cdde" }}>Timeline & Perf</td>
-                                <td colSpan={3} style={{ textAlign: "center", fontSize: ".63rem", fontWeight: 700, color: "#4b5775", textTransform: "uppercase", letterSpacing: ".05em" }}>Engagement</td>
+                            <tr className="theme-table-header">
+                                <td colSpan={3} className="border-r theme-border h-6" />
+                                <td colSpan={3} className="text-center text-[9px] font-black theme-text-muted uppercase tracking-widest border-r theme-border">Identity & Role</td>
+                                <td colSpan={2} className="text-center text-[9px] font-black theme-text-muted uppercase tracking-widest border-r theme-border">Compensation</td>
+                                <td colSpan={2} className="text-center text-[9px] font-black theme-text-muted uppercase tracking-widest border-r theme-border">Timeline & Perf</td>
+                                <td colSpan={3} className="text-center text-[9px] font-black theme-text-muted uppercase tracking-widest">Engagement</td>
                             </tr>
-                            <tr style={{ background: "#f4f6fb", borderBottom: "2px solid #c8cdde" }}>
+                            <tr className="dg-table-header-cell border-b-2 theme-border">
                                 {/* Checkbox */}
-                                <th style={{ width: 44, padding: 0, borderRight: "1px solid #dde1ec" }}>
-                                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 42 }}>
-                                        <input type="checkbox" checked={allSel} ref={el => { if (el) el.indeterminate = someSel && !allSel; }} onChange={e => toggleAll(e.target.checked)} style={{ width: 14, height: 14, accentColor: "#2563eb", cursor: "pointer" }} />
+                                <th className="dg-table-header-cell !w-11 !p-0 border-r theme-border">
+                                    <div className="flex items-center justify-center h-10.5">
+                                        <input type="checkbox" checked={allSel} ref={el => { if (el) el.indeterminate = someSel && !allSel; }} onChange={e => toggleAll(e.target.checked)} className="w-3.5 h-3.5 accent-blue-600 cursor-pointer" />
                                     </div>
-                                    <div style={{ height: 32, background: "#eef1fb", borderTop: "1px solid #dde1ec" }} />
+                                    <div className="h-8 theme-footer-bg border-t theme-border" />
                                 </th>
                                 <ColHeader col="id" label="Emp ID" sort={sort} dir={dir} onSort={onSort} mw={100} filterActive={false}>
-                                    <input style={INPUT} placeholder="Search…" defaultValue={filters.search} onChange={e => setF("search", e.target.value)} />
+                                    <input className={INPUT_CLS} placeholder="Search…" defaultValue={filters.search} onChange={e => setF("search", e.target.value)} suppressHydrationWarning />
                                 </ColHeader>
                                 <ColHeader col="lastName" label="Name" sort={sort} dir={dir} onSort={onSort} mw={180} filterActive={!!filters.search}>
-                                    <input style={INPUT} placeholder="Contains…" defaultValue={filters.search} onChange={e => setF("search", e.target.value)} />
+                                    <input className={INPUT_CLS} placeholder="Contains…" defaultValue={filters.search} onChange={e => setF("search", e.target.value)} suppressHydrationWarning />
                                 </ColHeader>
                                 <ColHeader col="department" label="Department" sort={sort} dir={dir} onSort={onSort} mw={130} filterActive={!!filters.department}>
-                                    <select style={SELECT} value={filters.department} onChange={e => setFNow("department", e.target.value)}>
-                                        <option value="">All</option>
-                                        {["Engineering", "Design", "Marketing", "Sales", "Finance", "HR", "Operations", "Legal"].map(d => <option key={d} value={d}>{d}</option>)}
+                                    <select className={SELECT_CLS} value={filters.department} onChange={e => setFNow("department", e.target.value)} suppressHydrationWarning>
+                                        <option value="" className="theme-option">All</option>
+                                        {["Engineering", "Design", "Marketing", "Sales", "Finance", "HR", "Operations", "Legal"].map(d => <option key={d} value={d} className="theme-option">{d}</option>)}
                                     </select>
                                 </ColHeader>
                                 <ColHeader col="role" label="Role" sort={sort} dir={dir} onSort={onSort} mw={150}>
-                                    <input style={INPUT} placeholder="Contains…" onChange={e => setF("search", e.target.value)} />
+                                    <input className={INPUT_CLS} placeholder="Contains…" onChange={e => setF("search", e.target.value)} suppressHydrationWarning />
                                 </ColHeader>
                                 <ColHeader col="location" label="Location" sort={sort} dir={dir} onSort={onSort} mw={120} filterActive={!!filters.location}>
-                                    <select style={SELECT} value={filters.location} onChange={e => setFNow("location", e.target.value)}>
-                                        <option value="">All Locations</option>
-                                        {["New York", "London", "Singapore", "Berlin", "Sydney", "Toronto", "Bangalore", "Dubai"].map(l => <option key={l} value={l}>{l}</option>)}
+                                    <select className={SELECT_CLS} value={filters.location} onChange={e => setFNow("location", e.target.value)} suppressHydrationWarning>
+                                        <option value="" className="theme-option">All Locations</option>
+                                        {["New York", "London", "Singapore", "Berlin", "Sydney", "Toronto", "Bangalore", "Dubai"].map(l => <option key={l} value={l} className="theme-option">{l}</option>)}
                                     </select>
                                 </ColHeader>
                                 <ColHeader col="salary" label="Salary" sort={sort} dir={dir} onSort={onSort} mw={110} filterActive={!!(filters.salMin || filters.salMax)}>
-                                    <div style={{ display: "flex", gap: 4 }}>
-                                        <input type="number" style={{ ...INPUT, width: "50%", textAlign: "center" }} placeholder="Min" defaultValue={filters.salMin} onChange={e => setF("salMin", e.target.value)} />
-                                        <input type="number" style={{ ...INPUT, width: "50%", textAlign: "center" }} placeholder="Max" defaultValue={filters.salMax} onChange={e => setF("salMax", e.target.value)} />
+                                    <div className="flex gap-1">
+                                        <input type="number" className={`${INPUT_CLS} !w-1/2 text-center`} placeholder="Min" defaultValue={filters.salMin} onChange={e => setF("salMin", e.target.value)} suppressHydrationWarning />
+                                        <input type="number" className={`${INPUT_CLS} !w-1/2 text-center`} placeholder="Max" defaultValue={filters.salMax} onChange={e => setF("salMax", e.target.value)} suppressHydrationWarning />
                                     </div>
                                 </ColHeader>
                                 <ColHeader col="projects" label="Projects" sort={sort} dir={dir} onSort={onSort} mw={110} filterActive={!!(filters.projMin || filters.projMax)}>
-                                    <div style={{ display: "flex", gap: 4 }}>
-                                        <input type="number" style={{ ...INPUT, width: "50%", textAlign: "center" }} placeholder="≥" defaultValue={filters.projMin} onChange={e => setF("projMin", e.target.value)} />
-                                        <input type="number" style={{ ...INPUT, width: "50%", textAlign: "center" }} placeholder="≤" defaultValue={filters.projMax} onChange={e => setF("projMax", e.target.value)} />
+                                    <div className="flex gap-1">
+                                        <input type="number" className={`${INPUT_CLS} !w-1/2 text-center`} placeholder="≥" defaultValue={filters.projMin} onChange={e => setF("projMin", e.target.value)} suppressHydrationWarning />
+                                        <input type="number" className={`${INPUT_CLS} !w-1/2 text-center`} placeholder="≤" defaultValue={filters.projMax} onChange={e => setF("projMax", e.target.value)} suppressHydrationWarning />
                                     </div>
                                 </ColHeader>
                                 <ColHeader col="startDate" label="Start Date" sort={sort} dir={dir} onSort={onSort} mw={110} filterActive={!!filters.startAfter}>
-                                    <input type="date" style={INPUT} defaultValue={filters.startAfter} onChange={e => setFNow("startAfter", e.target.value)} />
+                                    <input type="date" className={INPUT_CLS} defaultValue={filters.startAfter} onChange={e => setFNow("startAfter", e.target.value)} suppressHydrationWarning />
                                 </ColHeader>
                                 <ColHeader col="performance" label="Performance" sort={sort} dir={dir} onSort={onSort} mw={120} filterActive={!!filters.performance}>
-                                    <select style={SELECT} value={filters.performance} onChange={e => setFNow("performance", e.target.value)}>
-                                        <option value="">All</option>
-                                        {["Exceeds", "Meets", "Below", "N/A"].map(p => <option key={p} value={p}>{p}</option>)}
+                                    <select className={SELECT_CLS} value={filters.performance} onChange={e => setFNow("performance", e.target.value)} suppressHydrationWarning>
+                                        <option value="" className="theme-option">All</option>
+                                        {["Exceeds", "Meets", "Below", "N/A"].map(p => <option key={p} value={p} className="theme-option">{p}</option>)}
                                     </select>
                                 </ColHeader>
                                 <ColHeader col="satisfaction" label="Satisfaction" sort={sort} dir={dir} onSort={onSort} mw={130}>
-                                    <div style={{ height: 26 }} />
+                                    <div className="h-6.5" />
                                 </ColHeader>
                                 <ColHeader col="manager" label="Manager" sort={sort} dir={dir} onSort={onSort} mw={140}>
-                                    <input style={INPUT} placeholder="Search…" onChange={e => setF("search", e.target.value)} />
+                                    <input className={INPUT_CLS} placeholder="Search…" onChange={e => setF("search", e.target.value)} suppressHydrationWarning />
                                 </ColHeader>
                                 <ColHeader col="status" label="Status" sort={sort} dir={dir} onSort={onSort} mw={120} filterActive={!!filters.status}>
-                                    <select style={{ ...SELECT, borderColor: filters.status ? "#6366f1" : "#c8cedf" }} value={filters.status} onChange={e => setFNow("status", e.target.value)}>
-                                        <option value="">All</option>
-                                        {["Active", "On Leave", "Probation", "Contract", "Terminated"].map(s => <option key={s} value={s}>{s}</option>)}
+                                    <select className={`${SELECT_CLS} ${filters.status ? 'border-blue-500' : ''}`} value={filters.status} onChange={e => setFNow("status", e.target.value)} suppressHydrationWarning>
+                                        <option value="" className="theme-option">All</option>
+                                        {["Active", "On Leave", "Probation", "Contract", "Terminated"].map(s => <option key={s} value={s} className="theme-option">{s}</option>)}
                                     </select>
                                 </ColHeader>
                             </tr>
@@ -404,8 +410,8 @@ export default function EmployeeGridPage() {
                         <tbody>
                             {!grouped ? (
                                 pageRows.length === 0 ? (
-                                    <tr><td colSpan={13} style={{ textAlign: "center", padding: "3rem", color: "#8b93ac" }}>
-                                        No employees match the current filters. <button onClick={clearAll} style={{ color: "#2563eb", background: "none", border: "none", cursor: "pointer", fontWeight: 600 }}>Clear filters</button>
+                                    <tr><td colSpan={13} className="text-center py-12 theme-text-muted">
+                                        No employees match the current filters. <button onClick={clearAll} className="theme-text-info font-semibold hover:underline">Clear filters</button>
                                     </td></tr>
                                 ) : pageRows.map((r, i) => renderRow(r, i))
                             ) : (
@@ -414,28 +420,28 @@ export default function EmployeeGridPage() {
                                     const firstRow = rows[0];
                                     const ss = STATUS_STYLE[groupKey as keyof typeof STATUS_STYLE];
                                     const dc = DEPT_COLORS[groupKey as keyof typeof DEPT_COLORS];
-                                    const groupStyle = ss ?? dc ?? { bg: "#f8f9fc", color: "#4b5775", border: "#e2e5eb" };
+                                    const groupCls = getGroupCls(groupKey);
                                     return [
-                                        <tr key={`grp-${groupKey}`} onClick={() => toggleGroup(groupKey)} style={{ background: "#f0f2fa", cursor: "pointer", borderLeft: `3px solid ${groupStyle.color ?? "#6366f1"}` }}>
-                                            <td colSpan={13} style={{ padding: "10px 16px", borderBottom: "1px solid #dde1ec" }}>
-                                                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                                                    <span style={{ fontSize: ".8rem", fontWeight: 700, color: groupStyle.color ?? "#1e2a45" }}>
-                                                        {isOpen ? "▼" : "▶"} {groupBy.charAt(0).toUpperCase() + groupBy.slice(1)}: {groupKey}
+                                        <tr key={`grp-${groupKey}`} onClick={() => toggleGroup(groupKey)} 
+                                            className={`theme-footer-bg cursor-pointer border-l-4 ${groupCls.border}`} >
+                                            <td colSpan={13} className="px-4 py-2.5 border-b theme-border">
+                                                <div className="flex items-center gap-3">
+                                                    <span className="text-xs font-bold theme-text uppercase tracking-wide">
+                                                        {isOpen ? "▼" : "▶"} {groupBy}: <span className={groupCls.text}>{groupKey}</span>
                                                     </span>
-                                                    <span style={{ fontSize: ".72rem", background: "#fff", border: "1px solid #dde1ec", borderRadius: 99, padding: "2px 8px", color: "#4b5775", fontWeight: 600 }}>
+                                                    <span className="text-[10px] theme-footer-bg border theme-border rounded-full px-2 py-0.5 theme-text-muted font-bold">
                                                         {rows.length} employees
                                                     </span>
-                                                    <span style={{ fontSize: ".72rem", color: "#8b93ac" }}>
-                                                        Avg Salary: <strong style={{ color: "#1e2a45" }}>{fmtSal(Math.round(rows.reduce((s, r) => s + r.salary, 0) / rows.length))}</strong>
-                                                        &nbsp;·&nbsp; Avg Projects: <strong style={{ color: "#1e2a45" }}>{(rows.reduce((s, r) => s + r.projects, 0) / rows.length).toFixed(1)}</strong>
-                                                        &nbsp;·&nbsp; Departments: <strong style={{ color: "#1e2a45" }}>{[...new Set(rows.map(r => r.department))].length}</strong>
+                                                    <span className="text-[10px] theme-text-subtle">
+                                                        Avg Salary: <strong className="theme-text">{fmtSal(Math.round(rows.reduce((s, r) => s + r.salary, 0) / rows.length))}</strong>
+                                                        &nbsp;·&nbsp; Projects: <strong className="theme-text">{(rows.reduce((s, r) => s + r.projects, 0) / rows.length).toFixed(1)}</strong>
                                                     </span>
                                                 </div>
                                             </td>
                                         </tr>,
                                         ...(isOpen ? rows.slice(0, 50).map((r, i) => renderRow(r, i)) : []),
                                         ...(isOpen && rows.length > 50 ? [
-                                            <tr key={`grp-more-${groupKey}`}><td colSpan={13} style={{ padding: "8px 16px", color: "#8b93ac", fontSize: ".75rem", background: "#fafbff", borderBottom: "1px solid #dde1ec" }}>
+                                            <tr key={`grp-more-${groupKey}`}><td colSpan={13} className="px-4 py-2 theme-text-subtle text-[0.75rem] theme-footer-bg border-b theme-border">
                                                 + {rows.length - 50} more employees in this group
                                             </td></tr>
                                         ] : []),
@@ -447,33 +453,33 @@ export default function EmployeeGridPage() {
                 </div>
 
                 {/* Footer */}
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", borderTop: "1px solid #dde1ec", background: "#f4f6fb", flexWrap: "wrap", gap: 8 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
-                        <span style={{ fontSize: ".775rem", color: "#4b5775" }}>
+                <div className="flex items-center justify-between px-4 py-2.5 border-t theme-border theme-footer-bg flex-wrap gap-2">
+                    <div className="flex items-center gap-4 flex-wrap">
+                        <span className="text-[11px] theme-text-muted">
                             {!grouped
-                                ? <>Showing <strong style={{ color: "#1e2a45" }}>{sorted.length === 0 ? 0 : (safePg - 1) * rpp + 1}–{Math.min(safePg * rpp, sorted.length)}</strong> of <strong style={{ color: "#1e2a45" }}>{sorted.length.toLocaleString()}</strong> employees</>
-                                : <><strong style={{ color: "#1e2a45" }}>{grouped.size}</strong> groups · <strong style={{ color: "#1e2a45" }}>{sorted.length.toLocaleString()}</strong> employees</>
+                                ? <>Showing <strong className="theme-text">{sorted.length === 0 ? 0 : (safePg - 1) * rpp + 1}–{Math.min(safePg * rpp, sorted.length)}</strong> of <strong className="theme-text">{sorted.length.toLocaleString()}</strong></>
+                                : <><strong className="theme-text">{grouped.size}</strong> groups · <strong className="theme-text">{sorted.length.toLocaleString()}</strong> employees</>
                             }
                         </span>
                         {!grouped && (
-                            <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: ".775rem", color: "#4b5775" }}>
-                                Rows per page:
-                                <select style={{ height: 28, padding: "0 20px 0 8px", border: "1px solid #c8cdde", borderRadius: 5, fontSize: ".765rem", fontFamily: "inherit", appearance: "none", background: "#fff", color: "#1e2a45", outline: "none", cursor: "pointer" }}
+                            <div className="flex items-center gap-1.5 text-[11px] theme-text-muted">
+                                Rows:
+                                <select className="h-7 px-2 border theme-border rounded theme-footer-bg theme-text text-[11px] outline-none cursor-pointer"
                                     value={rpp} onChange={e => { setRpp(+e.target.value); setPage(1); }}>
-                                    {[20, 50, 100, 200].map(n => <option key={n} value={n}>{n}</option>)}
+                                    {[20, 50, 100, 200].map(n => <option key={n} value={n} className="theme-option">{n}</option>)}
                                 </select>
                             </div>
                         )}
                     </div>
-                    {!grouped && (
-                        <div style={{ display: "flex", gap: 3 }}>
-                            <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={safePg <= 1} style={{ width: 28, height: 28, borderRadius: 5, border: "1px solid #c8cdde", background: "#fff", color: "#4b5775", cursor: safePg <= 1 ? "default" : "pointer", opacity: safePg <= 1 ? .35 : 1, fontSize: ".85rem" }}>‹</button>
+                    {!grouped && (totalPages > 1) && (
+                        <div className="flex gap-1">
+                            <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={safePg <= 1} className="w-7 h-7 flex items-center justify-center rounded border theme-border theme-footer-bg theme-text text-sm disabled:opacity-30 hover:bg-white/5 transition-colors">‹</button>
                             {dedPgs.map((p, i) => p === "…" ? (
-                                <span key={i} style={{ width: 28, textAlign: "center", color: "#8b93ac", lineHeight: "28px" }}>…</span>
+                                <span key={i} className="w-7 text-center theme-text-subtle text-xs leading-7">…</span>
                             ) : (
-                                <button key={i} onClick={() => setPage(p as number)} style={{ width: 28, height: 28, borderRadius: 5, border: "1px solid #c8cdde", background: p === safePg ? "#2563eb" : "#fff", color: p === safePg ? "#fff" : "#4b5775", fontWeight: p === safePg ? 700 : 500, fontSize: ".755rem", cursor: "pointer", fontFamily: "inherit" }}>{p}</button>
+                                <button key={i} onClick={() => setPage(p as number)} className={`w-7 h-7 flex items-center justify-center rounded border transition-colors text-[11px] font-bold ${p === safePg ? 'theme-btn-neon shadow-none !border-none' : 'theme-border theme-footer-bg theme-text hover:bg-white/5'}`}>{p}</button>
                             ))}
-                            <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={safePg >= totalPages} style={{ width: 28, height: 28, borderRadius: 5, border: "1px solid #c8cdde", background: "#fff", color: "#4b5775", cursor: safePg >= totalPages ? "default" : "pointer", opacity: safePg >= totalPages ? .35 : 1, fontSize: ".85rem" }}>›</button>
+                            <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={safePg >= totalPages} className="w-7 h-7 flex items-center justify-center rounded border theme-border theme-footer-bg theme-text text-sm disabled:opacity-30 hover:bg-white/5 transition-colors">›</button>
                         </div>
                     )}
                 </div>

@@ -31,15 +31,15 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
       {/* Toolbar */}
       <div className="de-toolbar-bg de-border flex items-center justify-between px-6 py-4 border-b backdrop-blur-sm">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 px-2.5 py-1 bg-indigo-500/10 rounded-md border border-indigo-500/20">
-            <Terminal className="h-3.5 w-3.5 text-indigo-400" />
-            <span className="text-[10px] font-bold text-indigo-300 uppercase tracking-widest">SQL Workbench</span>
+          <div className="flex items-center gap-2 px-2.5 py-1 theme-tag-accent border rounded-md">
+            <Terminal className="h-3.5 w-3.5 theme-text-accent" />
+            <span className="text-[10px] font-bold theme-text-accent uppercase tracking-widest">SQL Workbench</span>
           </div>
           <div className="de-border h-4 w-px border-l" />
-          <div className="flex gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
-            <div className="w-2.5 h-2.5 rounded-full bg-amber-500/40" />
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/40" />
+          <div className="flex gap-1.5 opacity-50">
+            <div className="w-2 h-2 rounded-full theme-tag-danger border" />
+            <div className="w-2 h-2 rounded-full theme-tag-warning border" />
+            <div className="w-2 h-2 rounded-full theme-tag-success border" />
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -47,7 +47,7 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
             <Save className="h-4 w-4" />
             Save Snippet
           </button>
-          <button onClick={() => onExecute(sql)} disabled={loading || !sql.trim()} className="flex items-center gap-2.5 bg-indigo-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-indigo-500 active:scale-95 transition-all disabled:opacity-50 shadow-lg shadow-indigo-600/20">
+          <button onClick={() => onExecute(sql)} disabled={loading || !sql.trim()} className="theme-btn-accent flex items-center gap-2.5 px-6 py-2 rounded-xl font-bold active:scale-95 transition-all disabled:opacity-50">
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4 fill-current" />}
             Run Query
           </button>
@@ -77,7 +77,7 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
       {/* Footer */}
       <div className="de-toolbar-bg de-border de-text-muted flex items-center justify-between px-6 py-3 border-t">
         <div className="flex items-center gap-2">
-          <AlertCircle className="h-3.5 w-3.5 text-amber-500/80" />
+          <AlertCircle className="h-3.5 w-3.5 theme-text-warning" />
           <span className="text-[10px] font-medium tracking-tight uppercase">READ-ONLY SESSION • AUTO-ENFORCED LIMIT 10,000</span>
         </div>
         <div className="flex items-center gap-4 text-[10px] font-mono">
@@ -101,12 +101,12 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
                   type="text" autoFocus value={queryName}
                   onChange={(e) => setQueryName(e.target.value)}
                   placeholder="e.g. Monthly Revenue Report"
-                  className="de-input w-full rounded-xl px-4 py-2.5 border focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                  className="de-input w-full rounded-xl px-4 py-2.5 border focus:ring-1 focus:ring-var(--neon-green) transition-all"
                 />
               </div>
               <div className="flex gap-3 pt-2">
                 <button onClick={() => setShowSaveDialog(false)} className="de-input-bg de-text-muted flex-1 px-4 py-2 rounded-xl font-bold hover:bg-white/5 transition-all">Cancel</button>
-                <button onClick={handleSave} disabled={!queryName.trim()} className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-500 disabled:opacity-50 transition-all shadow-lg shadow-indigo-600/20">Save</button>
+                <button onClick={handleSave} disabled={!queryName.trim()} className="theme-btn-accent flex-1 px-4 py-2 rounded-xl font-bold disabled:opacity-50 transition-all">Save</button>
               </div>
             </div>
           </div>

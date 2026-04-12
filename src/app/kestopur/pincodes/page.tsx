@@ -29,9 +29,9 @@ export default function PincodesPage() {
     { key: 'location', label: 'Location', render: (p: Pincode) => <div><p className="text-sm theme-text">{p.city}</p><p className="text-xs theme-text-subtle">{p.state}</p></div> },
     { key: 'delivery', label: 'Delivery Days', render: (p: Pincode) => <span className="text-sm flex items-center gap-1 theme-text-muted"><Truck className="h-3.5 w-3.5" />{p.deliveryDaysMin}–{p.deliveryDaysMax}d</span> },
     { key: 'charges', label: 'Charges', render: (p: Pincode) => <span className="text-sm theme-text-muted">₹{p.deliveryCharges?.standard || 0}</span> },
-    { key: 'cod', label: 'COD', render: (p: Pincode) => p.isCodAvailable ? <CheckCircle className="h-5 w-5" style={{ color: '#34d399' }} /> : <XCircle className="h-5 w-5 theme-text-subtle" /> },
+    { key: 'cod', label: 'COD', render: (p: Pincode) => p.isCodAvailable ? <CheckCircle className="h-5 w-5 theme-text-success" /> : <XCircle className="h-5 w-5 theme-text-subtle" /> },
     { key: 'status', label: 'Status', render: (p: Pincode) => <KpBadge label={p.isActive ? 'Active' : 'Inactive'} variant={p.isActive ? 'active' : 'inactive'} /> },
-    { key: 'actions', label: 'Actions', align: 'right' as const, render: (p: Pincode) => <div className="flex items-center justify-end gap-1"><button onClick={() => { setSelected(p); setForm({ pincode: p.pincode, city: p.city, state: p.state }); setShowModal(true); }} className="p-1.5 rounded-lg hover:bg-white/10 theme-text-subtle"><Edit className="h-4 w-4" /></button><button onClick={() => handleDelete(p.pincodeId)} className="p-1.5 rounded-lg hover:bg-red-500/10 theme-text-danger"><Trash2 className="h-4 w-4" /></button></div> },
+    { key: 'actions', label: 'Actions', align: 'right' as const, render: (p: Pincode) => <div className="flex items-center justify-end gap-1"><button onClick={() => { setSelected(p); setForm({ pincode: p.pincode, city: p.city, state: p.state }); setShowModal(true); }} className="p-1.5 rounded-lg hover:bg-white/10 theme-text-subtle"><Edit className="h-4 w-4" /></button><button onClick={() => handleDelete(p.pincodeId)} className="p-1.5 rounded-lg hover:bg-white/10 theme-text-danger"><Trash2 className="h-4 w-4" /></button></div> },
   ];
 
   return (

@@ -22,8 +22,11 @@ const DEMO_STATS = {
 };
 
 // Dynamic per-type colors — cannot be CSS classes
-const TYPE_COLORS: Record<string, string> = {
-  yield: 'var(--neon-green)', disease: '#f87171', fertilizer: '#fbbf24',
+// Semantic type mapping
+const TYPE_CLASSES: Record<string, { tag: string; bg: string; text: string }> = {
+  yield: { tag: 'theme-tag-brand', bg: 'theme-neon-bg', text: 'theme-text-brand' },
+  disease: { tag: 'theme-tag-danger', bg: 'theme-bg-danger', text: 'theme-text-danger' },
+  fertilizer: { tag: 'theme-tag-warning', bg: 'theme-bg-warning', text: 'theme-text-warning' },
 };
 
 export default function AgroPilotDashboard() {
@@ -36,11 +39,22 @@ export default function AgroPilotDashboard() {
   }, []);
 
   const summaryCards = [
-    { label: 'Predictions', value: stats.total_predictions,                    icon: TrendingUp,   color: 'var(--neon-green)' },
-    { label: 'Chats',       value: stats.total_chats,                          icon: MessageSquare,color: '#60a5fa' },
-    { label: 'Accuracy',    value: `${Math.round(stats.accuracy_rate * 100)}%`,icon: Leaf,         color: '#fbbf24' },
-    { label: 'Crops',       value: stats.crops_analyzed.length,                icon: Bug,          color: '#c084fc' },
+    { label: 'Predictions', value: stats.total_predictions,                    icon: TrendingUp,   type: 'yield' },
+    { label: 'Chats',       value: stats.total_chats,                          icon: MessageSquare,type: 'info' },
+    { label: 'Accuracy',    value: `${Math.round(stats.accuracy_rate * 100)}%`,icon: Leaf,         type: 'fertilizer' },
+    { label: 'Crops',       value: stats.crops_analyzed.length,                icon: Bug,          type: 'purple' },
   ];
+
+  const getCls = (t: string) => {
+    const map: Record<string, { tag: string; text: string }> = {
+      yield: { tag: 'theme-tag-brand', text: 'theme-text-brand' },
+      info: { tag: 'theme-tag-info', text: 'theme-text-info' },
+      fertilizer: { tag: 'theme-tag-warning', text: 'theme-text-warning' },
+      purple: { tag: 'theme-tag-purple', text: 'theme-text-purple' },
+      disease: { tag: 'theme-tag-danger', text: 'theme-text-danger' },
+    };
+    return map[t] || { tag: '', text: '' };
+  };
 
   return (
     <div className="space-y-6">
@@ -56,15 +70,18 @@ export default function AgroPilotDashboard() {
 
       {/* Stats — color is dynamic prop, stays as style */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {summaryCards.map(({ label, value, icon: Icon, color }) => (
-          <div key={label} className="theme-card-bg rounded-xl border p-5 transition-all">
-            <div className="rounded-lg p-2.5 w-fit mb-3" style={{ background: `${color}15` }}>
-              <Icon className="h-5 w-5" style={{ color }} />
+        {summaryCards.map(({ label, value, icon: Icon, type }) => {
+          const cls = getCls(type);
+          return (
+            <div key={label} className="theme-card-bg rounded-xl border p-5 transition-all">
+              <div className={`rounded-lg p-2.5 w-fit mb-3 ${cls.tag}`}>
+                <Icon className={`h-5 w-5 ${cls.text}`} />
+              </div>
+              <p className="theme-text text-2xl font-bold">{value}</p>
+              <p className="theme-text-muted text-xs mt-0.5">{label}</p>
             </div>
-            <p className="theme-text text-2xl font-bold">{value}</p>
-            <p className="theme-text-muted text-xs mt-0.5">{label}</p>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -91,22 +108,24 @@ export default function AgroPilotDashboard() {
             </Link>
           </div>
           <div className="space-y-3">
-            {stats.recent_predictions.slice(0, 5).map((item: any) => (
-              <div key={item.id} className="flex items-center gap-3 rounded-lg p-2 hover:bg-white/5">
-                <div className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: TYPE_COLORS[item.type] || 'var(--circle)' }} />
-                <div className="flex-1 min-w-0">
-                  <p className="theme-text text-sm font-medium truncate">{item.crop}</p>
-                  <p className="theme-text-muted text-xs truncate">{item.result}</p>
+            {stats.recent_predictions.slice(0, 5).map((item: any) => {
+              const cls = TYPE_CLASSES[item.type] || { tag: 'theme-tag-success', bg: 'theme-bg-success', text: 'theme-text-success' };
+              return (
+                <div key={item.id} className="flex items-center gap-3 rounded-lg p-2 hover:bg-white/5">
+                  <div className={`h-2 w-2 rounded-full flex-shrink-0 ${cls.bg}`} />
+                  <div className="flex-1 min-w-0">
+                    <p className="theme-text text-sm font-medium truncate">{item.crop}</p>
+                    <p className="theme-text-muted text-xs truncate">{item.result}</p>
+                  </div>
+                  <div className="text-right">
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full capitalize ${cls.tag}`}>
+                      {item.type}
+                    </span>
+                    <p className="theme-text-subtle text-[10px] mt-1">{item.date}</p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <span className="text-[10px] px-2 py-0.5 rounded-full capitalize"
-                    style={{ background: `${TYPE_COLORS[item.type] || 'var(--circle)'}20`, color: TYPE_COLORS[item.type] || 'var(--circle)' }}>
-                    {item.type}
-                  </span>
-                  <p className="theme-text-subtle text-[10px] mt-1">{item.date}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -114,20 +133,23 @@ export default function AgroPilotDashboard() {
       {/* Quick Actions — color is dynamic prop, stays as style */}
       <div className="grid gap-4 sm:grid-cols-3">
         {[
-          { href: '/agropilot/analysis?tab=disease', title: 'Detect Disease',  desc: 'Upload crop photo for AI diagnosis',    icon: Bug,          color: '#f87171' },
-          { href: '/agropilot/analysis?tab=yield',   title: 'Predict Yield',   desc: 'Enter soil data for yield forecast',   icon: TrendingUp,   color: 'var(--neon-green)' },
-          { href: '/agropilot/chat',                 title: 'Ask AgroPilot',   desc: 'Chat with your AI farming advisor',    icon: MessageSquare,color: '#60a5fa' },
-        ].map(({ href, title, desc, icon: Icon, color }) => (
-          <Link key={href} href={href}>
-            <div className="theme-card-bg rounded-xl border p-5 transition-all hover:border-opacity-50 cursor-pointer">
-              <div className="rounded-lg p-2.5 w-fit mb-3" style={{ background: `${color}15` }}>
-                <Icon className="h-5 w-5" style={{ color }} />
+          { href: '/agropilot/analysis?tab=disease', title: 'Detect Disease',  desc: 'Upload crop photo for AI diagnosis',    icon: Bug,          type: 'disease' },
+          { href: '/agropilot/analysis?tab=yield',   title: 'Predict Yield',   desc: 'Enter soil data for yield forecast',   icon: TrendingUp,   type: 'yield' },
+          { href: '/agropilot/chat',                 title: 'Ask AgroPilot',   desc: 'Chat with your AI farming advisor',    icon: MessageSquare,type: 'info' },
+        ].map(({ href, title, desc, icon: Icon, type }) => {
+          const cls = getCls(type);
+          return (
+            <Link key={href} href={href}>
+              <div className="theme-card-bg rounded-xl border p-5 transition-all hover:border-opacity-50 cursor-pointer">
+                <div className={`rounded-lg p-2.5 w-fit mb-3 ${cls.tag}`}>
+                  <Icon className={`h-5 w-5 ${cls.text}`} />
+                </div>
+                <h3 className="theme-text font-semibold text-sm">{title}</h3>
+                <p className="theme-text-muted text-xs mt-1">{desc}</p>
               </div>
-              <h3 className="theme-text font-semibold text-sm">{title}</h3>
-              <p className="theme-text-muted text-xs mt-1">{desc}</p>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

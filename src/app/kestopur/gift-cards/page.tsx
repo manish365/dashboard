@@ -18,7 +18,7 @@ export default function GiftCardsPage() {
   const filtered = items.filter(g => g.giftCardCode?.toLowerCase().includes(search.toLowerCase()) || g.customerId?.toLowerCase().includes(search.toLowerCase()));
 
   const cols = [
-    { key: 'code', label: 'Code', render: (g: GiftCard) => <div className="flex items-center gap-2"><Gift className="h-4 w-4" style={{ color: '#f97316' }} /><span className="text-sm font-mono font-medium theme-text">{g.giftCardCode}</span></div> },
+    { key: 'code', label: 'Code', render: (g: GiftCard) => <div className="flex items-center gap-2"><Gift className="h-4 w-4 theme-text-orange" /><span className="text-sm font-mono font-medium theme-text">{g.giftCardCode}</span></div> },
     { key: 'customer', label: 'Customer', render: (g: GiftCard) => <span className="text-sm flex items-center gap-1 theme-text-muted"><User className="h-3.5 w-3.5" />{g.customerId?.slice(0, 12) || '—'}...</span> },
     { key: 'initial', label: 'Initial', render: (g: GiftCard) => <span className="text-sm theme-text-muted">{fmt(g.initialBalance)}</span> },
     { key: 'balance', label: 'Balance', render: (g: GiftCard) => <span className="text-sm font-semibold theme-text-neon">{fmt(g.currentBalance)}</span> },
@@ -31,9 +31,9 @@ export default function GiftCardsPage() {
     <div className="space-y-6">
       <KpPageHeader title="Gift Cards" subtitle="Issue and manage gift cards" action={<KpBtn><Plus className="h-4 w-4" /> Issue Gift Card</KpBtn>} />
       <div className="grid grid-cols-3 gap-4">
-        <KpStatCard label="Total Gift Cards" value={items.length} icon={Gift} color="#f97316" />
-        <KpStatCard label="Active" value={items.filter(g => g.isActive && g.currentBalance > 0).length} icon={Gift} color="#34d399" />
-        <KpStatCard label="Total Value" value={fmt(items.reduce((s, g) => s + (g.currentBalance || 0), 0))} icon={DollarSign} color="#60a5fa" />
+        <KpStatCard label="Total Gift Cards" value={items.length} icon={Gift} variant="orange" />
+        <KpStatCard label="Active" value={items.filter(g => g.isActive && g.currentBalance > 0).length} icon={Gift} variant="success" />
+        <KpStatCard label="Total Value" value={fmt(items.reduce((s, g) => s + (g.currentBalance || 0), 0))} icon={DollarSign} variant="info" />
       </div>
       <KpSearch value={search} onChange={setSearch} placeholder="Search by code or customer ID..." className="max-w-md" />
       <KpCard>

@@ -7,12 +7,12 @@ import { useToast } from '@/providers/toast-context';
 import { KpPageHeader, KpStatCard, KpCard } from '@/components/kestopur/ui';
 
 const QUICK_ACTIONS = [
-  { href: '/kestopur/users',     label: 'Manage Users',   desc: 'View, create, edit, and delete users',    icon: Users,     color: '#818cf8' },
-  { href: '/kestopur/roles',     label: 'Manage Roles',   desc: 'Create roles and assign permissions',     icon: Shield,    color: '#34d399' },
-  { href: '/kestopur/orders',    label: 'View Orders',    desc: 'Track and manage customer orders',        icon: ShoppingCart, color: '#fbbf24' },
-  { href: '/kestopur/kpi-tree',  label: 'KPI Explorer',   desc: 'Explore operational drilldowns',          icon: GitBranch, color: '#60a5fa' },
-  { href: '/kestopur/customers', label: 'B2B Management', desc: 'Manage corporate accounts',               icon: Building2, color: '#a78bfa' },
-  { href: '/kestopur/products',  label: 'Products',       desc: 'Manage your product catalog',             icon: Package,   color: '#f87171' },
+  { href: '/kestopur/users',     label: 'Manage Users',   desc: 'View, create, edit, and delete users',    icon: Users,     tagCls: 'theme-tag-accent',  textCls: 'theme-text-accent' },
+  { href: '/kestopur/roles',     label: 'Manage Roles',   desc: 'Create roles and assign permissions',     icon: Shield,    tagCls: 'theme-tag-success', textCls: 'theme-text-success' },
+  { href: '/kestopur/orders',    label: 'View Orders',    desc: 'Track and manage customer orders',        icon: ShoppingCart, tagCls: 'theme-tag-warning', textCls: 'theme-text-warning' },
+  { href: '/kestopur/kpi-tree',  label: 'KPI Explorer',   desc: 'Explore operational drilldowns',          icon: GitBranch, tagCls: 'theme-tag-info',    textCls: 'theme-text-info' },
+  { href: '/kestopur/customers', label: 'B2B Management', desc: 'Manage corporate accounts',               icon: Building2, tagCls: 'theme-tag-purple',  textCls: 'theme-text-purple' },
+  { href: '/kestopur/products',  label: 'Products',       desc: 'Manage your product catalog',             icon: Package,   tagCls: 'theme-tag-danger',  textCls: 'theme-text-danger' },
 ];
 
 export default function KestopurDashboard() {
@@ -34,10 +34,10 @@ export default function KestopurDashboard() {
       <KpPageHeader title="Kestopur Dashboard" subtitle="Welcome to your e-commerce admin panel" />
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <KpStatCard label="Total Users"    value={stats.totalUsers}    icon={Users}        color="#818cf8" loading={loading} />
-        <KpStatCard label="Total Orders"   value={stats.totalOrders}   icon={ShoppingCart} color="#fbbf24" loading={loading} />
-        <KpStatCard label="Total Products" value={stats.totalProducts} icon={Package}      color="#f87171" loading={loading} />
-        <KpStatCard label="Revenue"        value={`₹${stats.totalRevenue.toLocaleString()}`} icon={DollarSign} color="#34d399" loading={loading} />
+        <KpStatCard label="Total Users"    value={stats.totalUsers}    icon={Users}        variant="accent" loading={loading} />
+        <KpStatCard label="Total Orders"   value={stats.totalOrders}   icon={ShoppingCart} variant="warning" loading={loading} />
+        <KpStatCard label="Total Products" value={stats.totalProducts} icon={Package}      variant="danger" loading={loading} />
+        <KpStatCard label="Revenue"        value={`₹${stats.totalRevenue.toLocaleString()}`} icon={DollarSign} variant="success" loading={loading} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -65,11 +65,10 @@ export default function KestopurDashboard() {
             <span className="theme-text font-semibold text-sm">Quick Actions</span>
           </div>
           <div className="p-4 space-y-2">
-            {QUICK_ACTIONS.map(({ href, label, desc, icon: Icon, color }) => (
+            {QUICK_ACTIONS.map(({ href, label, desc, icon: Icon, tagCls, textCls }) => (
               <Link key={href} href={href} className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group">
-                {/* color is dynamic prop — stays as style */}
-                <div className="rounded-lg p-2 flex-shrink-0" style={{ background: `${color}15` }}>
-                  <Icon className="h-4 w-4" style={{ color }} />
+                <div className={`rounded-lg p-2 flex-shrink-0 ${tagCls}`}>
+                  <Icon className={`h-4 w-4 ${textCls}`} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="theme-text text-sm font-medium">{label}</p>

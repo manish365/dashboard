@@ -127,7 +127,7 @@ export const DataExplorerMain: React.FC<DataExplorerMainProps> = ({ initialConfi
               placeholder="Filter resources..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="de-input w-full pl-8 pr-3 py-1.5 border rounded-lg text-xs focus:ring-1 focus:ring-[#00e9bf] transition-all font-medium"
+              className="de-input w-full pl-8 pr-3 py-1.5 border rounded-lg text-xs focus:ring-1 focus:ring-[var(--neon-green)] transition-all font-medium"
             />
           </div>
         </div>
@@ -176,7 +176,7 @@ export const DataExplorerMain: React.FC<DataExplorerMainProps> = ({ initialConfi
                 {savedQueries.map(q => (
                   <div key={q.id} className="group relative">
                     <button onClick={() => handleLoadQuery(q)} className="de-text-muted de-hover-text w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[10px] font-bold hover:bg-white/5 transition-all text-left">
-                      <div className="h-1.5 w-1.5 rounded-full bg-blue-500/50 shrink-0" />
+                      <div className="h-1.5 w-1.5 rounded-full theme-tag-info shrink-0" />
                       <span className="truncate uppercase tracking-wider">{q.name}</span>
                     </button>
                     <button onClick={(e) => deleteSavedQuery(q.id, e)} className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-transparent group-hover:text-red-500/50 hover:text-red-500 transition-all rounded-lg">
@@ -247,7 +247,7 @@ export const DataExplorerMain: React.FC<DataExplorerMainProps> = ({ initialConfi
                       <h3 className="de-text text-lg font-black tracking-tight uppercase italic">
                         Refinement Layers
                         {selectedTables.length > 1 && (
-                          <span className="de-neon ml-2 text-[10px] bg-[#00e9bf]/10 px-2 py-0.5 rounded-full">Multi-Table Mode</span>
+                          <span className="theme-text-accent ml-2 text-[10px] theme-tag-accent px-2 py-0.5 rounded-full">Multi-Table Mode</span>
                         )}
                       </h3>
                     </div>
@@ -265,7 +265,7 @@ export const DataExplorerMain: React.FC<DataExplorerMainProps> = ({ initialConfi
                           });
                           fetchSavedQueries();
                         }}
-                        className="de-card-bg de-neon de-hover-bg-neon flex items-center gap-2 px-4 py-2 border border-[#00e9bf]/20 rounded-xl text-[10px] font-black transition-all"
+                        className="de-card-bg de-neon de-hover-bg-neon flex items-center gap-2 px-4 py-2 border theme-border rounded-xl text-[10px] font-black transition-all"
                       >
                         <Save className="h-3.5 w-3.5" />
                         Save Insight

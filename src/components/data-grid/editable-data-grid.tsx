@@ -74,7 +74,7 @@ export default function EditableDataGrid({
       flex: 1,
       minWidth: 120,
       // Enhanced styling for cell focus
-      cellStyle: { borderRight: '1px solid rgba(255,255,255,0.05)' },
+      cellClass: 'theme-border-right',
     }),
     [editable]
   );
@@ -293,14 +293,13 @@ export default function EditableDataGrid({
 
         {/* Search */}
         <div className="relative flex-1 min-w-[150px]">
-          <Search className="absolute left-2.5 top-1/2 h-3 w-3 -translate-y-1/2 text-slate-500" />
+          <Search className="absolute left-2.5 top-1/2 h-3 w-3 -translate-y-1/2 theme-text-subtle" />
           <input
             type="text"
             placeholder="Go to..."
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            className="theme-input theme-border w-full rounded-md border py-1 pl-8 pr-3 text-[11px] outline-none transition-colors focus:border-blue-500/50"
-            style={undefined}
+            className="theme-input theme-border w-full rounded-md border py-1 pl-8 pr-3 text-[11px] outline-none transition-colors focus:theme-border-brand"
           />
         </div>
 
@@ -309,7 +308,7 @@ export default function EditableDataGrid({
           {showAddRow && editable && (
             <button
               onClick={handleAddRow}
-              className="flex items-center gap-1 rounded-md bg-blue-600/90 px-2 py-1 text-[10px] font-medium text-white transition-all hover:bg-blue-500"
+              className="flex items-center gap-1 rounded-md theme-tag-info px-2 py-1 text-[10px] font-medium transition-all active:scale-95"
             >
               <Plus className="h-2.5 w-2.5" />
               Row
@@ -321,7 +320,7 @@ export default function EditableDataGrid({
               {showDeleteRow && editable && (
                 <button
                   onClick={handleDeleteRows}
-                  className="flex items-center gap-1 rounded-md bg-red-600/80 px-2 py-1 text-[10px] font-medium text-white hover:bg-red-500"
+                  className="flex items-center gap-1 rounded-md theme-tag-danger px-2 py-1 text-[10px] font-medium transition-all active:scale-95"
                 >
                   <Trash2 className="h-2.5 w-2.5" />
                   Del
@@ -329,8 +328,8 @@ export default function EditableDataGrid({
               )}
               { (isUpdating || saveStatus) && (
                 <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border shadow-lg animate-in fade-in slide-in-from-top-4 duration-300
-                  ${saveStatus?.includes('FAILED') ? 'bg-red-500/20 border-red-500/40 text-red-500' : 
-                    saveStatus?.includes('SUCCESSFULLY') ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-500' : 'bg-blue-500/20 border-blue-500/40 text-blue-500'}`}>
+                  ${saveStatus?.includes('FAILED') ? 'dg-alert-error' : 
+                    saveStatus?.includes('SUCCESSFULLY') ? 'dg-alert-success' : 'dg-alert-info'}`}>
                   {isUpdating ? <Loader2 className="h-4 w-4 animate-spin" /> : <div className="h-2 w-2 rounded-full bg-current animate-pulse" />}
                   <div className="flex flex-col">
                     <span className="text-[10px] font-bold tracking-widest uppercase">{saveStatus}</span>
@@ -342,7 +341,7 @@ export default function EditableDataGrid({
           {showBulkEdit && editable && (
                 <button
                   onClick={() => setShowBulkEditPanel(!showBulkEditPanel)}
-                  className="flex items-center gap-1 rounded-md bg-amber-600/80 px-2 py-1 text-[10px] font-medium text-white hover:bg-amber-500"
+                  className="flex items-center gap-1 rounded-md theme-tag-warning px-2 py-1 text-[10px] font-medium transition-all active:scale-95"
                 >
                   <Edit3 className="h-2.5 w-2.5" />
                   Bulk
@@ -374,8 +373,7 @@ export default function EditableDataGrid({
 
       {/* Bulk edit panel (Conditional) */}
       {showBulkEditPanel && (
-        <div className="mx-1 flex flex-wrap items-center gap-1.5 rounded-md border p-2"
-          style={{ background: 'rgba(217, 119, 6, 0.05)', borderColor: 'rgba(217, 119, 6, 0.2)' }}>
+        <div className="mx-1 flex flex-wrap items-center gap-1.5 rounded-md border p-2 theme-tag-orange theme-border">
           <select
             value={bulkEditField}
             onChange={(e) => setBulkEditField(e.target.value)}
@@ -391,12 +389,12 @@ export default function EditableDataGrid({
             placeholder="Value"
             value={bulkEditValue}
             onChange={(e) => setBulkEditValue(e.target.value)}
-            className="theme-input theme-border rounded border px-2 py-1 text-[10px] outline-none focus:border-blue-500/50"
+            className="theme-input theme-border rounded border px-2 py-1 text-[10px] outline-none focus:theme-border-brand"
           />
           <button
             onClick={handleBulkEdit}
             disabled={!bulkEditField}
-            className="rounded bg-amber-600 px-2 py-1 text-[10px] font-medium text-white disabled:opacity-40"
+            className="rounded theme-tag-warning px-2 py-1 text-[10px] font-medium disabled:opacity-40"
           >
             Apply
           </button>

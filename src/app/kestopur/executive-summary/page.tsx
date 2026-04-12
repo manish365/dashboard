@@ -20,64 +20,77 @@ import { KpCard, KpSkeleton } from '@/components/kestopur/ui';
 
 // ── Components ────────────────────────────────────────────────────────────────
 
-const MetricCard = ({ label, value, trend, icon: Icon, color, delay }: any) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5, delay }}
-    className="relative group overflow-hidden rounded-2xl border p-6 transition-all hover:shadow-2xl hover:shadow-neon-green/5 theme-card-bg"
-  >
-    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-      <Icon size={80} style={{ color }} />
-    </div>
-    
-    <div className="flex items-center justify-between mb-4">
-      <div className="rounded-xl p-2.5" style={{ background: `${color}15` }}>
-        <Icon size={24} style={{ color }} />
+const getColorClasses = (hex: string) => {
+  const map: Record<string, { text: string; tag: string; bg: string }> = {
+    'var(--neon-green)': { text: 'theme-text-brand', tag: 'theme-tag-brand', bg: 'theme-neon-bg' },
+    '#60a5fa': { text: 'theme-text-info', tag: 'theme-tag-info', bg: 'bg-blue-400' },
+    '#fbbf24': { text: 'theme-text-warning', tag: 'theme-tag-warning', bg: 'bg-amber-400' },
+    '#f87171': { text: 'theme-text-danger', tag: 'theme-tag-danger', bg: 'bg-red-400' },
+    '#a78bfa': { text: 'theme-text-purple', tag: 'theme-tag-purple', bg: 'bg-indigo-400' },
+    '#34d399': { text: 'theme-text-success', tag: 'theme-tag-success', bg: 'bg-emerald-400' },
+  };
+  return map[hex] || { text: 'theme-text-subtle', tag: 'theme-tag-subtle', bg: 'theme-footer-bg' };
+};
+
+const MetricCard = ({ label, value, trend, icon: Icon, color, delay }: any) => {
+  const cls = getColorClasses(color);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay }}
+      className="relative group overflow-hidden rounded-2xl border p-6 transition-all hover:shadow-2xl hover:shadow-neon-green/5 theme-card-bg"
+    >
+      <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+        <Icon size={80} className={cls.text} />
       </div>
-      {trend && (
-        <div className={`flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full ${trend > 0 ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
-          {trend > 0 ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
-          {Math.abs(trend)}%
+      
+      <div className="flex items-center justify-between mb-4">
+        <div className={`rounded-xl p-2.5 ${cls.tag}`}>
+          <Icon size={24} className={cls.text} />
         </div>
-      )}
-    </div>
+        {trend && (
+          <div className={`flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full ${trend > 0 ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
+            {trend > 0 ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+            {Math.abs(trend)}%
+          </div>
+        )}
+      </div>
 
-    <h3 className="text-sm font-medium mb-1 theme-text-muted">{label}</h3>
-    <div className="text-3xl font-bold tracking-tight theme-text">{value}</div>
-    
-    <div className="mt-4 h-1 w-full bg-white/5 rounded-full overflow-hidden">
-      <motion.div 
-        initial={{ width: 0 }}
-        animate={{ width: '70%' }}
-        transition={{ duration: 1, delay: delay + 0.3 }}
-        className="h-full rounded-full" 
-        style={{ background: color }} 
-      />
-    </div>
-  </motion.div>
-);
+      <h3 className="text-sm font-medium mb-1 theme-text-muted">{label}</h3>
+      <div className="text-3xl font-bold tracking-tight theme-text">{value}</div>
+      
+      <div className="mt-4 h-1 w-full bg-white/5 rounded-full overflow-hidden">
+        <motion.div 
+          initial={{ width: 0 }}
+          animate={{ width: '70%' }}
+          transition={{ duration: 1, delay: delay + 0.3 }}
+          className={`h-full rounded-full ${cls.bg}`} 
+        />
+      </div>
+    </motion.div>
+  );
+};
 
-const PerformanceBar = ({ label, value, percentage, color, delay }: any) => (
-  <div className="space-y-2">
-    <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider">
-      <span className="theme-text-muted">{label}</span>
-      <span className="theme-text">{value}</span>
+const PerformanceBar = ({ label, value, percentage, color, delay }: any) => {
+  const cls = getColorClasses(color);
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider">
+        <span className="theme-text-muted">{label}</span>
+        <span className="theme-text">{value}</span>
+      </div>
+      <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+        <motion.div 
+          initial={{ width: 0 }}
+          animate={{ width: `${percentage}%` }}
+          transition={{ duration: 1.2, delay, ease: "easeOut" }}
+          className={`h-full rounded-full shadow-[0_0_10px_rgba(0,0,0,0.5)] ${cls.bg}`}
+        />
+      </div>
     </div>
-    <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-      <motion.div 
-        initial={{ width: 0 }}
-        animate={{ width: `${percentage}%` }}
-        transition={{ duration: 1.2, delay, ease: "easeOut" }}
-        className="h-full rounded-full shadow-[0_0_10px_rgba(0,0,0,0.5)]"
-        style={{ 
-          background: `linear-gradient(90deg, ${color}cc, ${color})`,
-          boxShadow: `0 0 15px ${color}40`
-        }}
-      />
-    </div>
-  </div>
-);
+  );
+};
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 
@@ -220,7 +233,7 @@ export default function ExecutiveSummary() {
         >
           <div className="flex items-center gap-3 mb-8">
             <div className="p-2 rounded-xl bg-white/5">
-              <Shield size={20} style={{ color: '#60a5fa' }} />
+              <Shield size={20} className="theme-text-info" />
             </div>
             <h2 className="text-xl font-bold theme-text">Governance Health</h2>
           </div>

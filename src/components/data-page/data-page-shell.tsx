@@ -147,10 +147,10 @@ export default function DataPageShell({
   };
 
   const statusConfig: Record<ApprovalStatus, { icon: React.ElementType; color: string; label: string }> = {
-    Draft: { icon: FileX2, color: 'text-[var(--old-price)] bg-[var(--input-color)] border-[var(--circle)]', label: 'Draft' },
-    Submitted: { icon: Clock, color: 'text-amber-400 bg-amber-500/10 border-amber-500/20', label: 'Submitted' },
-    Approved: { icon: CheckCircle, color: 'text-[var(--neon-green)] bg-[var(--neon-green)]/10 border-[var(--neon-green)]/20', label: 'Approved' },
-    Rejected: { icon: FileX2, color: 'text-red-400 bg-red-500/10 border-red-500/20', label: 'Rejected' },
+    Draft: { icon: FileX2, color: 'theme-tag-subtle', label: 'Draft' },
+    Submitted: { icon: Clock, color: 'theme-tag-warning', label: 'Submitted' },
+    Approved: { icon: CheckCircle, color: 'theme-tag-success', label: 'Approved' },
+    Rejected: { icon: FileX2, color: 'theme-tag-danger', label: 'Rejected' },
   };
 
   const StatusIcon = statusConfig[status].icon;
@@ -228,7 +228,7 @@ export default function DataPageShell({
           )}
           {state.user && canClone(state.user.role) && (
             <button onClick={() => setShowCloneDialog(true)}
-              className="theme-btn-outline flex items-center gap-1 rounded-lg border px-2.5 py-1 text-[11px] font-medium transition-all hover:bg-slate-500/5 active:scale-95">
+              className="theme-btn-outline flex items-center gap-1 rounded-lg border px-2.5 py-1 text-[11px] font-medium transition-all hover:bg-white/10 active:scale-95">
               <Copy className="h-3 w-3" />
               Clone
             </button>
@@ -245,12 +245,12 @@ export default function DataPageShell({
             <button 
               onClick={handleSendToAI}
               disabled={isSendingToAI}
-              className="flex items-center gap-1.5 rounded-lg px-3 py-1 text-[11px] font-semibold transition-all hover:opacity-90 active:scale-95 disabled:opacity-60 bg-indigo-600 text-white shadow-lg shadow-indigo-500/20 mr-1"
+              className="theme-btn-accent flex items-center gap-1.5 rounded-lg px-3 py-1 text-[11px] font-semibold transition-all hover:opacity-90 active:scale-95 disabled:opacity-60 mr-1"
             >
               {isSendingToAI ? (
-                <Loader2 className="h-3 w-3 animate-spin text-white" />
+                <Loader2 className="h-3 w-3 animate-spin theme-text-on-neon" />
               ) : (
-                <BarChart3 className="h-3.5 w-3.5 text-white" />
+                <BarChart3 className="h-3.5 w-3.5 theme-text-on-neon" />
               )}
               {isSendingToAI ? 'Sending...' : 'Send to A&I'}
             </button>
@@ -294,8 +294,8 @@ export default function DataPageShell({
                         onClick={() => setActiveTab(tab.key)}
                         className={`rounded px-3 py-1 text-[10px] font-semibold transition-all ${
                           activeTab === tab.key
-                            ? 'theme-neon-bg theme-text-on-neon shadow-[0_0_10px_rgba(0,233,191,0.3)]'
-                            : 'theme-text-muted hover:text-[var(--neon-green)] hover:bg-slate-500/5'
+                            ? 'theme-neon-bg theme-text-on-neon shadow-lg shadow-neon-green/20'
+                            : 'theme-text-muted hover:text-[var(--neon-green)] hover:bg-white/5'
                         }`}
                       >
                         {tab.label}

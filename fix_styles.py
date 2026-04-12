@@ -1,6 +1,6 @@
 import os
 
-SRC = r'c:\Users\manis\OneDrive\Desktop\poc\croma\src'
+SRC = r'c:\Users\manis\OneDrive\Desktop\poc\store\src'
 
 # Only non-conditional, non-dynamic patterns remaining
 SIMPLE = [
@@ -10,7 +10,7 @@ SIMPLE = [
     # learnpath learner roadmap - gradient (uses CSS var but is a gradient - keep as style, just fix the var part)
     (" style={{ background: 'linear-gradient(90deg, var(--neon-green), transparent)' }}", ' className="theme-neon-gradient"'),
     # permissions page
-    (" style={{ background: 'var(--croma-wall)', color: 'var(--circle)' }}", ' className="theme-card-bg theme-text-subtle"'),
+    (" style={{ background: 'var(--store-wall)', color: 'var(--circle)' }}", ' className="theme-card-bg theme-text-subtle"'),
     # falcon-tree conditional (multi-line) - skip, it's dynamic
     # kpi-tree breadcrumb - conditional, skip
     # submissions

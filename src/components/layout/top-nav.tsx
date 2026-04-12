@@ -35,7 +35,7 @@ export default function TopNav() {
   };
 
   return (
-    <header className="theme-nav-bg sticky top-0 z-40 flex h-16 items-center justify-between border-b px-4 backdrop-blur-xl lg:px-6 shadow-sm">
+    <header className="theme-nav-bg sticky top-0 z-40 flex h-16 items-center justify-between theme-border border-b px-4 backdrop-blur-xl lg:px-6 shadow-sm">
       <div className="flex items-center gap-3">
         <button
           onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}
@@ -63,9 +63,9 @@ export default function TopNav() {
           {!mounted ? (
             <div className="h-4 w-4" />
           ) : state.theme === 'light' ? (
-            <Moon className="h-4 w-4 text-slate-600" />
+            <Moon className="h-4 w-4 theme-text-subtle" />
           ) : (
-            <Sun className="h-4 w-4 text-amber-400" />
+            <Sun className="h-4 w-4 theme-text-warning" />
           )}
         </button>
 
@@ -115,7 +115,7 @@ export default function TopNav() {
                 {isAuthEnabled && (
                   <button
                     onClick={logout}
-                    className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-red-400 transition-colors hover:bg-red-500/10 hover:text-red-300"
+                    className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm theme-text-danger transition-colors hover:bg-white/10"
                   >
                     <LogOut className="h-4 w-4" />
                     Sign Out

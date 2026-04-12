@@ -101,7 +101,7 @@ export default function AgroPilotChat() {
             <div className="theme-footer-bg theme-border rounded-2xl rounded-tl-sm border px-4 py-3">
               <div className="flex gap-1">
                 {[0, 1, 2].map((i) => (
-                  <div key={i} className="theme-neon-bg w-2 h-2 rounded-full animate-bounce" style={{ animationDelay: `${i * 100}ms` }} />
+                  <div key={i} className={`theme-neon-bg w-2 h-2 rounded-full animate-bounce [animation-delay:${i * 150}ms]`} />
                 ))}
               </div>
             </div>

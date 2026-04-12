@@ -52,33 +52,28 @@ function Node({ node, focus, isKpi, onClick }: { node: any; focus: boolean; isKp
   return (
     <motion.div layout initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}
       whileHover={{ y: -3 }} onClick={onClick}
-      className="rounded-2xl border cursor-pointer transition-all p-5"
-      style={{
-        background: focus ? 'var(--neon-green)' : 'var(--foot-color)',
-        borderColor: focus ? 'var(--neon-green)' : 'var(--border-color)',
-        minWidth: focus ? '16rem' : '12rem', maxWidth: focus ? '18rem' : '14rem',
-      }}>
+      className={`rounded-2xl border cursor-pointer transition-all p-5 ${focus ? 'theme-neon-bg theme-border-neon w-[18rem]' : 'theme-nav-bg theme-border w-[14rem]'}`}>
       <div className="flex items-center justify-between mb-3">
-        <div className="rounded-lg p-1.5" style={{ background: focus ? 'rgba(0,0,0,0.15)' : 'rgba(0,233,191,0.1)' }}>
-          <Activity className="h-4 w-4" style={{ color: focus ? '#000' : 'var(--neon-green)' }} />
+        <div className={`rounded-lg p-1.5 ${focus ? 'bg-black/15' : 'theme-tag-brand'}`}>
+          <Activity className={`h-4 w-4 ${focus ? 'text-black' : 'theme-text-brand'}`} />
         </div>
-        <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: focus ? 'rgba(0,0,0,0.5)' : 'var(--circle)' }}>
+        <span className={`text-[9px] font-black uppercase tracking-widest ${focus ? 'text-black/50' : 'theme-text-subtle'}`}>
           {isKpi ? 'KPI' : node.type || 'node'}
         </span>
       </div>
-      <h3 className="font-bold text-sm mb-2" style={{ color: focus ? '#000' : 'var(--text-color)' }}>{node.name}</h3>
+      <h3 className={`font-bold text-sm mb-2 ${focus ? 'text-black' : 'theme-text'}`}>{node.name}</h3>
       {focus && isKpi && (
         <div className="pt-2 border-t border-black/10">
-          <p className="text-xl font-black" style={{ color: '#000' }}>{node.value}</p>
-          <p className="text-xs mt-0.5" style={{ color: 'rgba(0,0,0,0.6)' }}>Target: {node.target} · {node.trend}</p>
+          <p className="text-xl font-black text-black">{node.value}</p>
+          <p className="text-xs mt-0.5 text-black/60">Target: {node.target} · {node.trend}</p>
         </div>
       )}
       {focus && !isKpi && (node as any).kpis?.length > 0 && (
         <div className="pt-2 border-t border-black/10 space-y-1.5">
           {(node as any).kpis.slice(0, 2).map((kid: string) => DATA.kpis[kid] && (
-            <div key={kid} className="rounded-lg p-2" style={{ background: 'rgba(0,0,0,0.1)' }}>
-              <p className="text-[10px]" style={{ color: 'rgba(0,0,0,0.6)' }}>{DATA.kpis[kid].name}</p>
-              <p className="text-sm font-black" style={{ color: '#000' }}>{DATA.kpis[kid].value}</p>
+            <div key={kid} className="rounded-lg p-2 bg-black/10">
+              <p className="text-[10px] text-black/60">{DATA.kpis[kid].name}</p>
+              <p className="text-sm font-black text-black">{DATA.kpis[kid].value}</p>
             </div>
           ))}
         </div>
@@ -117,11 +112,11 @@ export default function FalconTreePage() {
   const cy = size.h / 2;
 
   return (
-    <div className="flex flex-col rounded-xl border overflow-hidden theme-card-bg" style={{ height: 'calc(100vh - 8rem)' }}>
+    <div className="flex flex-col rounded-xl border overflow-hidden theme-card-bg h-screen-offset">
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b flex-shrink-0 theme-border">
         <div className="flex items-center gap-3">
-          <div className="rounded-xl p-2.5" style={{ background: 'rgba(0,233,191,0.1)' }}>
+          <div className="rounded-xl p-2.5 theme-tag-brand">
             <Network className="h-5 w-5 theme-text-neon" />
           </div>
           <div>
@@ -130,6 +125,7 @@ export default function FalconTreePage() {
           </div>
         </div>
         <button onClick={() => setCurrent({ node: DATA.verticals[0], type: 'vertical' })}
+          suppressHydrationWarning
           className="flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold border hover:bg-white/5 transition-colors theme-btn-cancel">
           <RefreshCcw className="h-3.5 w-3.5" /> Reset
         </button>
@@ -193,7 +189,7 @@ export default function FalconTreePage() {
         <p className="text-[10px] font-bold flex items-center gap-2 theme-text-subtle">
           <MousePointer2 className="h-3.5 w-3.5" /> Click any node to drill into context
         </p>
-        <button className="rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-widest theme-btn-neon">
+        <button suppressHydrationWarning className="rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-widest theme-btn-neon">
           Analyze Shared Impact
         </button>
       </div>

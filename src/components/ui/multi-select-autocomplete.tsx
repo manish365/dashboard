@@ -55,12 +55,12 @@ export default function MultiSelectAutocomplete({
       {label && <label className="theme-text text-xs font-semibold opacity-70">{label}</label>}
       <div className="relative">
         <div
-          className="flex min-h-[42px] flex-wrap gap-1.5 rounded-xl border p-2 transition-all focus-within:ring-2 focus-within:ring-blue-500/20 theme-input-bg theme-border"
+          className="flex min-h-[42px] flex-wrap gap-1.5 rounded-xl border p-2 transition-all focus-within:ring-2 focus-within:ring-[var(--hyperlink)]/20 theme-input-bg theme-border"
         >
           {selected.map((opt) => (
             <span
               key={opt}
-              className="flex items-center gap-1 rounded-md bg-blue-500/10 px-2 py-0.5 text-xs font-medium text-blue-500 border border-blue-500/20"
+              className="flex items-center gap-1 rounded-md theme-tag-info px-2 py-0.5 text-xs font-medium theme-text-info border theme-border"
             >
               {opt}
               <button
@@ -68,7 +68,7 @@ export default function MultiSelectAutocomplete({
                   e.stopPropagation();
                   removeOption(opt);
                 }}
-                className="rounded-full hover:bg-blue-500/20"
+                className="rounded-full hover:bg-white/10"
               >
                 <X className="h-3 w-3" />
               </button>
@@ -76,7 +76,7 @@ export default function MultiSelectAutocomplete({
           ))}
           <input
             type="text"
-            className="theme-text flex-1 bg-transparent text-sm outline-none placeholder:text-slate-500"
+            className="theme-text flex-1 bg-transparent text-sm outline-none placeholder:theme-text-subtle"
             placeholder={selected.length === 0 ? placeholder : ''}
             value={query}
             onChange={(e) => {
@@ -100,11 +100,11 @@ export default function MultiSelectAutocomplete({
               filteredOptions.map((opt) => (
                 <div
                   key={opt}
-                  className="flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors hover:bg-blue-500/10 theme-text"
+                  className="flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors hover:bg-white/5 theme-text"
                   onClick={() => toggleOption(opt)}
                 >
                   {opt}
-                  {selected.includes(opt) && <Check className="h-4 w-4 text-blue-500" />}
+                  {selected.includes(opt) && <Check className="h-4 w-4 theme-text-brand" />}
                 </div>
               ))
             )}

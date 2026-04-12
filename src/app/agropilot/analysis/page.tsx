@@ -87,8 +87,7 @@ function DiseaseTab() {
         <div onDragOver={(e) => { e.preventDefault(); setIsDrag(true); }}
           onDragLeave={() => setIsDrag(false)}
           onDrop={(e) => { e.preventDefault(); setIsDrag(false); const f = e.dataTransfer.files[0]; if (f) handleFile(f); }}
-          className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${isDrag ? 'border-[var(--neon-green)] bg-[rgba(0,233,191,0.05)]' : ''}`}
-          style={{ borderColor: isDrag ? 'var(--neon-green)' : 'var(--border-color)' }}
+          className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${isDrag ? 'border-emerald-500 bg-emerald-500/5' : 'theme-border'}`}
           onClick={() => document.getElementById('disease-file-input')?.click()}>
           <input id="disease-file-input" type="file" accept="image/*" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }} />
           {preview ? (
@@ -118,11 +117,11 @@ function DiseaseTab() {
             </button>
           </div>
         </div>
-        {error && <p className="text-sm rounded-lg p-2" style={{ color: '#f87171', background: 'rgba(248,113,113,0.1)' }}>{error}</p>}
+        {error && <p className="text-sm rounded-lg p-2 theme-tag-danger">{error}</p>}
       </div>
 
       <div>
-        {loading && <div className="h-full flex items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" style={{ borderColor: 'var(--neon-green)', borderTopColor: 'transparent' }} /></div>}
+        {loading && <div className="h-full flex items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-t-transparent border-emerald-500" /></div>}
         {result && !loading && (
           <ResultCard>
             <div className="flex items-start justify-between gap-2">
@@ -130,10 +129,10 @@ function DiseaseTab() {
                 <h3 className="font-bold text-lg theme-text">{result.disease_name}</h3>
                 <div className="flex gap-2 mt-1 flex-wrap">
                   <span className="text-xs px-2 py-0.5 rounded-full theme-neon-tag">{Math.round(result.confidence * 100)}% confidence</span>
-                  <span className="text-xs px-2 py-0.5 rounded-full capitalize" style={{ background: 'rgba(251,191,36,0.1)', color: '#fbbf24' }}>{result.severity}</span>
+                  <span className="text-xs px-2 py-0.5 rounded-full capitalize theme-tag-warning">{result.severity}</span>
                 </div>
               </div>
-              {result.severity === 'healthy' ? <CheckCircle className="h-8 w-8 flex-shrink-0 theme-text-neon" /> : <AlertTriangle className="h-8 w-8 flex-shrink-0" style={{ color: '#fbbf24' }} />}
+              {result.severity === 'healthy' ? <CheckCircle className="h-8 w-8 flex-shrink-0 theme-text-neon" /> : <AlertTriangle className="h-8 w-8 flex-shrink-0 theme-text-warning" />}
             </div>
             {result.treatment?.length > 0 && (
               <div>
@@ -144,7 +143,7 @@ function DiseaseTab() {
             {result.prevention?.length > 0 && (
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide mb-2 theme-text-subtle">Prevention</p>
-                <ul className="space-y-1">{result.prevention.map((p: string, i: number) => <li key={i} className="text-sm flex gap-2 theme-text-muted"><span style={{ color: '#60a5fa' }}>•</span>{p}</li>)}</ul>
+                <ul className="space-y-1">{result.prevention.map((p: string, i: number) => <li key={i} className="text-sm flex gap-2 theme-text-muted"><span className="theme-text-info">•</span>{p}</li>)}</ul>
               </div>
             )}
           </ResultCard>
@@ -191,17 +190,17 @@ function YieldTab() {
           <FieldInput label="Humidity (%)" type="number" value={form.humidity_pct} onChange={(e) => set('humidity_pct', parseFloat(e.target.value))} />
           <FieldInput label="Area (ha)" type="number" step="0.1" value={form.area_hectares} onChange={(e) => set('area_hectares', parseFloat(e.target.value))} />
         </div>
-        {error && <p className="text-sm rounded-lg p-2" style={{ color: '#f87171', background: 'rgba(248,113,113,0.1)' }}>{error}</p>}
+        {error && <p className="text-sm rounded-lg p-2 theme-tag-danger">{error}</p>}
         <button onClick={predict} disabled={loading}
           className="w-full flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-40 theme-btn-neon">
           <TrendingUp className="h-4 w-4" /> {loading ? 'Calculating...' : 'Predict Yield'}
         </button>
       </div>
       <div>
-        {loading && <div className="h-full flex items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" style={{ borderColor: 'var(--neon-green)', borderTopColor: 'transparent' }} /></div>}
+        {loading && <div className="h-full flex items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-t-transparent border-emerald-500" /></div>}
         {result && !loading && (
           <ResultCard>
-            <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(0,233,191,0.05)' }}>
+            <div className="text-center p-4 rounded-xl theme-tag-brand">
               <p className="text-sm theme-text-muted">Predicted Yield</p>
               <p className="text-4xl font-bold mt-1 theme-text-neon">{result.predicted_yield_kg_per_ha?.toLocaleString()}</p>
               <p className="text-sm theme-text-muted">kg / hectare</p>
@@ -213,7 +212,7 @@ function YieldTab() {
                 <ul className="space-y-1">{result.recommendations.map((r: string, i: number) => <li key={i} className="text-sm flex gap-2 theme-text-muted"><span className="theme-text-neon">✓</span>{r}</li>)}</ul>
               </div>
             )}
-            {result.explanation && <p className="text-sm rounded-lg p-3" style={{ color: 'var(--old-price)', background: 'var(--foot-color)' }}>{result.explanation}</p>}
+            {result.explanation && <p className="text-sm rounded-lg p-3 theme-footer-bg theme-text-subtle">{result.explanation}</p>}
           </ResultCard>
         )}
         {!result && !loading && <EmptyResult icon={TrendingUp} text="Fill in crop data to predict yield" />}
@@ -254,17 +253,17 @@ function FertilizerTab() {
           <FieldInput label="Target Yield (kg/ha)" type="number" value={form.target_yield} onChange={(e) => set('target_yield', parseFloat(e.target.value))} />
         </div>
         <SelectInput label="Growth Stage" options={['germination', 'vegetative', 'flowering', 'fruiting', 'maturity']} value={form.growth_stage} onChange={(v) => set('growth_stage', v)} />
-        {error && <p className="text-sm rounded-lg p-2" style={{ color: '#f87171', background: 'rgba(248,113,113,0.1)' }}>{error}</p>}
+        {error && <p className="text-sm rounded-lg p-2 theme-tag-danger">{error}</p>}
         <button onClick={recommend} disabled={loading}
           className="w-full flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-40 theme-btn-neon">
           <Leaf className="h-4 w-4" /> {loading ? 'Generating...' : 'Get Recommendation'}
         </button>
       </div>
       <div>
-        {loading && <div className="h-full flex items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" style={{ borderColor: 'var(--neon-green)', borderTopColor: 'transparent' }} /></div>}
+        {loading && <div className="h-full flex items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-t-transparent border-emerald-500" /></div>}
         {result && !loading && (
           <ResultCard>
-            <div className="p-4 rounded-xl" style={{ background: 'rgba(251,191,36,0.05)' }}>
+            <div className="p-4 rounded-xl theme-tag-warning">
               <p className="text-xs uppercase tracking-wide font-semibold theme-text-subtle">Primary Fertilizer</p>
               <p className="text-2xl font-bold mt-1 theme-text">{result.primary_fertilizer}</p>
               <p className="text-sm theme-text-muted">{result.quantity_kg_per_ha} kg/ha</p>
@@ -288,7 +287,7 @@ function FertilizerTab() {
                 <p className="text-sm theme-text-muted">{result.application_schedule}</p>
               </div>
             )}
-            {result.explanation && <p className="text-sm rounded-lg p-3" style={{ color: 'var(--old-price)', background: 'var(--foot-color)' }}>{result.explanation}</p>}
+            {result.explanation && <p className="text-sm rounded-lg p-3 theme-footer-bg theme-text-subtle">{result.explanation}</p>}
           </ResultCard>
         )}
         {!result && !loading && <EmptyResult icon={Leaf} text="Enter crop details for fertilizer advice" />}
@@ -316,10 +315,7 @@ function AnalysisContent() {
       <div className="flex gap-1 rounded-xl border p-1 w-fit theme-footer-bg theme-border">
         {TABS.map(({ id, label, icon: Icon }) => (
           <button key={id} onClick={() => setTab(id)}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-            style={tab === id
-              ? { background: 'var(--neon-green)', color: '#000' }
-              : { color: 'var(--old-price)' }}>
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === id ? 'theme-btn-neon shadow-none !rounded-lg' : 'theme-text-subtle hover:bg-white/5'}`}>
             <Icon className="h-4 w-4" />
             <span className="hidden sm:inline">{label}</span>
           </button>
@@ -337,7 +333,7 @@ function AnalysisContent() {
 
 export default function AnalysisPage() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" style={{ borderColor: 'var(--neon-green)', borderTopColor: 'transparent' }} /></div>}>
+    <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="h-8 w-8 animate-spin rounded-full border-4 border-t-transparent border-emerald-500" /></div>}>
       <AnalysisContent />
     </Suspense>
   );

@@ -32,22 +32,22 @@ export const ChartWidget: React.FC<ChartWidgetProps> = ({ title, type, data, xAx
           <YAxis axisLine={false} tickLine={false} tick={tickStyle} />
           <Tooltip contentStyle={tooltipStyle} itemStyle={{ color: 'var(--text-color)', fontWeight: 'bold' }} />
           <Legend verticalAlign="top" height={36} />
-          <Line type="monotone" dataKey={yAxis} stroke="#00e9bf" strokeWidth={4} dot={{ r: 4, fill: '#00e9bf', strokeWidth: 2, stroke: 'var(--text-color-black)' }} activeDot={{ r: 8, strokeWidth: 0 }} />
+          <Line type="monotone" dataKey={yAxis} stroke="var(--neon-green)" strokeWidth={4} dot={{ r: 4, fill: 'var(--neon-green)', strokeWidth: 2, stroke: 'var(--text-color-black)' }} activeDot={{ r: 8, strokeWidth: 0 }} />
         </LineChart>
       );
       case 'area': return (
         <AreaChart data={data}>
           <defs>
             <linearGradient id="colorY" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#00e9bf" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="#00e9bf" stopOpacity={0} />
+              <stop offset="5%" stopColor="var(--neon-green)" stopOpacity={0.3} />
+              <stop offset="95%" stopColor="var(--neon-green)" stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
           <XAxis dataKey={xAxis} axisLine={false} tickLine={false} tick={tickStyle} />
           <YAxis axisLine={false} tickLine={false} tick={tickStyle} />
           <Tooltip contentStyle={tooltipStyle} />
-          <Area type="monotone" dataKey={yAxis} stroke="#00e9bf" fillOpacity={1} fill="url(#colorY)" strokeWidth={3} />
+          <Area type="monotone" dataKey={yAxis} stroke="var(--neon-green)" fillOpacity={1} fill="url(#colorY)" strokeWidth={3} />
         </AreaChart>
       );
       default: return (
@@ -56,7 +56,7 @@ export const ChartWidget: React.FC<ChartWidgetProps> = ({ title, type, data, xAx
           <XAxis dataKey={xAxis} axisLine={false} tickLine={false} tick={tickStyle} />
           <YAxis axisLine={false} tickLine={false} tick={tickStyle} />
           <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={tooltipStyle} />
-          <Bar dataKey={yAxis} fill="#00e9bf" radius={[6, 6, 0, 0]} barSize={32} />
+          <Bar dataKey={yAxis} fill="var(--neon-green)" radius={[6, 6, 0, 0]} barSize={32} />
         </BarChart>
       );
     }

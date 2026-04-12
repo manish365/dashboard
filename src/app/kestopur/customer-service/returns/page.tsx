@@ -34,7 +34,7 @@ export default function ReturnsPage() {
         <ArrowLeft className="h-4 w-4" /> Customer Service
       </Link>
       <KpPageHeader title="Returns" subtitle="Manage product return requests"
-        action={<div className="rounded-xl p-2.5" style={{ background: 'rgba(251,191,36,0.1)' }}><RotateCcw className="h-5 w-5" style={{ color: '#fbbf24' }} /></div>} />
+        action={<div className="rounded-xl p-2.5 theme-tag-warning"><RotateCcw className="h-5 w-5 theme-text-warning" /></div>} />
       <KpSearch value={search} onChange={setSearch} placeholder="Search returns..." className="max-w-md" />
       <KpCard>
         {loading ? <KpSkeleton /> : <KpTable cols={cols} rows={filtered} rowKey={r => r.id} emptyMsg="No return requests found." />}

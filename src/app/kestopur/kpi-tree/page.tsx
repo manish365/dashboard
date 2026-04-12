@@ -57,15 +57,35 @@ function findKpiPaths(kpiId: string) {
   return paths;
 }
 
+const getColorClasses = (hex: string) => {
+  const map: Record<string, { text: string; tag: string }> = {
+    '#60a5fa': { text: 'theme-text-info', tag: 'theme-tag-info' },
+    '#34d399': { text: 'theme-text-success', tag: 'theme-tag-success' },
+    '#fbbf24': { text: 'theme-text-warning', tag: 'theme-tag-warning' },
+    '#f87171': { text: 'theme-text-danger', tag: 'theme-tag-danger' },
+    '#818cf8': { text: 'theme-text-accent', tag: 'theme-tag-accent' },
+    '#f97316': { text: 'theme-text-orange', tag: 'theme-tag-orange' },
+    '#a78bfa': { text: 'theme-text-purple', tag: 'theme-tag-purple' },
+    '#ec4899': { text: 'theme-text-pink', tag: 'theme-tag-pink' },
+    '#2dd4bf': { text: 'theme-text-teal', tag: 'theme-tag-teal' },
+    '#fb7185': { text: 'theme-text-rose', tag: 'theme-tag-rose' },
+    '#c084fc': { text: 'theme-text-purple', tag: 'theme-tag-purple' },
+    '#94a3b8': { text: 'theme-text-subtle', tag: 'theme-tag-subtle' },
+    '#22d3ee': { text: 'theme-text-cyan', tag: 'theme-tag-cyan' },
+  };
+  return map[hex?.toLowerCase()] || { text: 'theme-text-subtle', tag: 'theme-tag-subtle' };
+};
+
 function NodeCard({ title, type, icon: Icon, onClick, color }: { title: string; type: string; icon: any; onClick: () => void; color: string }) {
+  const cls = getColorClasses(color);
   return (
     <motion.div layoutId={title} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
       whileHover={{ scale: 1.02, y: -3 }} onClick={onClick}
       className="rounded-2xl border cursor-pointer group transition-all hover:border-[var(--neon-green)]/30 theme-card-bg">
       <div className="p-5">
         <div className="flex items-center justify-between mb-3">
-          <div className="rounded-xl p-2" style={{ background: `${color}15` }}>
-            <Icon className="h-5 w-5" style={{ color }} />
+          <div className={`rounded-xl p-2 ${cls.tag}`}>
+            <Icon className={`h-5 w-5 ${cls.text}`} />
           </div>
           <span className="text-[10px] uppercase font-bold tracking-widest theme-text-subtle">{type}</span>
         </div>
@@ -87,12 +107,12 @@ function KpiCard({ id, onSelect }: { id: string; onSelect: (k: any) => void }) {
       className="rounded-xl border p-4 cursor-pointer transition-all hover:border-[var(--neon-green)]/40 theme-footer-bg theme-border">
       <div className="flex justify-between items-start mb-2">
         <p className="text-[10px] font-bold uppercase tracking-widest theme-text-subtle">Metric</p>
-        <TrendingUp className="h-3.5 w-3.5" style={{ color: kpi.color }} />
+        <TrendingUp className={`h-3.5 w-3.5 ${getColorClasses(kpi.color).text}`} />
       </div>
       <h5 className="font-bold text-sm mb-3 theme-text">{kpi.name}</h5>
       <div className="flex items-end justify-between">
         <span className="text-xl font-black theme-text">{kpi.value}</span>
-        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: `${kpi.color}15`, color: kpi.color }}>{kpi.trend}</span>
+        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${getColorClasses(kpi.color).tag}`}>{kpi.trend}</span>
       </div>
     </motion.div>
   );
@@ -147,8 +167,8 @@ export default function KpiTreePage() {
           )}
           <div>
             <div className="flex items-center gap-3">
-              <div className="rounded-xl p-2" style={{ background: 'rgba(96,165,250,0.15)' }}>
-                <GitBranch className="h-6 w-6" style={{ color: '#60a5fa' }} />
+            <div className="rounded-xl p-2 theme-tag-info">
+                <GitBranch className="h-6 w-6 theme-text-info" />
               </div>
               <h1 className="text-2xl font-bold theme-text">KPI Explorer</h1>
             </div>
@@ -157,8 +177,7 @@ export default function KpiTreePage() {
               {history.map((h, i) => (
                 <span key={i} className="flex items-center gap-1">
                   <button onClick={() => setHistory(history.slice(0, i + 1))}
-                    className="text-xs hover:opacity-80 transition-opacity"
-                    style={{ color: i === history.length - 1 ? 'var(--text-color)' : 'var(--circle)' }}>
+                    className={`text-xs hover:opacity-80 transition-opacity ${i === history.length - 1 ? 'theme-text' : 'theme-text-subtle'}`}>
                     {h.label}
                   </button>
                   {i < history.length - 1 && <ChevronRight className="h-3 w-3 theme-text-subtle" />}
@@ -185,7 +204,7 @@ export default function KpiTreePage() {
                 </div>
                 {searchResults.kpis.length > 0 && (
                   <div className="mb-3">
-                    <p className="text-xs font-bold mb-2 flex items-center gap-1" style={{ color: '#60a5fa' }}><TrendingUp className="h-3 w-3" /> KPIs</p>
+                    <p className="text-xs font-bold mb-2 flex items-center gap-1 theme-text-info"><TrendingUp className="h-3 w-3" /> KPIs</p>
                     {searchResults.kpis.map(k => (
                       <button key={k.id} onClick={() => setSelectedKpi(k)}
                         className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/5 transition-colors flex justify-between items-center">
@@ -197,7 +216,7 @@ export default function KpiTreePage() {
                 )}
                 {searchResults.nodes.length > 0 && (
                   <div>
-                    <p className="text-xs font-bold mb-2 flex items-center gap-1" style={{ color: '#a78bfa' }}><Layers className="h-3 w-3" /> Org Units</p>
+                    <p className="text-xs font-bold mb-2 flex items-center gap-1 theme-text-purple"><Layers className="h-3 w-3" /> Org Units</p>
                     {searchResults.nodes.map((n: any) => (
                       <button key={n.id} onClick={() => navigateTo(n)}
                         className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/5 transition-colors flex justify-between items-center">
@@ -268,8 +287,8 @@ export default function KpiTreePage() {
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               className="fixed top-0 right-0 bottom-0 w-full max-w-md border-l shadow-2xl z-50 p-8 overflow-y-auto theme-card-bg">
               <div className="flex justify-between items-start mb-8">
-                <div className="rounded-xl p-3" style={{ background: `${selectedKpi.color}15` }}>
-                  <TrendingUp className="h-7 w-7" style={{ color: selectedKpi.color }} />
+                <div className={`rounded-xl p-3 ${getColorClasses(selectedKpi.color).tag}`}>
+                  <TrendingUp className={`h-7 w-7 ${getColorClasses(selectedKpi.color).text}`} />
                 </div>
                 <button onClick={() => setSelectedKpi(null)} className="p-2 rounded-xl hover:bg-white/10 transition-colors theme-text-subtle">
                   <X className="h-5 w-5" />
@@ -277,7 +296,7 @@ export default function KpiTreePage() {
               </div>
 
               <div className="mb-8">
-                <span className="text-[10px] font-bold uppercase tracking-widest block mb-2" style={{ color: selectedKpi.color }}>KPI Performance</span>
+                <span className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${getColorClasses(selectedKpi.color).text}`}>KPI Performance</span>
                 <h2 className="text-3xl font-black mb-5 theme-text">{selectedKpi.name}</h2>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-xl p-4 theme-footer-bg">
@@ -286,7 +305,7 @@ export default function KpiTreePage() {
                   </div>
                   <div className="rounded-xl p-4 theme-footer-bg">
                     <p className="text-[10px] font-bold uppercase tracking-widest mb-1 theme-text-subtle">Trend</p>
-                    <p className="text-2xl font-black" style={{ color: selectedKpi.color }}>{selectedKpi.trend}</p>
+                    <p className={`text-2xl font-black ${getColorClasses(selectedKpi.color).text}`}>{selectedKpi.trend}</p>
                   </div>
                 </div>
               </div>

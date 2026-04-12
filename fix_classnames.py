@@ -1,7 +1,7 @@
 import os
 import re
 
-SRC = r'c:\Users\manis\OneDrive\Desktop\poc\croma\src'
+SRC = r'c:\Users\manis\OneDrive\Desktop\poc\store\src'
 
 # Pattern: className="existing" className="theme-xxx"
 # Merge into: className="existing theme-xxx"

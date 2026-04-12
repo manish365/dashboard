@@ -37,7 +37,7 @@ export default function InventoryPage() {
     { key: 'product', label: 'Product ID', render: (i: InventoryItem) => <span className="text-sm font-mono theme-text">{i.productId?.slice(0, 12)}...</span> },
     { key: 'variant', label: 'Variant', render: (i: InventoryItem) => <span className="text-sm font-mono theme-text-subtle">{i.variantId ? `${i.variantId.slice(0, 8)}...` : '—'}</span> },
     { key: 'warehouse', label: 'Warehouse', render: (i: InventoryItem) => <span className="text-sm theme-text-muted">{whName(i.warehouseId)}</span> },
-    { key: 'available', label: 'Available', render: (i: InventoryItem) => <span className="text-sm font-semibold" style={{ color: i.availableQuantity <= (i.minimumStockLevel || 10) ? '#fbbf24' : 'var(--text-color)' }}>{i.availableQuantity}</span> },
+    { key: 'available', label: 'Available', render: (i: InventoryItem) => <span className={`text-sm font-semibold ${i.availableQuantity <= (i.minimumStockLevel || 10) ? 'theme-text-warning' : 'theme-text'}`}>{i.availableQuantity}</span> },
     { key: 'reserved', label: 'Reserved', render: (i: InventoryItem) => <span className="text-sm theme-text-subtle">{i.reservedQuantity || 0}</span> },
     { key: 'min', label: 'Min Level', render: (i: InventoryItem) => <span className="text-sm theme-text-subtle">{i.minimumStockLevel || 10}</span> },
     { key: 'status', label: 'Status', render: (i: InventoryItem) => <KpBadge label={i.availableQuantity <= (i.minimumStockLevel || 10) ? 'Low Stock' : 'In Stock'} variant={i.availableQuantity <= (i.minimumStockLevel || 10) ? 'warning' : 'active'} /> },
@@ -47,9 +47,9 @@ export default function InventoryPage() {
     <div className="space-y-6">
       <KpPageHeader title="Inventory" subtitle="Monitor and manage stock levels across warehouses" action={<KpBtn><Plus className="h-4 w-4" /> Stock Operation</KpBtn>} />
       <div className="grid grid-cols-3 gap-4">
-        <KpStatCard label="Total SKUs" value={items.length} icon={Package} color="#60a5fa" />
-        <KpStatCard label="Low Stock" value={lowStockCount} icon={AlertTriangle} color="#fbbf24" />
-        <KpStatCard label="Active Warehouses" value={warehouses.length} icon={Package} color="#34d399" />
+        <KpStatCard label="Total SKUs" value={items.length} icon={Package} variant="info" />
+        <KpStatCard label="Low Stock" value={lowStockCount} icon={AlertTriangle} variant="warning" />
+        <KpStatCard label="Active Warehouses" value={warehouses.length} icon={Package} variant="success" />
       </div>
       <div className="flex flex-wrap gap-3">
         <KpSearch value={search} onChange={setSearch} placeholder="Search by product or warehouse..." className="flex-1 max-w-sm" />
@@ -59,7 +59,7 @@ export default function InventoryPage() {
         </KpSelect>
         <label className="flex items-center gap-2 rounded-xl px-3 py-2 border cursor-pointer hover:bg-white/5 text-sm theme-btn-cancel">
           <input type="checkbox" checked={lowStockOnly} onChange={e => setLowStockOnly(e.target.checked)} className="rounded" />
-          <AlertTriangle className="h-3.5 w-3.5" style={{ color: '#fbbf24' }} /> Low Stock Only
+          <AlertTriangle className="h-3.5 w-3.5 theme-text-warning" /> Low Stock Only
         </label>
       </div>
       <KpCard>{loading ? <KpSkeleton /> : <KpTable cols={cols} rows={filtered} rowKey={(i, idx) => `${i.productId}-${idx}`} emptyMsg="No inventory records found." />}</KpCard>

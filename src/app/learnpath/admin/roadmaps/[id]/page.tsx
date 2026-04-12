@@ -134,19 +134,18 @@ export default function RoadmapFormPage() {
         </div>
 
         {steps.map((step, si) => (
-          <div key={si} className="rounded-xl border overflow-hidden theme-card-bg" style={{ borderColor: step.open ? 'rgba(0,233,191,0.2)' : 'var(--border-color)' }}>
+          <div key={si} className={`rounded-xl border overflow-hidden theme-card-bg ${step.open ? 'theme-border-brand shadow-sm' : 'theme-border'}`}>
             {/* Step header */}
             <div className="flex items-center gap-3 px-4 py-3">
-              <div className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0"
-                style={{ background: step.open ? 'rgba(0,233,191,0.1)' : 'var(--foot-color)', color: step.open ? 'var(--neon-green)' : 'var(--circle)', border: `1px solid ${step.open ? 'rgba(0,233,191,0.3)' : 'var(--border-color)'}` }}>
+            <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 border ${step.open ? 'theme-tag-brand theme-border-brand/30' : 'theme-footer-bg theme-text-subtle theme-border'}`}>
                 {si + 1}
               </div>
               {step.open ? (
                 <input value={step.title} onChange={e => updateStep(si, 'title', e.target.value)}
                   placeholder={`Step ${si + 1} title…`} onClick={e => e.stopPropagation()}
-                  className="flex-1 bg-transparent border-b text-sm font-semibold outline-none pb-0.5 theme-text" style={{ borderColor: 'rgba(0,233,191,0.3)' }} />
+                  className="flex-1 bg-transparent border-b theme-border-brand/30 text-sm font-semibold outline-none pb-0.5 theme-text" />
               ) : (
-                <span className="flex-1 text-sm font-semibold truncate" style={{ color: step.title ? 'var(--text-color)' : 'var(--circle)' }}>
+                <span className={`flex-1 text-sm font-semibold truncate ${step.title ? 'theme-text' : 'theme-text-subtle'}`}>
                   {step.title || `Step ${si + 1} — (untitled)`}
                 </span>
               )}
@@ -205,15 +204,14 @@ export default function RoadmapFormPage() {
         ))}
 
         <button type="button" onClick={addStep}
-          className="w-full rounded-xl py-3 text-sm font-semibold border-2 border-dashed transition-all hover:bg-white/5 theme-text-subtle" style={{ borderColor: 'rgba(0,233,191,0.2)' }}>
+          className="w-full rounded-xl py-3 text-sm font-semibold border-2 border-dashed transition-all hover:bg-white/5 theme-text-subtle border-emerald-500/20">
           <Plus className="h-4 w-4 inline mr-1" /> Add Another Step
         </button>
       </div>
 
       {/* Sticky footer */}
       <div className="sticky bottom-4 flex items-center justify-between gap-3 rounded-xl border px-5 py-4 theme-card-bg backdrop-blur-md">
-        <span className="text-xs px-2 py-0.5 rounded-full font-bold"
-          style={{ background: lc.bg, color: lc.color, border: `1px solid ${lc.border}` }}>{level}</span>
+        <span className={`text-xs px-2 py-0.5 rounded-full font-bold border ${lc.tag}`}>{level}</span>
         <div className="flex gap-2">
           <GhostBtn onClick={() => router.push('/learnpath/admin/roadmaps')}>Cancel</GhostBtn>
           <GhostBtn onClick={() => handleSave(false)} disabled={saving || publishing}>

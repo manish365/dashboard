@@ -56,8 +56,7 @@ export default function LearnPathAdminDashboard() {
         ) : (
           roadmaps.slice(0, 5).map((r, idx) => (
             <div key={r.id}
-              className="flex items-center justify-between gap-4 px-5 py-4 hover:bg-white/5 transition-colors"
-              style={{ borderBottom: idx < Math.min(roadmaps.length, 5) - 1 ? '1px solid var(--border-color)' : 'none' }}>
+              className={`flex items-center justify-between gap-4 px-5 py-4 hover:bg-white/5 transition-colors ${idx < Math.min(roadmaps.length, 5) - 1 ? 'border-b theme-border' : ''}`}>
               <div className="flex items-center gap-3 min-w-0">
                 <div className="theme-footer-bg rounded-lg p-2 flex-shrink-0">
                   <BookOpen className="theme-text-subtle h-4 w-4" />

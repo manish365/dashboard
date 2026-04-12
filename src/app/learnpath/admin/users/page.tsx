@@ -13,12 +13,10 @@ const emptyForm: FormState = { name: '', email: '', password: '', role: 'LEARNER
 
 function RoleBadge({ role }: { role: 'ADMIN' | 'LEARNER' }) {
   const isAdmin = role === 'ADMIN';
-  const styles = isAdmin
-    ? { background: 'rgba(167,139,250,0.1)', color: '#a78bfa', borderColor: 'rgba(167,139,250,0.2)' }
-    : { background: 'rgba(52,211,153,0.1)', color: '#34d399', borderColor: 'rgba(52,211,153,0.2)' };
+  const cls = isAdmin ? 'theme-tag-purple border-purple-500/20' : 'theme-tag-success border-green-500/20';
 
   return (
-    <span className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full w-fit font-semibold border" style={styles}>
+    <span className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-full w-fit font-semibold border ${cls}`}>
       {isAdmin ? <Shield className="h-2.5 w-2.5" /> : <GraduationCap className="h-2.5 w-2.5" />}
       {role}
     </span>
@@ -28,13 +26,7 @@ function RoleBadge({ role }: { role: 'ADMIN' | 'LEARNER' }) {
 function UserAvatar({ name, role }: { name: string; role: string }) {
   const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
   const isAdmin = role === 'ADMIN';
-  const gradient = isAdmin
-    ? 'linear-gradient(135deg,#6366f1,#8b5cf6)'
-    : 'linear-gradient(135deg,#10b981,#059669)';
-
-  return (
-    <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-white"
-      style={{ background: gradient }}>
+    <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-white ${isAdmin ? 'bg-gradient-to-br from-indigo-500 to-purple-500' : 'bg-gradient-to-br from-emerald-500 to-green-600'}`}>
       {initials}
     </div>
   );
@@ -144,10 +136,10 @@ export default function AdminUsersPage() {
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <SearchInput value={search} onChange={setSearch} placeholder="Search by name or email…" className="flex-1 max-w-sm" />
         <div className="flex gap-2">
-          <span className="text-xs px-3 py-1.5 rounded-lg font-semibold bg-[#818cf81a] text-[#818cf8] border border-[#818cf833]">
+          <span className="theme-tag-accent border-indigo-500/20 text-xs px-3 py-1.5 rounded-lg font-semibold border">
             {users.filter(u => u.role === 'LEARNER').length} Learners
           </span>
-          <span className="text-xs px-3 py-1.5 rounded-lg font-semibold bg-[#a78bfa1a] text-[#a78bfa] border border-[#a78bfa33]">
+          <span className="theme-tag-purple border-purple-500/20 text-xs px-3 py-1.5 rounded-lg font-semibold border">
             {users.filter(u => u.role === 'ADMIN').length} Admins
           </span>
         </div>

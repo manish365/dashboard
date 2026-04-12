@@ -56,8 +56,8 @@ export default function RolesPage() {
             <div key={role.id} className="rounded-xl border p-5 transition-all hover:border-[var(--neon-green)]/20 theme-card-bg">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="rounded-lg p-2" style={{ background: 'rgba(129,140,248,0.1)' }}>
-                    <Shield className="h-5 w-5" style={{ color: '#818cf8' }} />
+                  <div className="rounded-lg p-2 theme-tag-accent">
+                    <Shield className="h-5 w-5 theme-text-accent" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-sm theme-text">{role.name}</h3>
@@ -70,7 +70,7 @@ export default function RolesPage() {
                 <p className="text-xs mb-2 theme-text-subtle">Permissions ({role.permissions?.length || 0})</p>
                 <div className="flex flex-wrap gap-1 max-h-16 overflow-hidden">
                   {role.permissions?.slice(0, 3).map(p => (
-                    <span key={p.id} className="text-xs px-1.5 py-0.5 rounded" style={{ background: 'rgba(52,211,153,0.1)', color: '#34d399' }}>{p.name}</span>
+                    <span key={p.id} className="text-xs px-1.5 py-0.5 rounded theme-tag-success">{p.name}</span>
                   ))}
                   {(role.permissions?.length || 0) > 3 && (
                     <span className="text-xs px-1.5 py-0.5 rounded theme-footer-bg theme-text-subtle">+{(role.permissions?.length || 0) - 3} more</span>

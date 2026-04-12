@@ -7,7 +7,7 @@ import { KpPageHeader, KpCard, KpTable, KpBadge, KpSearch, KpSkeleton } from '@/
 
 interface SupportTicket { id: string; subject: string; priority: string; status: string; createdAt: string; }
 
-const PRIORITY_COLORS: Record<string, string> = { high: '#f87171', medium: '#fbbf24', low: '#34d399' };
+const PRIORITY_CLASSES: Record<string, string> = { high: 'theme-tag-danger', medium: 'theme-tag-warning', low: 'theme-tag-success' };
 
 export default function TicketsPage() {
   const [items, setItems] = useState<SupportTicket[]>([]);
@@ -27,8 +27,7 @@ export default function TicketsPage() {
     { key: 'subject', label: 'Subject', render: (t: SupportTicket) => <span className="text-sm font-medium theme-text">{t.subject}</span> },
     {
       key: 'priority', label: 'Priority', render: (t: SupportTicket) => (
-        <span className="text-xs px-2 py-0.5 rounded-full font-semibold capitalize"
-          style={{ background: `${PRIORITY_COLORS[t.priority?.toLowerCase()] || 'var(--circle)'}15`, color: PRIORITY_COLORS[t.priority?.toLowerCase()] || 'var(--circle)' }}>
+        <span className={`text-xs px-2 py-0.5 rounded-full font-semibold capitalize ${PRIORITY_CLASSES[t.priority?.toLowerCase()] || 'theme-tag-subtle'}`}>
           {t.priority}
         </span>
       ),
@@ -43,7 +42,7 @@ export default function TicketsPage() {
         <ArrowLeft className="h-4 w-4" /> Customer Service
       </Link>
       <KpPageHeader title="Support Tickets" subtitle="Handle customer support requests"
-        action={<div className="rounded-xl p-2.5" style={{ background: 'rgba(167,139,250,0.1)' }}><Ticket className="h-5 w-5" style={{ color: '#a78bfa' }} /></div>} />
+        action={<div className="rounded-xl p-2.5 theme-tag-purple"><Ticket className="h-5 w-5 theme-text-purple" /></div>} />
       <KpSearch value={search} onChange={setSearch} placeholder="Search tickets..." className="max-w-md" />
       <KpCard>
         {loading ? <KpSkeleton /> : <KpTable cols={cols} rows={filtered} rowKey={t => t.id} emptyMsg="No support tickets found." />}

@@ -57,11 +57,12 @@ export default function DashboardPage() {
           <h1 className="theme-text text-2xl font-bold">Dashboard</h1>
           <p className="theme-text-muted text-sm">Manage incentive data for Store stores</p>
         </div>
-        <div className="theme-input-wrap flex items-center gap-2 rounded-lg border border-white/10 px-3 py-1.5">
+        <div className="theme-input-wrap flex items-center gap-2 rounded-lg border theme-border px-3 py-1.5">
           <Calendar className="theme-text-subtle h-4 w-4" />
           <select
             value={state.selectedMonth}
             onChange={(e) => dispatch({ type: 'SET_MONTH', payload: Number(e.target.value) })}
+            suppressHydrationWarning
             className="theme-text bg-transparent text-sm outline-none"
           >
             {MONTHS.map((m) => (
@@ -71,6 +72,7 @@ export default function DashboardPage() {
           <select
             value={state.selectedYear}
             onChange={(e) => dispatch({ type: 'SET_YEAR', payload: Number(e.target.value) })}
+            suppressHydrationWarning
             className="theme-text bg-transparent text-sm outline-none"
           >
             {years.map((y) => (
@@ -105,6 +107,7 @@ export default function DashboardPage() {
           {canUpload(state.user.role) && (
             <button
               onClick={() => setShowUploadDialog(true)}
+              suppressHydrationWarning
               className="theme-btn-neon flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all active:scale-[0.98]"
             >
               <Upload className="h-4 w-4" />
@@ -114,7 +117,8 @@ export default function DashboardPage() {
           {canClone(state.user.role) && (
             <button
               onClick={() => setShowCloneDialog(true)}
-              className="theme-btn-outline flex items-center gap-2 rounded-xl border px-5 py-3 text-sm font-medium transition-all hover:bg-slate-500/5 active:scale-[0.98]"
+              suppressHydrationWarning
+              className="theme-btn-outline flex items-center gap-2 rounded-xl border px-5 py-3 text-sm font-medium transition-all hover:bg-white/10 active:scale-[0.98]"
             >
               <Copy className="h-4 w-4" />
               Clone Previous Month
@@ -146,7 +150,7 @@ export default function DashboardPage() {
       {/* Upload Dialog */}
       {showUploadDialog && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="theme-card-bg w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-white/10 p-6 shadow-2xl">
+          <div className="theme-card-bg w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border theme-border p-6 shadow-2xl">
             <div className="mb-5 flex items-center justify-between">
               <div>
                 <h2 className="theme-text text-lg font-semibold">Upload Templates</h2>
@@ -154,6 +158,7 @@ export default function DashboardPage() {
               </div>
               <button
                 onClick={() => { setShowUploadDialog(false); setActiveTemplate(null); }}
+                suppressHydrationWarning
                 className="theme-text-subtle rounded-lg p-1.5 hover:bg-white/10"
               >
                 <X className="h-5 w-5" />
@@ -166,7 +171,8 @@ export default function DashboardPage() {
                   <button
                     key={template.name}
                     onClick={() => setActiveTemplate(template.name)}
-                    className="theme-toolbar-bg flex items-center gap-3 rounded-xl border border-white/10 p-4 text-left transition-all hover:border-[var(--neon-green)]/30"
+                    suppressHydrationWarning
+                    className="theme-toolbar-bg flex items-center gap-3 rounded-xl border theme-border p-4 text-left transition-all hover:border-[var(--neon-green)]/30"
                   >
                     <FileSpreadsheet className="theme-text-neon h-5 w-5" />
                     <div>
@@ -180,6 +186,7 @@ export default function DashboardPage() {
               <div>
                 <button
                   onClick={() => setActiveTemplate(null)}
+                  suppressHydrationWarning
                   className="theme-text-link mb-3 flex items-center gap-1 text-xs hover:opacity-80"
                 >
                   ← Back to templates
@@ -209,7 +216,7 @@ export default function DashboardPage() {
           <h2 className="theme-text mb-3 text-lg font-semibold">Recent Uploads</h2>
           <div className="space-y-2">
             {state.uploadedFiles.map((file) => (
-              <div key={file.id} className="theme-card-bg flex items-center justify-between rounded-xl border border-white/10 p-3">
+              <div key={file.id} className="theme-card-bg flex items-center justify-between rounded-xl border theme-border p-3">
                 <div className="flex items-center gap-3">
                   <FileSpreadsheet className="theme-text-neon h-4 w-4" />
                   <div>
@@ -221,6 +228,7 @@ export default function DashboardPage() {
                 </div>
                 <button
                   onClick={() => dispatch({ type: 'REMOVE_UPLOADED_FILE', payload: file.id })}
+                  suppressHydrationWarning
                   className="theme-text-subtle rounded-lg p-1.5 hover:bg-white/10"
                 >
                   <X className="h-4 w-4" />

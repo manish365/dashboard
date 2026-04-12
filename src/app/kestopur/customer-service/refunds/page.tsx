@@ -34,7 +34,7 @@ export default function RefundsPage() {
         <ArrowLeft className="h-4 w-4" /> Customer Service
       </Link>
       <KpPageHeader title="Refunds" subtitle="Process customer refunds"
-        action={<div className="rounded-xl p-2.5" style={{ background: 'rgba(96,165,250,0.1)' }}><RefreshCw className="h-5 w-5" style={{ color: '#60a5fa' }} /></div>} />
+        action={<div className="rounded-xl p-2.5 theme-tag-info"><RefreshCw className="h-5 w-5 theme-text-info" /></div>} />
       <KpSearch value={search} onChange={setSearch} placeholder="Search by order ID..." className="max-w-md" />
       <KpCard>
         {loading ? <KpSkeleton /> : <KpTable cols={cols} rows={filtered} rowKey={r => r.id} emptyMsg="No refunds found." />}

@@ -4,45 +4,46 @@ import { useState, useMemo, useCallback, useRef } from "react";
 import { INVOICE_DATA, DEFAULT_FILTERS, type Invoice, type Filters } from "./data";
 
 function fmt(d: Date) { return d.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" }); }
-function progColor(p: number) { if (p >= 75) return "#16a34a"; if (p >= 40) return "#d97706"; return "#dc2626"; }
 
-const PRIORITY_STYLE: Record<string, { bg: string; color: string }> = {
-  Critical: { bg: "#fdf4ff", color: "#7e22ce" }, High: { bg: "#fff1f1", color: "#b91c1c" },
-  Medium: { bg: "#fff7ed", color: "#c2410c" }, Low: { bg: "#f0fdf4", color: "#15803d" },
+const PRIORITY_CLASSES: Record<string, { tag: string; text: string }> = {
+  Critical: { tag: 'theme-tag-purple', text: 'theme-text-purple' },
+  High: { tag: 'theme-tag-danger', text: 'theme-text-danger' },
+  Medium: { tag: 'theme-tag-orange', text: 'theme-text-orange' },
+  Low: { tag: 'theme-tag-success', text: 'theme-text-success' },
 };
-const PRIORITY_DOT: Record<string, string> = { Critical: "#a855f7", High: "#ef4444", Medium: "#f97316", Low: "#22c55e" };
-const STATUS_STYLE: Record<string, { bg: string; color: string; border: string }> = {
-  Approved: { bg: "#ecfdf5", color: "#065f46", border: "#a7f3d0" },
-  Pending: { bg: "#fffbeb", color: "#92400e", border: "#fde68a" },
-  Review: { bg: "#eff6ff", color: "#1e40af", border: "#bfdbfe" },
-  Blocked: { bg: "#fff1f2", color: "#9f1239", border: "#fecdd3" },
-  Completed: { bg: "#f5f3ff", color: "#5b21b6", border: "#ddd6fe" },
+
+const STATUS_CLASSES: Record<string, { tag: string; text: string }> = {
+  Approved: { tag: 'theme-tag-success', text: 'theme-text-success' },
+  Pending: { tag: 'theme-tag-warning', text: 'theme-text-warning' },
+  Review: { tag: 'theme-tag-info', text: 'theme-text-info' },
+  Blocked: { tag: 'theme-tag-danger', text: 'theme-text-danger' },
+  Completed: { tag: 'theme-tag-brand', text: 'theme-text-brand' },
 };
 
 function Sparkline({ vals }: { vals: number[] }) {
   const max = Math.max(...vals);
   return (
     <div className="flex items-end gap-0.5 h-[22px]">
-      {vals.map((v, i) => <div key={i} style={{ height: Math.round((v / max) * 20) + 2 }} className="w-1 rounded-t-sm bg-blue-500 opacity-45" />)}
+      {vals.map((v, i) => <div key={i} style={{ height: Math.round((v / max) * 20) + 2 }} className="w-1 rounded-t-sm theme-tag-info opacity-50" />)}
     </div>
   );
 }
 
 function PriBadge({ p }: { p: string }) {
-  const s = PRIORITY_STYLE[p] ?? PRIORITY_STYLE.Low;
+  const cls = PRIORITY_CLASSES[p] ?? PRIORITY_CLASSES.Low;
   return (
-    <span className="dg-badge" style={{ background: s.bg, color: s.color }}>
-      <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 inline-block" style={{ background: PRIORITY_DOT[p] ?? "#22c55e" }} />
+    <span className={`dg-badge ${cls.tag}`}>
+      <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 inline-block bg-current`} />
       {p}
     </span>
   );
 }
 
 function StatusPill({ s }: { s: string }) {
-  const st = STATUS_STYLE[s] ?? STATUS_STYLE.Pending;
+  const cls = STATUS_CLASSES[s] ?? STATUS_CLASSES.Pending;
   const icons: Record<string, string> = { Approved: "✓", Pending: "⏱", Review: "◉", Blocked: "⚠", Completed: "✔" };
   return (
-    <span className="dg-status-pill" style={{ background: st.bg, color: st.color, borderColor: st.border }}>
+    <span className={`dg-status-pill ${cls.tag} border`}>
       <span className="text-[0.65rem]">{icons[s] ?? "·"}</span>
       {s}
     </span>
@@ -50,13 +51,24 @@ function StatusPill({ s }: { s: string }) {
 }
 
 function ProgressCell({ pct }: { pct: number }) {
-  const c = progColor(pct);
+  const getCls = (p: number) => {
+    if (p >= 75) return 'theme-text-success';
+    if (p >= 40) return 'theme-text-orange';
+    return 'theme-text-danger';
+  };
+  const getBgCls = (p: number) => {
+    if (p >= 75) return 'theme-tag-success';
+    if (p >= 40) return 'theme-tag-warning';
+    return 'theme-tag-danger';
+  };
+  const textCls = getCls(pct);
+  const bgCls = getBgCls(pct);
   return (
     <div className="flex items-center gap-[7px] min-w-[110px]">
-      <div className="flex-1 h-1.5 rounded-full bg-gray-200 overflow-hidden">
-        <div className="h-full rounded-full transition-all duration-300" style={{ width: `${pct}%`, background: c }} />
+      <div className="flex-1 h-1.5 rounded-full theme-footer-bg overflow-hidden">
+        <div className={`h-full rounded-full transition-all duration-300 ${bgCls}`} style={{ width: `${pct}%` }} />
       </div>
-      <span className="text-[0.7rem] font-bold w-[32px] text-right" style={{ color: c }}>{pct}%</span>
+      <span className={`text-[0.7rem] font-bold w-[32px] text-right ${textCls}`}>{pct}%</span>
     </div>
   );
 }
@@ -127,7 +139,7 @@ export default function DataGridPage() {
 
   const S = {
     // Styles moved to globals.css (.dg-card, .dg-toolbar, .dg-btn, .dg-table-cell, etc)
-    btnActive: { background: "#f0f0ff", borderColor: "#a5b4fc", color: "#6366f1" } as React.CSSProperties,
+    btnActive: { border: '1px solid var(--neon-green)', color: 'var(--neon-green)' } as React.CSSProperties,
   } as const;
 
   const pgs: (number | "…")[] = [];
@@ -161,8 +173,8 @@ export default function DataGridPage() {
       <div className="dg-card">
         <div className="dg-toolbar">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[0.9375rem] font-bold text-[#1e2a45]">Invoices <span className="dg-badge bg-[#eff4ff] text-[#2563eb] border border-[#c7d7fd]">{filtered.length} records</span></span>
-            <button className={`dg-btn ${hasActiveFilters ? 'bg-[#f0f0ff] border-[#a5b4fc] text-[#6366f1]' : ''}`} onClick={clearAll}>✕ Clear Filters</button>
+            <span className="text-[0.9375rem] font-bold theme-text">Invoices <span className="dg-badge theme-tag-info">{filtered.length} records</span></span>
+            <button className={`dg-btn ${hasActiveFilters ? 'theme-tag-accent' : ''}`} onClick={clearAll}>✕ Clear Filters</button>
           </div>
           <div className="flex gap-1.5">
             <button className="dg-btn dg-btn-primary">+ New Invoice</button>
@@ -171,15 +183,15 @@ export default function DataGridPage() {
 
         {hasActiveFilters && (
           <div className="dg-filter-bar">
-            <span className="text-[0.7rem] text-[#8b93ac] font-medium">Filtered by:</span>
-            {filters.status && <span className="dg-badge bg-[#f0f0ff] border-[#c7c7fd] text-[#6366f1]">Status: {filters.status} <span onClick={() => setFI("status", "")} className="cursor-pointer ml-1 font-bold opacity-60">×</span></span>}
-            {filters.team && <span className="dg-badge bg-[#f0f0ff] border-[#c7c7fd] text-[#6366f1]">Team: {filters.team} <span onClick={() => setFI("team", "")} className="cursor-pointer ml-1 font-bold opacity-60">×</span></span>}
+            <span className="text-[0.7rem] theme-text-subtle font-medium">Filtered by:</span>
+            {filters.status && <span className="dg-badge theme-tag-accent">Status: {filters.status} <span onClick={() => setFI("status", "")} className="cursor-pointer ml-1 font-bold opacity-60">×</span></span>}
+            {filters.team && <span className="dg-badge theme-tag-accent">Team: {filters.team} <span onClick={() => setFI("team", "")} className="cursor-pointer ml-1 font-bold opacity-60">×</span></span>}
           </div>
         )}
 
         <div className="dg-stats-bar">
           {[{ label: "Total Budget", val: `$${aggregBudget.toLocaleString()}` }, { label: "Total Hours", val: aggregHours.toLocaleString() + "h" }, { label: "Avg Completion", val: `${aggregPct}%` }].map(({ label, val }) => (
-            <span key={label} className="text-[0.72rem] text-[#4b5775]">{label}: <strong className="text-[#1e2a45]">{val}</strong></span>
+            <span key={label} className="text-[0.72rem] theme-text-muted">{label}: <strong className="theme-text">{val}</strong></span>
           ))}
         </div>
 
@@ -187,30 +199,30 @@ export default function DataGridPage() {
           <table className="dg-table">
             <thead>
               <tr className="dg-table-header-row">
-                <th className="w-[44px] p-0 border-r border-var(--border-color)">
+                <th className="w-[44px] p-0 border-r theme-border">
                   <div className="flex items-center justify-center h-[42px]">
-                    <input type="checkbox" checked={allOnPage} ref={el => { if (el) el.indeterminate = someOnPage && !allOnPage; }} onChange={e => toggleAll(e.target.checked)} className="w-3.5 h-3.5 accent-[#2563eb] cursor-pointer" />
+                    <input type="checkbox" checked={allOnPage} ref={el => { if (el) el.indeterminate = someOnPage && !allOnPage; }} onChange={e => toggleAll(e.target.checked)} className="w-3.5 h-3.5 accent-[var(--neon-green)] cursor-pointer" />
                   </div>
-                  <div className="h-[36px] bg-[#eef1fb] border-t border-var(--border-color)" />
+                  <div className="h-[36px] theme-footer-bg border-t theme-border" />
                 </th>
                 {COLS.map(({ col, label, fa, mw }) => (
                   <th key={col} style={{ minWidth: mw }} className="p-0 relative border-none">
                     <div onClick={() => onSort(col)} className="flex items-center justify-between px-[10px] h-[42px] cursor-pointer select-none">
-                      <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${fa ? 'text-[#6366f1]' : 'text-[#4b5775]'}`}>{label}</span>
-                      <span className={`text-[10px] ${fa ? 'text-[#6366f1]' : 'text-[#9ca3af]'}`}>▼</span>
+                      <span className={`text-[0.7rem] font-bold uppercase tracking-wider ${fa ? 'theme-text-info' : 'theme-text-muted'}`}>{label}</span>
+                      <span className={`text-[10px] ${fa ? 'theme-text-info' : 'theme-text-subtle'}`}>▼</span>
                     </div>
-                    <div className="p-[3px_6px] bg-[#eef1fb] border-t border-var(--border-color)">
+                    <div className="p-[3px_6px] theme-footer-bg border-t theme-border">
                       {col === "id" && <input className="dg-input" defaultValue={filters.id} placeholder="Search ID…" onChange={e => setF("id", e.target.value)} />}
                       {col === "company" && <input className="dg-input" defaultValue={filters.company} placeholder="Contains…" onChange={e => setF("company", e.target.value)} />}
                       {col === "project" && <input className="dg-input" defaultValue={filters.project} placeholder="Contains…" onChange={e => setF("project", e.target.value)} />}
                       {col === "team" && <select className="dg-select" value={filters.team} onChange={e => setFI("team", e.target.value)}><option value="">All Teams</option>{["Alpha", "Beta", "Gamma", "Delta", "Epsilon"].map(t => <option key={t} value={t}>{t}</option>)}</select>}
-                      {col === "budget" && <div className="flex gap-1"><input type="number" className="dg-input w-[62px] text-center" defaultValue={filters.bmin} placeholder="Min" onChange={e => setF("bmin", e.target.value)} /><span className="text-[#8b93ac] text-[0.65rem]">–</span><input type="number" className="dg-input w-[62px] text-center" defaultValue={filters.bmax} placeholder="Max" onChange={e => setF("bmax", e.target.value)} /></div>}
-                      {col === "hours" && <div className="flex gap-1"><input type="number" className="dg-input w-[56px] text-center" placeholder="≥" onChange={e => setF("hmin", e.target.value)} /><span className="text-[#8b93ac] text-[0.65rem]">–</span><input type="number" className="dg-input w-[56px] text-center" placeholder="≤" onChange={e => setF("hmax", e.target.value)} /></div>}
+                      {col === "budget" && <div className="flex gap-1"><input type="number" className="dg-input w-[62px] text-center" defaultValue={filters.bmin} placeholder="Min" onChange={e => setF("bmin", e.target.value)} /><span className="theme-text-subtle text-[0.65rem]">–</span><input type="number" className="dg-input w-[62px] text-center" defaultValue={filters.bmax} placeholder="Max" onChange={e => setF("bmax", e.target.value)} /></div>}
+                      {col === "hours" && <div className="flex gap-1"><input type="number" className="dg-input w-[56px] text-center" placeholder="≥" onChange={e => setF("hmin", e.target.value)} /><span className="theme-text-subtle text-[0.65rem]">–</span><input type="number" className="dg-input w-[56px] text-center" placeholder="≤" onChange={e => setF("hmax", e.target.value)} /></div>}
                       {col === "start" && <input type="date" className="dg-input" onChange={e => setFI("startAfter", e.target.value)} />}
-                      {col === "deadline" && <input type="date" className="dg-input" style={{ borderColor: filters.deadlineBefore ? "#6366f1" : "var(--border-color)" }} defaultValue={filters.deadlineBefore} onChange={e => setFI("deadlineBefore", e.target.value)} />}
-                      {col === "pct" && <div className="flex gap-1"><input type="number" className="dg-input w-[52px] text-center" placeholder="≥%" onChange={e => setF("pmin", e.target.value)} /><span className="text-[#8b93ac] text-[0.65rem]">–</span><input type="number" className="dg-input w-[52px] text-center" placeholder="≤%" onChange={e => setF("pmax", e.target.value)} /></div>}
+                      {col === "deadline" && <input type="date" className={`dg-input ${filters.deadlineBefore ? 'theme-border-brand' : ''}`} defaultValue={filters.deadlineBefore} onChange={e => setFI("deadlineBefore", e.target.value)} />}
+                      {col === "pct" && <div className="flex gap-1"><input type="number" className="dg-input w-[52px] text-center" placeholder="≥%" onChange={e => setF("pmin", e.target.value)} /><span className="theme-text-subtle text-[0.65rem]">–</span><input type="number" className="dg-input w-[52px] text-center" placeholder="≤%" onChange={e => setF("pmax", e.target.value)} /></div>}
                       {col === "priority" && <select className="dg-select" value={filters.priority} onChange={e => setFI("priority", e.target.value)}><option value="">All</option>{["Critical", "High", "Medium", "Low"].map(p => <option key={p} value={p}>{p}</option>)}</select>}
-                      {col === "status" && <select className="dg-select" style={{ borderColor: filters.status ? "#6366f1" : "var(--border-color)" }} value={filters.status} onChange={e => setFI("status", e.target.value)}><option value="">All</option>{["Approved", "Pending", "Review", "Blocked", "Completed"].map(s => <option key={s} value={s}>{s}</option>)}</select>}
+                      {col === "status" && <select className={`dg-select ${filters.status ? 'theme-border-brand' : ''}`} value={filters.status} onChange={e => setFI("status", e.target.value)}><option value="">All</option>{["Approved", "Pending", "Review", "Blocked", "Completed"].map(s => <option key={s} value={s}>{s}</option>)}</select>}
                     </div>
                   </th>
                 ))}
@@ -218,29 +230,27 @@ export default function DataGridPage() {
             </thead>
             <tbody>
               {pageRows.length === 0 ? (
-                <tr><td colSpan={12} className="text-center p-12 text-[#8b93ac]">No records match. <button onClick={clearAll} className="bg-none border-none cursor-pointer font-semibold text-[#2563eb]">Clear filters</button></td></tr>
+                <tr><td colSpan={12} className="text-center p-12 theme-text-subtle">No records match. <button onClick={clearAll} className="bg-none border-none cursor-pointer font-semibold theme-text-info">Clear filters</button></td></tr>
               ) : pageRows.map((row, ri) => {
                 const sel = selected.has(row.id);
                 const pastDue = row.deadline < new Date("2026-03-01");
                 return (
-                  <tr key={row.id} onClick={() => toggleSel(row.id)} className="dg-table-row cursor-pointer"
-                    style={{ background: sel ? "#e8effe" : ri % 2 ? "#f9fafd" : "#fff", borderLeft: sel ? "3px solid #3b82f6" : "3px solid transparent" }}
-                    onMouseEnter={e => { if (!sel) e.currentTarget.style.background = "#eef2fd"; }}
-                    onMouseLeave={e => { e.currentTarget.style.background = sel ? "#e8effe" : ri % 2 ? "#f9fafd" : "#fff"; }}>
-                    <td className="dg-table-cell w-[44px] p-0"><div className="flex items-center justify-center h-[48px]"><input type="checkbox" checked={sel} onChange={() => toggleSel(row.id)} onClick={e => e.stopPropagation()} className="w-3.5 h-3.5 accent-[#2563eb] cursor-pointer" /></div></td>
-                    <td className="dg-table-cell"><span className="font-mono text-[.74rem] text-[#2563eb] font-bold">{row.id}</span></td>
+                  <tr key={row.id} onClick={() => toggleSel(row.id)}
+                    className={`dg-table-row cursor-pointer ${sel ? 'theme-tag-info border-l-4 theme-border-brand' : 'hover:bg-white/5 border-l-4 border-l-transparent'}`}>
+                    <td className="dg-table-cell w-[44px] p-0"><div className="flex items-center justify-center h-[48px]"><input type="checkbox" checked={sel} onChange={() => toggleSel(row.id)} onClick={e => e.stopPropagation()} className="w-3.5 h-3.5 accent-[var(--neon-green)] cursor-pointer" /></div></td>
+                    <td className="dg-table-cell"><span className="theme-mono text-[.74rem] theme-text-info font-bold">{row.id}</span></td>
                     <td className="dg-table-cell">
                       <div className="flex items-center gap-2">
                         <div className="w-[26px] h-[26px] rounded-md text-[0.6rem] font-extrabold text-white flex items-center justify-center flex-shrink-0" style={{ background: row.avatarColor }}>{row.initials}</div>
-                        <div><div className="font-semibold text-[0.8rem]">{row.company}</div><div className="text-[.66rem] text-[#8b93ac]">{row.team} Team</div></div>
+                        <div><div className="font-semibold text-[0.8rem]">{row.company}</div><div className="text-[.66rem] theme-text-subtle">{row.team} Team</div></div>
                       </div>
                     </td>
                     <td className="dg-table-cell"><span className="font-medium">{row.project}</span></td>
-                    <td className="dg-table-cell"><span className="text-[.75rem] px-2 py-0.5 rounded bg-[#f1f3f9] text-[#4b5775] font-semibold">{row.team}</span></td>
+                    <td className="dg-table-cell"><span className="text-[.75rem] px-2 py-0.5 rounded theme-footer-bg theme-text-muted font-semibold">{row.team}</span></td>
                     <td className="dg-table-cell"><span className="font-bold">${row.budget.toLocaleString()}</span></td>
-                    <td className="dg-table-cell"><div className="flex items-center gap-1.5"><span className="text-[#4b5775] font-medium">{row.hours.toLocaleString()}h</span><Sparkline vals={row.spark} /></div></td>
-                    <td className="dg-table-cell"><span className="text-[#4b5775] text-[.775rem]">{fmt(row.start)}</span></td>
-                    <td className="dg-table-cell"><span className={`text-[.775rem] ${pastDue ? 'text-[#dc2626] font-semibold' : 'text-[#4b5775]'}`}>{fmt(row.deadline)}</span></td>
+                    <td className="dg-table-cell"><div className="flex items-center gap-1.5"><span className="theme-text-muted font-medium">{row.hours.toLocaleString()}h</span><Sparkline vals={row.spark} /></div></td>
+                    <td className="dg-table-cell"><span className="theme-text-muted text-[.775rem]">{fmt(row.start)}</span></td>
+                    <td className="dg-table-cell"><span className={`text-[.775rem] ${pastDue ? 'theme-text-danger font-semibold' : 'theme-text-muted'}`}>{fmt(row.deadline)}</span></td>
                     <td className="dg-table-cell"><ProgressCell pct={row.pct} /></td>
                     <td className="dg-table-cell"><PriBadge p={row.priority} /></td>
                     <td className="dg-table-cell !border-r-0"><StatusPill s={row.status} /></td>
@@ -251,12 +261,15 @@ export default function DataGridPage() {
           </table>
         </div>
 
-        <div className="dg-toolbar !border-t border-var(--border-color) bg-[#f4f6fb]">
-          <span className="text-[.775rem] text-[#4b5775]">Showing <strong>{sorted.length === 0 ? 0 : (safePage - 1) * rpp + 1}–{Math.min(safePage * rpp, sorted.length)}</strong> of <strong>{sorted.length}</strong> records</span>
+        <div className="dg-toolbar !border-t theme-border theme-footer-bg">
+          <span className="text-[.775rem] theme-text-muted">Showing <strong>{sorted.length === 0 ? 0 : (safePage - 1) * rpp + 1}–{Math.min(safePage * rpp, sorted.length)}</strong> of <strong>{sorted.length}</strong> records</span>
           <div className="flex gap-1">
             {[{ label: "‹", pg: safePage - 1, disabled: safePage <= 1 }, ...dedupedPgs.map(p => ({ label: String(p), pg: typeof p === "number" ? p : -1, disabled: p === "…" })), { label: "›", pg: safePage + 1, disabled: safePage >= totalPages }].map(({ label, pg: p, disabled }, i) => (
-              disabled && label !== "‹" && label !== "›" ? <span key={i} className="w-7 text-center text-[#8b93ac]">…</span> :
-                <button key={i} disabled={disabled} onClick={() => !disabled && setPage(p)} className="dg-btn w-7 h-7 !p-0 justify-center" style={{ background: p === safePage ? "#2563eb" : "#fff", color: p === safePage ? "#fff" : "#4b5775", fontWeight: p === safePage ? 700 : 500, opacity: disabled ? .35 : 1 }}>{label}</button>
+              disabled && label !== "‹" && label !== "›" ? <span key={i} className="w-7 text-center theme-text-subtle">…</span> :
+                <button key={i} disabled={disabled} onClick={() => !disabled && setPage(p)}
+                  className={`dg-btn w-7 h-7 !p-0 justify-center transition-colors ${p === safePage ? 'theme-btn-neon' : 'theme-card-bg theme-text'} ${disabled ? 'opacity-30' : ''}`}>
+                  {label}
+                </button>
             ))}
           </div>
         </div>

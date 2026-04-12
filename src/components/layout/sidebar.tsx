@@ -50,7 +50,7 @@ export default function Sidebar() {
       )}
 
       <aside
-        className={`theme-sidebar-bg fixed left-0 top-16 z-50 h-[calc(100vh-4rem)] border-r backdrop-blur-xl transition-all duration-300 lg:relative lg:top-0 lg:z-0 lg:translate-x-0
+        className={`theme-sidebar-bg fixed left-0 top-16 z-50 h-[calc(100vh-4rem)] theme-border border-r backdrop-blur-xl transition-all duration-300 lg:relative lg:top-0 lg:z-0 lg:translate-x-0
           ${state.sidebarOpen ? 'w-60 translate-x-0' : 'w-16 translate-x-0 lg:w-16 -translate-x-full lg:translate-x-0'}`}
       >
         <div className="flex items-center justify-end p-3 lg:hidden">

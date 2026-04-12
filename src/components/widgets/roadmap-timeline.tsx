@@ -26,12 +26,12 @@ export default function RoadmapTimeline({
             <div key={index} className="relative pl-6">
               <div className="theme-card-bg absolute -left-[11px] top-1 flex h-5 w-5 items-center justify-center rounded-full">
                 {isCompleted
-                  ? <CheckCircle2 className="h-5 w-5 text-emerald-500 bg-emerald-500/10 rounded-full" />
+                  ? <CheckCircle2 className="h-5 w-5 theme-text-success theme-tag-success rounded-full" />
                   : isCurrent
-                  ? <Circle className="h-4 w-4 fill-blue-500 text-blue-500" />
+                  ? <Circle className="h-4 w-4 theme-text-info fill-current" />
                   : <Circle className="theme-text-muted h-4 w-4" />}
               </div>
-              <h4 className={`text-sm font-bold ${isCurrent ? 'text-blue-500' : 'theme-text'}`}>{step.title}</h4>
+              <h4 className={`text-sm font-bold ${isCurrent ? 'theme-text-info' : 'theme-text'}`}>{step.title}</h4>
               {step.desc && <p className="theme-text mt-1 text-xs opacity-60 leading-relaxed">{step.desc}</p>}
             </div>
           );

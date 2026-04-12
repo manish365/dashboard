@@ -15,11 +15,33 @@ export function KpPageHeader({ title, subtitle, action }: { title: string; subti
   );
 }
 
-export function KpStatCard({ label, value, icon: Icon, color, loading }: { label: string; value: string | number; icon: React.ElementType; color: string; loading?: boolean }) {
+export function KpStatCard({ label, value, icon: Icon, color, loading, variant }: { label: string; value: string | number; icon: React.ElementType; color?: string; loading?: boolean; variant?: string }) {
+  const getSemanticCls = (c: string, v?: string) => {
+    const iconVariant = v?.toLowerCase();
+    if (iconVariant === 'success') return { tag: 'theme-tag-success', text: 'theme-text-success' };
+    if (iconVariant === 'warning') return { tag: 'theme-tag-warning', text: 'theme-text-warning' };
+    if (iconVariant === 'info')    return { tag: 'theme-tag-info',    text: 'theme-text-info' };
+    if (iconVariant === 'danger')  return { tag: 'theme-tag-danger',  text: 'theme-text-danger' };
+    if (iconVariant === 'accent')  return { tag: 'theme-tag-accent',  text: 'theme-text-accent' };
+    if (iconVariant === 'orange')  return { tag: 'theme-tag-orange',  text: 'theme-text-orange' };
+
+    const map: Record<string, { tag: string; text: string }> = {
+      '#34d399': { tag: 'theme-tag-success', text: 'theme-text-success' },
+      '#fbbf24': { tag: 'theme-tag-warning', text: 'theme-text-warning' },
+      '#60a5fa': { tag: 'theme-tag-info', text: 'theme-text-info' },
+      '#f87171': { tag: 'theme-tag-danger', text: 'theme-text-danger' },
+      '#818cf8': { tag: 'theme-tag-accent', text: 'theme-text-accent' },
+      '#f97316': { tag: 'theme-tag-orange', text: 'theme-text-orange' },
+    };
+    return map[c || ''] || { tag: 'theme-footer-bg', text: 'theme-text-subtle' };
+  };
+
+  const cls = getSemanticCls(color || '', variant);
+
   return (
     <div className="dg-card p-5">
-      <div className="rounded-lg p-2.5 w-fit mb-3" style={{ background: `${color}20` }}>
-        <Icon className="h-5 w-5" style={{ color }} />
+      <div className={`rounded-lg p-2.5 w-fit mb-3 ${cls.tag}`}>
+        <Icon className={`h-5 w-5 ${cls.text}`} />
       </div>
       <p className="theme-text text-2xl font-bold">{loading ? '—' : value}</p>
       <p className="theme-text-muted text-xs mt-0.5">{label}</p>
@@ -40,6 +62,7 @@ export function KpSearch({ value, onChange, placeholder = 'Search…', className
     <div className={`relative ${className}`}>
       <Search className="theme-text-subtle absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none" />
       <input value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}
+        suppressHydrationWarning
         className="theme-input-field theme-border w-full rounded-xl pl-10 pr-4 py-2.5 text-sm outline-none border"
         {...props} />
     </div>
@@ -49,6 +72,7 @@ export function KpSearch({ value, onChange, placeholder = 'Search…', className
 export function KpSelect({ value, onChange, children, className = '' }: { value: string; onChange: (v: string) => void; children: React.ReactNode; className?: string }) {
   return (
     <select value={value} onChange={e => onChange(e.target.value)}
+      suppressHydrationWarning
       className={`theme-select theme-border rounded-xl px-3 py-2.5 text-sm outline-none border ${className}`}>
       {children}
     </select>
@@ -58,6 +82,7 @@ export function KpSelect({ value, onChange, children, className = '' }: { value:
 export function KpBtn({ children, onClick, loading, disabled, className = '' }: { children: React.ReactNode; onClick?: () => void; loading?: boolean; disabled?: boolean; className?: string }) {
   return (
     <button onClick={onClick} disabled={disabled || loading}
+      suppressHydrationWarning
       className={`theme-btn-neon flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-40 ${className}`}>
       {loading && <Loader2 className="h-4 w-4 animate-spin" />}
       {children}
@@ -68,35 +93,23 @@ export function KpBtn({ children, onClick, loading, disabled, className = '' }: 
 export function KpGhostBtn({ children, onClick, className = '' }: { children: React.ReactNode; onClick?: () => void; className?: string }) {
   return (
     <button onClick={onClick}
+      suppressHydrationWarning
       className={`theme-btn-cancel flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm border hover:bg-white/5 transition-colors ${className}`}>
       {children}
     </button>
   );
 }
 
-const BADGE_STYLES: Record<string, { bg: string; color: string }> = {
-  active:      { bg: 'rgba(52,211,153,0.1)',  color: '#34d399' },
-  success:     { bg: 'rgba(52,211,153,0.1)',  color: '#34d399' },
-  delivered:   { bg: 'rgba(52,211,153,0.1)',  color: '#34d399' },
-  published:   { bg: 'rgba(52,211,153,0.1)',  color: '#34d399' },
-  pending:     { bg: 'rgba(251,191,36,0.1)',  color: '#fbbf24' },
-  processing:  { bg: 'rgba(251,191,36,0.1)',  color: '#fbbf24' },
-  warning:     { bg: 'rgba(251,191,36,0.1)',  color: '#fbbf24' },
-  draft:       { bg: 'rgba(251,191,36,0.1)',  color: '#fbbf24' },
-  cancelled:   { bg: 'rgba(248,113,113,0.1)', color: '#f87171' },
-  error:       { bg: 'rgba(248,113,113,0.1)', color: '#f87171' },
-  inactive:    { bg: 'rgba(148,163,184,0.1)', color: 'var(--circle)' },
-  default:     { bg: 'rgba(148,163,184,0.1)', color: 'var(--circle)' },
-};
-
 export function KpBadge({ label, variant = 'default' }: { label: string; variant?: string }) {
-  const s = BADGE_STYLES[variant?.toLowerCase()] ?? BADGE_STYLES.default;
-  return (
-    <span className="text-xs px-2 py-0.5 rounded-full font-semibold capitalize border"
-      style={{ background: s.bg, color: s.color, borderColor: s.color + '33' }}>
-      {label}
-    </span>
-  );
+  const v = variant?.toLowerCase();
+  const getVariantCls = (val: string) => {
+    if (['success', 'active', 'delivered', 'published'].includes(val)) return 'theme-tag-success theme-border';
+    if (['warning', 'pending', 'processing', 'draft'].includes(val)) return 'theme-tag-warning theme-border';
+    if (['error', 'cancelled', 'blocked'].includes(val)) return 'theme-tag-danger theme-border';
+    return 'theme-tag-subtle theme-border';
+  };
+
+  return <span className={`text-xs px-2 py-0.5 rounded-full font-semibold capitalize border ${getVariantCls(v)}`}>{label}</span>;
 }
 
 interface Col<T> { key: string; label: string; align?: 'left' | 'right'; render: (row: T) => React.ReactNode; }
@@ -182,8 +195,8 @@ export function KpDataPage<T>({
 export function KpPagination({ page, totalPages, total, limit, onPage }: { page: number; totalPages: number; total: number; limit: number; onPage: (p: number) => void }) {
   if (totalPages <= 1) return null;
   return (
-    <div className="dg-toolbar !border-t border-var(--border-color) bg-[#f4f6fb]/5">
-      <span className="theme-text-muted text-sm">
+    <div className="dg-toolbar !border-t theme-border theme-footer-bg">
+      <span className="theme-text-muted text-sm px-4">
         Showing {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
       </span>
       <div className="flex gap-2">
@@ -221,8 +234,7 @@ export function KpField({ label, error, ...props }: React.InputHTMLAttributes<HT
   return (
     <div className="space-y-1">
       <label className="theme-text-muted block text-xs font-semibold">{label}</label>
-      <input className="theme-input-field w-full rounded-lg px-3 py-2.5 text-sm outline-none border transition-colors"
-        style={{ borderColor: error ? '#f87171' : 'var(--border-color)' }}
+      <input className={`theme-input-field w-full rounded-lg px-3 py-2.5 text-sm outline-none border transition-colors ${error ? 'theme-border-danger' : 'theme-border'}`}
         {...props} />
       {error && <p className="theme-text-danger text-xs">{error}</p>}
     </div>

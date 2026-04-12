@@ -35,12 +35,11 @@ export default function ApprovalsPage() {
     setShowConfirmDialog(null);
   };
 
-  // Dynamic status colors — must stay as style
-  const statusStyles: Record<ApprovalStatus, { icon: React.ElementType; color: string }> = {
-    Draft:     { icon: Clock,        color: 'var(--old-price)' },
-    Submitted: { icon: Send,         color: '#f59e0b' },
-    Approved:  { icon: CheckCircle,  color: 'var(--neon-green)' },
-    Rejected:  { icon: XCircle,      color: '#ef4444' },
+  const STATUS_CONFIG: Record<ApprovalStatus, { icon: React.ElementType; cls: string }> = {
+    Draft:     { icon: Clock,        cls: 'theme-tag-subtle' },
+    Submitted: { icon: Send,         cls: 'theme-tag-warning border theme-border' },
+    Approved:  { icon: CheckCircle,  cls: 'theme-tag-brand' },
+    Rejected:  { icon: XCircle,      cls: 'theme-tag-danger border theme-border' },
   };
 
   const getColumnDefs = (dataKey: string): ColDef[] => {
@@ -61,13 +60,13 @@ export default function ApprovalsPage() {
       {/* Stats — color is dynamic, stays as style */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         {[
-          { label: 'Pending Review', count: datasets.filter(([_, m]) => m.status === 'Submitted').length, icon: Clock,        color: '#f59e0b' },
-          { label: 'Approved',       count: datasets.filter(([_, m]) => m.status === 'Approved').length,  icon: FileCheck,    color: 'var(--neon-green)' },
-          { label: 'Rejected',       count: datasets.filter(([_, m]) => m.status === 'Rejected').length,  icon: AlertTriangle,color: '#ef4444' },
+          { label: 'Pending Review', count: datasets.filter(([_, m]) => m.status === 'Submitted').length, icon: Clock,        cls: 'theme-tag-warning border theme-border' },
+          { label: 'Approved',       count: datasets.filter(([_, m]) => m.status === 'Approved').length,  icon: FileCheck,    cls: 'theme-tag-brand' },
+          { label: 'Rejected',       count: datasets.filter(([_, m]) => m.status === 'Rejected').length,  icon: AlertTriangle,cls: 'theme-tag-danger border theme-border' },
         ].map((stat) => (
-          <div key={stat.label} className="theme-card-bg flex items-center gap-4 rounded-xl border border-white/10 p-4">
-            <div className="rounded-lg p-2.5" style={{ background: `${stat.color}15` }}>
-              <stat.icon className="h-5 w-5" style={{ color: stat.color }} />
+          <div key={stat.label} className="theme-card-bg flex items-center gap-4 rounded-xl border p-4">
+            <div className={`rounded-lg p-2.5 ${stat.cls}`}>
+              <stat.icon className="h-5 w-5" />
             </div>
             <div>
               <p className="theme-text text-2xl font-bold">{stat.count}</p>
@@ -78,7 +77,7 @@ export default function ApprovalsPage() {
       </div>
 
       {datasets.length === 0 ? (
-        <div className="theme-card-bg flex flex-col items-center justify-center rounded-xl border border-white/10 py-16">
+        <div className="theme-card-bg flex flex-col items-center justify-center rounded-xl border theme-border py-16">
           <Clock className="theme-text-subtle h-12 w-12 mb-4" />
           <p className="theme-text-muted text-lg font-medium">No submissions yet</p>
           <p className="theme-text-subtle text-sm">Data managers can submit datasets from individual data pages</p>
@@ -86,15 +85,15 @@ export default function ApprovalsPage() {
       ) : (
         <div className="space-y-3">
           {datasets.map(([key, meta]) => {
-            const StatusIcon = statusStyles[meta.status].icon;
+            const config = STATUS_CONFIG[meta.status];
+            const StatusIcon = config.icon;
             const pageLabel = DATA_PAGE_LABELS[meta.tableName as keyof typeof DATA_PAGE_LABELS] || meta.tableName;
-            const color = statusStyles[meta.status].color;
             return (
-              <div key={key} className="theme-card-bg rounded-xl border border-white/10 p-4 transition-all hover:border-white/15">
+              <div key={key} className="theme-card-bg rounded-xl border theme-border p-4 transition-all hover:border-[var(--neon-green)]/30">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-4">
-                    <div className="rounded-lg p-2 border" style={{ borderColor: `${color}30`, background: `${color}10` }}>
-                      <StatusIcon className="h-4 w-4" style={{ color }} />
+                    <div className={`rounded-lg p-2 border ${config.cls}`}>
+                      <StatusIcon className="h-4 w-4" />
                     </div>
                     <div>
                       <p className="theme-text text-sm font-semibold">{pageLabel}</p>
@@ -105,12 +104,11 @@ export default function ApprovalsPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="rounded-full border px-2.5 py-0.5 text-xs font-medium"
-                      style={{ borderColor: `${color}30`, color, background: `${color}10` }}>
+                    <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${config.cls}`}>
                       {meta.status}
                     </span>
-                    <button onClick={() => setViewingDataset(key)}
-                      className="theme-text-muted flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium transition-all hover:bg-white/5">
+                     <button onClick={() => setViewingDataset(key)}
+                      className="theme-text-muted flex items-center gap-1.5 rounded-lg border theme-border px-3 py-1.5 text-xs font-medium transition-all hover:bg-white/5">
                       <Eye className="h-3.5 w-3.5" /> View
                     </button>
                     {isApprover && meta.status === 'Submitted' && (
@@ -119,8 +117,8 @@ export default function ApprovalsPage() {
                           className="theme-btn-neon flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all hover:opacity-90">
                           <CheckCircle className="h-3.5 w-3.5" /> Approve
                         </button>
-                        <button onClick={() => setShowConfirmDialog({ key, action: 'reject' })}
-                          className="flex items-center gap-1.5 rounded-lg bg-red-600/80 px-3 py-1.5 text-xs font-medium text-white transition-all hover:bg-red-500">
+                         <button onClick={() => setShowConfirmDialog({ key, action: 'reject' })}
+                          className="theme-tag-danger flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all hover:opacity-80">
                           <XCircle className="h-3.5 w-3.5" /> Reject
                         </button>
                       </>

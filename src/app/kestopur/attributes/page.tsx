@@ -45,7 +45,7 @@ export default function AttributesPage() {
 
   const cols = [
     { key: 'name', label: 'Code / Name', render: (a: Attr) => <div><p className="text-sm font-semibold theme-text">{a.attribute_name}</p><p className="text-xs font-mono theme-text-subtle">{a.attribute_code}</p></div> },
-    { key: 'type', label: 'Type', render: (a: Attr) => <span className="text-xs px-2 py-0.5 rounded font-medium" style={{ background: 'rgba(96,165,250,0.1)', color: '#60a5fa' }}>{a.attribute_type}</span> },
+    { key: 'type', label: 'Type', render: (a: Attr) => <span className="text-xs px-2 py-0.5 rounded font-medium theme-tag-info">{a.attribute_type}</span> },
     { key: 'group', label: 'Group', render: (a: Attr) => <span className="text-sm theme-text-muted">{a.attribute_group || '—'}</span> },
     { key: 'required', label: 'Required', render: (a: Attr) => <KpBadge label={a.is_required ? 'Required' : 'Optional'} variant={a.is_required ? 'active' : 'default'} /> },
     {

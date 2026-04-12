@@ -15,8 +15,8 @@ export const ROLE_LABELS: Record<UserRole, string> = {
 };
 
 export const ROLE_COLORS: Record<UserRole, string> = {
-  [UserRole.DATA_MANAGER]: 'bg-[#00e9bf]/15 text-[#00e9bf] border-[#00e9bf]/30',
-  [UserRole.APPROVER]: 'bg-[#12DAA8]/15 text-[#12DAA8] border-[#12DAA8]/30',
+  [UserRole.DATA_MANAGER]: 'theme-tag-brand',
+  [UserRole.APPROVER]: 'theme-tag-success',
 };
 
 export function canEdit(role: UserRole): boolean {

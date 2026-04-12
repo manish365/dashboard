@@ -47,7 +47,7 @@ export default function PermissionsPage() {
                     <div key={perm.id} className="rounded-xl border p-4 transition-all hover:border-[var(--neon-green)]/20 theme-footer-bg theme-border">
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <Shield className="h-4 w-4 flex-shrink-0" style={{ color: '#818cf8' }} />
+                          <Shield className="h-4 w-4 flex-shrink-0 theme-text-accent" />
                           <p className="text-sm font-medium theme-text">{perm.name}</p>
                         </div>
                         <div className="flex gap-1">

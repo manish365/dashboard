@@ -46,7 +46,7 @@ export default function ProfilePage() {
             {profile.roles?.length > 0 && (
               <div className="flex gap-1.5 mt-2 flex-wrap">
                 {profile.roles.map((r: any) => (
-                  <span key={r.id || r} className="text-xs px-2 py-0.5 rounded-full font-semibold" style={{ background: 'rgba(129,140,248,0.1)', color: '#818cf8' }}>
+                  <span key={r.id || r} className="text-xs px-2 py-0.5 rounded-full font-semibold theme-tag-accent">
                     {typeof r === 'string' ? r : r.name}
                   </span>
                 ))}

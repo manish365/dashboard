@@ -38,10 +38,10 @@ export default function OrdersPage() {
   const fmtCurrency = (n: number) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0 }).format(n || 0);
 
   const stats = [
-    { label: 'Total', value: pagination.total, color: 'var(--neon-green)' },
-    { label: 'Pending', value: orders.filter(o => o.orderStatus === 'pending').length, color: '#fbbf24' },
-    { label: 'Processing', value: orders.filter(o => ['confirmed', 'processing'].includes(o.orderStatus)).length, color: '#f97316' },
-    { label: 'Delivered', value: orders.filter(o => o.orderStatus === 'delivered').length, color: '#34d399' },
+    { label: 'Total', value: pagination.total, className: 'theme-text-brand' },
+    { label: 'Pending', value: orders.filter(o => o.orderStatus === 'pending').length, className: 'theme-text-warning' },
+    { label: 'Processing', value: orders.filter(o => ['confirmed', 'processing'].includes(o.orderStatus)).length, className: 'theme-text-orange' },
+    { label: 'Delivered', value: orders.filter(o => o.orderStatus === 'delivered').length, className: 'theme-text-success' },
   ];
 
   const cols = [
@@ -68,7 +68,7 @@ export default function OrdersPage() {
         {stats.map(s => (
           <div key={s.label} className="rounded-xl border p-4 theme-card-bg">
             <p className="text-xs theme-text-muted">{s.label}</p>
-            <p className="text-2xl font-bold mt-1" style={{ color: s.color }}>{s.value}</p>
+            <p className={`text-2xl font-bold mt-1 ${s.className}`}>{s.value}</p>
           </div>
         ))}
       </div>

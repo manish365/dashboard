@@ -38,7 +38,7 @@ export default function DataTable({
           </thead>
           <tbody className="theme-table-body">
             {data.map((row, i) => (
-              <tr key={i} className="theme-border border-t hover:bg-slate-500/5 transition-colors">
+              <tr key={i} className="theme-border border-t hover:bg-white/5 transition-colors">
                 {columns.map((col) => (
                   <td key={col.key} className="theme-text px-5 py-3 font-medium">
                     {row[col.key]}

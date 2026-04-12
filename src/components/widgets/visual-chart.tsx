@@ -16,6 +16,19 @@ export default function VisualChart({
 
   const maxValue = parsedData.length > 0 ? Math.max(...parsedData.map((d: any) => d.value ?? 0)) : 100;
 
+  const getBgClass = (c: string) => {
+    const map: Record<string, string> = {
+      'var(--neon-green)': 'theme-neon-bg',
+      '#60a5fa': 'theme-tag-info',
+      '#fbbf24': 'theme-tag-warning',
+      '#f87171': 'theme-tag-danger',
+      '#a78bfa': 'theme-tag-purple',
+      '#34d399': 'theme-tag-success',
+      '#818cf8': 'theme-tag-accent',
+    };
+    return map[c] || 'theme-neon-bg';
+  };
+
   return (
     <div className="dg-card p-5 flex flex-col">
       <div className="mb-6">
@@ -26,14 +39,15 @@ export default function VisualChart({
       <div className="flex items-end gap-3 w-full" style={{ height: `${height}px` }}>
         {parsedData.map((item: any, i: number) => {
           const pct = maxValue > 0 ? ((item.value || 0) / maxValue) * 100 : 0;
+          const bgCls = getBgClass(color);
           return (
             <div key={i} className="group relative flex flex-1 flex-col items-center justify-end h-full">
-              <div className="absolute -top-8 hidden rounded bg-slate-800 px-2 py-1 text-[10px] text-white shadow-lg group-hover:block z-10 whitespace-nowrap">
+              <div className="absolute -top-8 hidden rounded theme-dropdown-bg border px-2 py-1 text-[10px] theme-text shadow-lg group-hover:block z-10 whitespace-nowrap">
                 {item.label}: {item.value}
               </div>
-              {/* height % and color are dynamic props — must stay as style */}
-              <div className="w-full rounded-t-sm transition-all duration-500 ease-out hover:opacity-80"
-                style={{ height: `${pct}%`, background: color, opacity: 0.9, minHeight: pct > 0 ? '4px' : '0' }} />
+              {/* height % is dynamic — color and other styles use classes */}
+              <div className={`w-full rounded-t-sm transition-all duration-500 ease-out hover:opacity-80 opacity-90 ${bgCls} ${pct > 0 ? 'min-h-[4px]' : 'min-h-0'}`}
+                style={{ height: `${pct}%` }} />
               <span className="theme-text mt-2 text-[10px] font-medium opacity-60">{item.label}</span>
             </div>
           );

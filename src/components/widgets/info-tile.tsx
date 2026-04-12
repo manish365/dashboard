@@ -17,7 +17,7 @@ export default function InfoTile({
   return (
     <div className="theme-panel flex items-start gap-4 rounded-2xl border p-5">
       <div className="theme-footer-bg rounded-xl border p-3">
-        <Icon className="h-6 w-6 text-blue-500" />
+        <Icon className="h-6 w-6 theme-text-info" />
       </div>
       <div>
         <h4 className="theme-text text-sm font-bold">{label}</h4>

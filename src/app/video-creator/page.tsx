@@ -50,7 +50,7 @@ function IdeasSection({ onSelectTitle }: { onSelectTitle: (t: string) => void })
           <p className="theme-text-subtle text-xs font-semibold uppercase tracking-wide">Suggested Titles — click to use</p>
           {ideas.map((idea, i) => (
             <button key={i} onClick={() => onSelectTitle(idea)}
-              className="theme-text-muted theme-border w-full text-left text-sm p-3 rounded-lg border transition-all hover:border-[var(--neon-green)] hover:bg-white/5">
+              className="theme-text-muted theme-border w-full text-left text-sm p-3 rounded-lg border transition-all hover:bg-white/5">
               {idea}
             </button>
           ))}
@@ -130,7 +130,7 @@ function ScriptSection({ initialTitle }: { initialTitle: string }) {
           <p className="theme-text-subtle text-xs font-semibold uppercase tracking-wide">Scene Editor</p>
           {scenes.map((scene, idx) => (
             /* borderLeft neon accent is intentional design — kept as style */
-            <div key={idx} className="theme-footer-bg theme-border rounded-xl border p-4 space-y-3 border-l-4 border-l-[var(--neon-green)]">
+            <div key={idx} className="theme-footer-bg theme-border rounded-xl border p-4 space-y-3 border-l-4 theme-border-brand">
               <div className="flex items-center justify-between">
                 <h4 className="theme-text font-semibold text-sm">Scene {scene.scene_number}</h4>
                 <span className="theme-text-subtle text-xs">{scene.duration}s</span>
@@ -194,10 +194,10 @@ function ProjectsSection() {
       <h2 className="theme-text font-semibold">Your Video Projects</h2>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map((proj) => (
-          <div key={proj.id} className="theme-footer-bg theme-border rounded-xl border p-4 space-y-2 transition-all hover:border-[var(--neon-green)]/30">
+          <div key={proj.id} className="theme-footer-bg theme-border rounded-xl border p-4 space-y-2 transition-all hover:bg-white/5">
             <p className="theme-text font-medium text-sm line-clamp-2">{proj.title}</p>
             <p className="theme-text-muted text-xs">{proj.niche}</p>
-            <span className={`text-xs px-2 py-0.5 rounded-full ${proj.status === 'completed' ? 'bg-green-500/10 text-green-400' : 'bg-white/5 text-gray-400'}`}>{proj.status}</span>
+            <span className={`text-xs px-2 py-0.5 rounded-full ${proj.status === 'completed' ? 'theme-tag-success' : 'theme-tag-subtle'}`}>{proj.status}</span>
           </div>
         ))}
       </div>

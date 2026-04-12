@@ -24,23 +24,23 @@ export default function CouponsPage() {
   });
 
   const cols = [
-    { key: 'code', label: 'Code', render: (c: Coupon) => <div className="flex items-center gap-2"><Tag className="h-4 w-4" style={{ color: '#60a5fa' }} /><span className="text-sm font-medium theme-text">{c.couponCode}</span></div> },
+    { key: 'code', label: 'Code', render: (c: Coupon) => <div className="flex items-center gap-2"><Tag className="h-4 w-4 theme-text-info" /><span className="text-sm font-medium theme-text">{c.couponCode}</span></div> },
     { key: 'name', label: 'Name', render: (c: Coupon) => <span className="text-sm theme-text-muted">{c.couponName}</span> },
     { key: 'type', label: 'Type', render: (c: Coupon) => <span className="text-sm capitalize theme-text-muted">{c.couponType?.replace('_', ' ')}</span> },
     { key: 'value', label: 'Value', render: (c: Coupon) => <span className="text-sm font-medium flex items-center gap-1 theme-text">{c.couponType === 'percentage_discount' ? <><Percent className="h-3.5 w-3.5" />{c.discountValue}%</> : <><DollarSign className="h-3.5 w-3.5" />₹{c.discountValue}</>}</span> },
     { key: 'usage', label: 'Usage', render: (c: Coupon) => <span className="text-sm theme-text-muted">{c.timesUsed || 0} / {c.usageLimit || '∞'}</span> },
     { key: 'expiry', label: 'Valid Until', render: (c: Coupon) => <span className="text-sm flex items-center gap-1 theme-text-subtle"><Calendar className="h-3.5 w-3.5" />{c.validUntil ? new Date(c.validUntil).toLocaleDateString() : 'No expiry'}</span> },
     { key: 'status', label: 'Status', render: (c: Coupon) => <KpBadge label={c.isActive ? 'Active' : 'Inactive'} variant={c.isActive ? 'active' : 'inactive'} /> },
-    { key: 'actions', label: 'Actions', align: 'right' as const, render: (c: Coupon) => <button onClick={() => handleDelete(c.couponId)} className="p-1.5 rounded-lg hover:bg-red-500/10 theme-text-danger"><Trash2 className="h-4 w-4" /></button> },
+    { key: 'actions', label: 'Actions', align: 'right' as const, render: (c: Coupon) => <button onClick={() => handleDelete(c.couponId)} className="p-1.5 rounded-lg hover:bg-white/10 theme-text-danger"><Trash2 className="h-4 w-4" /></button> },
   ];
 
   return (
     <div className="space-y-6">
       <KpPageHeader title="Coupons & Promotions" subtitle="Manage discount coupons and promotional codes" action={<KpBtn><Plus className="h-4 w-4" /> Create Coupon</KpBtn>} />
       <div className="grid grid-cols-3 gap-4">
-        <KpStatCard label="Total Coupons" value={coupons.length} icon={Tag} color="#60a5fa" />
-        <KpStatCard label="Active" value={coupons.filter(c => c.isActive).length} icon={Tag} color="#34d399" />
-        <KpStatCard label="Inactive" value={coupons.filter(c => !c.isActive).length} icon={Tag} color="var(--circle)" />
+        <KpStatCard label="Total Coupons" value={coupons.length} icon={Tag} variant="info" />
+        <KpStatCard label="Active" value={coupons.filter(c => c.isActive).length} icon={Tag} variant="success" />
+        <KpStatCard label="Inactive" value={coupons.filter(c => !c.isActive).length} icon={Tag} variant="subtle" />
       </div>
       <div className="flex gap-3">
         <KpSearch value={search} onChange={setSearch} placeholder="Search coupons..." className="flex-1 max-w-sm" />

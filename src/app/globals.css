@@ -139,6 +139,112 @@
 
 /* ── Danger / delete ── */
 .theme-text-danger { color: #f87171; }
+.theme-tag-danger {
+  background-color: rgba(248, 113, 113, 0.1);
+  color: #f87171;
+}
+.theme-bg-danger { background-color: #f87171; }
+.theme-border-danger { border-color: #f87171; }
+
+/* ── Success ── */
+.theme-text-success { color: #34d399; }
+.theme-tag-success {
+  background-color: rgba(52, 211, 153, 0.1);
+  color: #34d399;
+}
+.theme-bg-success { background-color: #34d399; }
+.theme-border-success { border-color: #34d399; }
+
+/* ── Info ── */
+.theme-text-info { color: #60a5fa; }
+.theme-tag-info {
+  background-color: rgba(96, 165, 250, 0.1);
+  color: #60a5fa;
+}
+.theme-bg-info { background-color: #60a5fa; }
+.theme-border-info { border-color: #60a5fa; }
+
+/* ── Warning ── */
+.theme-text-warning { color: #fbbf24; }
+.theme-tag-warning {
+  background-color: rgba(251, 191, 36, 0.1);
+  color: #fbbf24;
+}
+.theme-bg-warning { background-color: #fbbf24; }
+.theme-border-warning { border-color: #fbbf24; }
+
+/* ── Accent (Indigo) ── */
+.theme-text-accent { color: #818cf8; }
+.theme-tag-accent {
+  background-color: rgba(129, 140, 248, 0.1);
+  color: #818cf8;
+}
+.theme-bg-accent { background-color: #818cf8; }
+.theme-border-accent { border-color: #818cf8; }
+
+.theme-btn-accent {
+  background-color: #818cf8;
+  color: var(--text-color-black);
+  box-shadow: 0 4px 12px rgba(129, 140, 248, 0.2);
+}
+.theme-btn-accent:hover { opacity: 0.9; }
+
+/* ── Orange ── */
+.theme-text-orange { color: #f97316; }
+.theme-tag-orange {
+  background-color: rgba(249, 115, 22, 0.1);
+  color: #f97316;
+}
+.theme-bg-orange    { background-color: #f97316; }
+.theme-border-orange { border-color: #f97316; }
+
+/* ── Purple ── */
+.theme-text-purple { color: #a78bfa; }
+.theme-tag-purple {
+  background-color: rgba(167, 139, 250, 0.1);
+  color: #a78bfa;
+}
+.theme-bg-purple    { background-color: #a78bfa; }
+.theme-border-purple { border-color: #a78bfa; }
+
+/* ── Pink ── */
+.theme-text-pink { color: #ec4899; }
+.theme-tag-pink {
+  background-color: rgba(236, 72, 153, 0.1);
+  color: #ec4899;
+}
+
+/* ── Teal ── */
+.theme-text-teal { color: #2dd4bf; }
+.theme-tag-teal {
+  background-color: rgba(45, 212, 191, 0.1);
+  color: #2dd4bf;
+}
+
+/* ── Brand / Neon ── */
+.theme-text-brand { color: var(--neon-green); }
+.theme-tag-brand {
+  background-color: rgba(0, 233, 191, 0.1);
+  color: var(--neon-green);
+}
+
+/* ── Layout Utilities ── */
+.h-screen-offset { height: calc(100vh - 8rem); }
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.theme-text-left   { text-align: left; }
+.theme-text-center { text-align: center; }
+.theme-text-right  { text-align: right; }
+
+.theme-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
 
 /* ── Progress bar track ── */
 .theme-progress-track { background-color: var(--foot-color); }

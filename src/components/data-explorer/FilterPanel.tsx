@@ -34,7 +34,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ columns, filters, onCh
           <Filter className="de-neon h-3.5 w-3.5" />
           <h4 className="de-text text-[10px] font-black uppercase tracking-widest">Filter Layers</h4>
         </div>
-        <button onClick={add} className="de-neon de-hover-bg-neon flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest bg-[#00e9bf]/5 px-3 py-1.5 rounded-lg border border-[#00e9bf]/20 transition-all active:scale-95">
+        <button onClick={add} className="de-neon de-hover-bg-neon flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest theme-tag-accent px-3 py-1.5 rounded-lg border theme-border transition-all active:scale-95">
           <Plus className="h-3 w-3" />
           Add Layer
         </button>
@@ -49,21 +49,21 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ columns, filters, onCh
           filters.map((filter, idx) => (
             <div key={idx} className="de-input-bg de-border flex items-center gap-1.5 p-2 rounded-xl border shadow-sm animate-in fade-in slide-in-from-left-2 duration-300">
               <select value={filter.column} onChange={(e) => update(idx, { column: e.target.value })}
-                className="de-select flex-1 min-w-0 text-[10px] h-7 border rounded-lg px-2 focus:outline-none focus:ring-1 focus:ring-[#00e9bf] transition-all font-bold appearance-none cursor-pointer">
+                className="de-select flex-1 min-w-0 text-[10px] h-7 border rounded-lg px-2 focus:outline-none focus:ring-1 focus:ring-[var(--neon-green)] transition-all font-bold appearance-none cursor-pointer">
                 {columns.map(col => {
                   const parts = col.split('.');
                   return <option key={col} value={col}>{parts.length > 1 ? `${parts[0].toUpperCase()} • ${parts[1].toUpperCase()}` : col.toUpperCase()}</option>;
                 })}
               </select>
               <select value={filter.operator} onChange={(e) => update(idx, { operator: e.target.value })}
-                className="de-select w-20 text-[10px] h-7 border rounded-lg px-2 focus:outline-none focus:ring-1 focus:ring-[#00e9bf] transition-all font-bold appearance-none cursor-pointer text-center">
+                className="de-select w-20 text-[10px] h-7 border rounded-lg px-2 focus:outline-none focus:ring-1 focus:ring-[var(--neon-green)] transition-all font-bold appearance-none cursor-pointer text-center">
                 {OPERATORS.map(op => <option key={op.value} value={op.value}>{op.value.toUpperCase()}</option>)}
               </select>
               {filter.operator !== 'is_null' && (
                 <input type="text" value={filter.value} onChange={(e) => update(idx, { value: e.target.value })} placeholder="..."
-                  className="de-input flex-1 min-w-0 text-[10px] h-7 border rounded-lg px-2 focus:ring-1 focus:ring-[#00e9bf] transition-all font-medium" />
+                  className="de-input flex-1 min-w-0 text-[10px] h-7 border rounded-lg px-2 focus:ring-1 focus:ring-[var(--neon-green)] transition-all font-medium" />
               )}
-              <button onClick={() => remove(idx)} className="de-text-muted p-1.5 hover:bg-red-500/10 hover:text-red-500 rounded-lg transition-all active:scale-90">
+              <button onClick={() => remove(idx)} className="theme-text-muted p-1.5 hover:bg-white/10 hover:theme-text-danger rounded-lg transition-all active:scale-90">
                 <X className="h-3.5 w-3.5" />
               </button>
             </div>

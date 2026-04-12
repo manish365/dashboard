@@ -40,8 +40,7 @@ export default function CustomersPage() {
     {
       key: 'info', label: 'Customer', render: (c: Customer) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
-            style={{ background: 'rgba(96,165,250,0.15)', color: '#60a5fa' }}>
+          <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 theme-tag-info">
             {c.first_name?.[0] || '?'}{c.last_name?.[0] || ''}
           </div>
           <div>

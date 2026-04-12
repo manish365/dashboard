@@ -38,7 +38,7 @@ export default function AccordionGroup({
           >
             <span className="text-sm font-bold">{item.title}</span>
             <ChevronDown 
-              className={`h-4 w-4 transition-transform duration-200 ${openIndex === index ? 'rotate-180 text-blue-500' : 'opacity-50'}`} 
+              className={`h-4 w-4 transition-transform duration-200 ${openIndex === index ? 'rotate-180 theme-text-info' : 'opacity-50'}`} 
             />
           </button>
           

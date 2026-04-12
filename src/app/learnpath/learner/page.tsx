@@ -55,10 +55,7 @@ export default function LearnerCatalogPage() {
         <div className="flex gap-2 flex-wrap">
           {['', 'BEGINNER', 'INTERMEDIATE', 'ADVANCED'].map(l => (
             <button key={l} onClick={() => setLevelFilter(l)}
-              className="px-3 py-1.5 rounded-full text-xs font-medium border transition-all"
-              style={levelFilter === l
-                ? { background: 'rgba(0,233,191,0.1)', borderColor: 'rgba(0,233,191,0.4)', color: 'var(--neon-green)' }
-                : { background: 'var(--foot-color)', borderColor: 'var(--border-color)', color: 'var(--old-price)' }}>
+              className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${levelFilter === l ? 'theme-tag-brand border-emerald-500/40' : 'theme-footer-bg theme-border theme-text-subtle'}`}>
               {l === '' ? 'All Levels' : l.charAt(0) + l.slice(1).toLowerCase()}
             </button>
           ))}
@@ -103,8 +100,7 @@ export default function LearnerCatalogPage() {
                 <div className="mt-auto">
                   {isEnrolled ? (
                     <Link href={`/learnpath/learner/roadmap/${r.id}`}
-                      className="theme-text-neon flex items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-medium border transition-all hover:bg-white/5"
-                      style={{ borderColor: 'rgba(0,233,191,0.3)' }}>
+                      className="theme-text-neon flex items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-medium border transition-all hover:bg-white/5 border-emerald-500/30">
                       {progress === 100 ? <CheckCircle className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                       {progress === 100 ? 'Completed!' : 'Continue Learning'}
                     </Link>

@@ -94,7 +94,7 @@ export default function LearnerRoadmapDetail() {
         </div>
         <ProgressBar pct={progressPct} label={`${completedCount}/${totalCount} tasks`} />
         {progressPct === 100 && (
-          <p className="flex items-center gap-1.5 mt-2 text-sm font-semibold" style={{ color: '#34d399' }}>
+          <p className="flex items-center gap-1.5 mt-2 text-sm font-semibold theme-text-success">
             <CheckCircle className="h-4 w-4" /> Roadmap Complete! 🎉
           </p>
         )}
@@ -103,8 +103,8 @@ export default function LearnerRoadmapDetail() {
       {/* Google Doc */}
       <Card className="p-5">
         <div className="flex items-center gap-3 mb-4">
-          <div className="rounded-lg p-2" style={{ background: 'rgba(96,165,250,0.1)', border: '1px solid rgba(96,165,250,0.2)' }}>
-            <FileText className="h-5 w-5" style={{ color: '#60a5fa' }} />
+          <div className="rounded-lg p-2 theme-tag-info">
+            <FileText className="h-5 w-5 theme-text-info" />
           </div>
           <div>
             <p className="font-semibold text-sm theme-text">Google Doc</p>
@@ -114,16 +114,14 @@ export default function LearnerRoadmapDetail() {
         {savedDoc && !editingDoc ? (
           <div className="flex items-center gap-2 flex-wrap">
             <a href={savedDoc} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border hover:opacity-80 transition-opacity"
-              style={{ background: 'rgba(96,165,250,0.1)', borderColor: 'rgba(96,165,250,0.2)', color: '#60a5fa' }}>
+              className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border hover:opacity-80 transition-opacity theme-tag-info">
               <ExternalLink className="h-3.5 w-3.5" /> Open in Google Docs
             </a>
             <GhostBtn onClick={() => { setDocUrl(savedDoc); setEditingDoc(true); }} className="text-xs py-1.5 px-3">
               <Link2 className="h-3.5 w-3.5" /> Change URL
             </GhostBtn>
             <button onClick={() => { setDocUrl(''); saveDocUrl(); }}
-              className="text-xs px-3 py-1.5 rounded-lg border hover:bg-red-500/10 transition-colors"
-              style={{ borderColor: 'rgba(248,113,113,0.2)', color: '#f87171' }}>
+              className="text-xs px-3 py-1.5 rounded-lg border hover:bg-red-500/10 transition-colors theme-text-danger border-red-500/20">
               <X className="h-3.5 w-3.5 inline mr-1" /> Remove
             </button>
           </div>
@@ -138,7 +136,7 @@ export default function LearnerRoadmapDetail() {
               </PrimaryBtn>
               {editingDoc && <GhostBtn onClick={() => setEditingDoc(false)} className="text-sm py-1.5 px-3">Cancel</GhostBtn>}
             </div>
-            {docSaved && <p className="text-xs" style={{ color: '#34d399' }}>Google Doc URL saved!</p>}
+            {docSaved && <p className="text-xs theme-text-success">Google Doc URL saved!</p>}
           </div>
         )}
       </Card>
@@ -149,20 +147,18 @@ export default function LearnerRoadmapDetail() {
           const done = isStepDone(step);
           const stepCompleted = step.todos.filter(t => isTodoDone(t.id)).length;
           return (
-            <div key={step.id} className="theme-card-bg rounded-xl border overflow-hidden transition-colors"
-              style={{ borderColor: done ? 'rgba(52,211,153,0.3)' : 'var(--border-color)' }}>
+            <div key={step.id} className={`theme-card-bg rounded-xl border overflow-hidden transition-colors ${done ? 'border-green-500/30' : 'theme-border'}`}>
               {/* Step trigger */}
               <button type="button"
                 onClick={() => setOpenSteps(p => ({ ...p, [si]: !p[si] }))}
                 className="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-white/5 transition-colors">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-all"
-                  style={{ background: done ? 'rgba(52,211,153,0.15)' : 'var(--foot-color)', border: `1.5px solid ${done ? 'rgba(52,211,153,0.4)' : 'var(--border-color)'}` }}>
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-all border-1.5 ${done ? 'theme-tag-success border-green-500/40' : 'theme-footer-bg theme-border'}`}>
                   {done
-                    ? <CheckCircle className="h-4 w-4" style={{ color: '#34d399' }} />
+                    ? <CheckCircle className="h-4 w-4 theme-text-success" />
                     : <span className="text-xs font-bold theme-text-subtle">{si + 1}</span>}
                 </div>
                 <div className="flex-1 text-left min-w-0">
-                  <p className="text-sm font-semibold truncate" style={{ color: done ? '#34d399' : 'var(--text-color)' }}>{step.title}</p>
+                  <p className={`text-sm font-semibold truncate ${done ? 'theme-text-success' : 'theme-text'}`}>{step.title}</p>
                   <p className="text-xs theme-text-subtle">{stepCompleted}/{step.todos.length} completed · {step.estimatedHours}h</p>
                 </div>
                 {openSteps[si]
@@ -180,8 +176,7 @@ export default function LearnerRoadmapDetail() {
                       <div className="space-y-1">
                         {step.resources.map((url, i) => (
                           <a key={i} href={url} target="_blank" rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 text-sm hover:opacity-80 transition-opacity truncate"
-                            style={{ color: '#818cf8' }}>
+                            className="flex items-center gap-1.5 text-sm hover:opacity-80 transition-opacity truncate theme-text-accent">
                             <ExternalLink className="h-3.5 w-3.5 flex-shrink-0" />
                             <span className="truncate">{url}</span>
                           </a>
@@ -198,18 +193,15 @@ export default function LearnerRoadmapDetail() {
                         const isToggling = toggling === todo.id;
                         return (
                           <button key={todo.id} onClick={() => toggleTodo(todo.id)} disabled={isToggling}
-                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border text-left transition-all"
-                            style={{ background: isDone ? 'rgba(52,211,153,0.05)' : 'var(--foot-color)', borderColor: isDone ? 'rgba(52,211,153,0.25)' : 'var(--border-color)' }}>
-                            <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all"
-                              style={{ borderColor: isDone ? '#34d399' : 'var(--border-color)', background: isDone ? '#34d399' : 'transparent' }}>
+                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border text-left transition-all ${isDone ? 'bg-green-500/5 border-green-500/25' : 'theme-footer-bg theme-border'}`}>
+                            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${isDone ? 'border-green-500 bg-green-500' : 'theme-border transparent'}`}>
                               {isToggling
-                                ? <Loader2 className="h-3 w-3 animate-spin" style={{ color: isDone ? '#fff' : 'var(--circle)' }} />
+                                ? <Loader2 className={`h-3 w-3 animate-spin ${isDone ? 'text-white' : 'theme-text-subtle'}`} />
                                 : isDone
                                   ? <CheckCircle className="h-3 w-3 text-white" />
                                   : <Circle className="h-3 w-3 opacity-0" />}
                             </div>
-                            <span className="text-sm transition-all"
-                              style={{ color: isDone ? 'var(--circle)' : 'var(--text-color)', textDecoration: isDone ? 'line-through' : 'none' }}>
+                            <span className={`text-sm transition-all ${isDone ? 'theme-text-subtle line-through' : 'theme-text'}`}>
                               {todo.label}
                             </span>
                           </button>

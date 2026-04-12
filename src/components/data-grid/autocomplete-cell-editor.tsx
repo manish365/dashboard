@@ -19,9 +19,9 @@ const AutocompleteCellEditor = forwardRef((props: AutocompleteCellEditorProps, r
   }));
 
   return (
-    <div className="theme-dropdown-bg min-w-[200px] overflow-hidden rounded-lg border shadow-2xl">
+    <div className="theme-dropdown-bg min-w-[200px] overflow-hidden rounded-lg border theme-border shadow-2xl">
       <input ref={inputRef}
-        className="theme-input theme-border-header w-full border-b px-3 py-1.5 text-sm outline-none focus:ring-1 focus:ring-blue-500/50"
+        className="theme-input theme-border-header w-full border-b px-3 py-1.5 text-sm outline-none focus:theme-border-brand"
         value={value}
         onChange={(e) => { setValue(e.target.value); setIsOpen(true); }}
         onKeyDown={(e) => {
@@ -35,7 +35,7 @@ const AutocompleteCellEditor = forwardRef((props: AutocompleteCellEditorProps, r
         <div className="max-h-[200px] overflow-auto">
           {filteredOptions.map(opt => (
             <div key={opt}
-              className="theme-text cursor-pointer px-3 py-2 text-sm transition-colors hover:bg-blue-600/10"
+              className="theme-text cursor-pointer px-3 py-2 text-sm transition-colors hover:bg-white/10"
               onClick={() => { setValue(opt); setIsOpen(false); props.stopEditing(); }}>
               {opt}
             </div>

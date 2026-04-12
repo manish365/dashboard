@@ -11,7 +11,7 @@ function StarRating({ n }: { n: number }) {
   return (
     <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map(i => (
-        <Star key={i} className="h-3.5 w-3.5" fill={i <= n ? '#fbbf24' : 'none'} style={{ color: i <= n ? '#fbbf24' : 'var(--circle)' }} />
+        <Star key={i} className={`h-3.5 w-3.5 ${i <= n ? 'theme-text-warning' : 'theme-text-subtle'}`} fill={i <= n ? 'currentColor' : 'none'} />
       ))}
       <span className="text-xs ml-1 theme-text-subtle">{n}/5</span>
     </div>
@@ -56,7 +56,7 @@ export default function ReviewsPage() {
       key: 'actions', label: 'Actions', align: 'right' as const, render: (r: Review) => (
         <div className="flex items-center justify-end gap-1">
           {r.status !== 'approved' && (
-            <button onClick={() => handleApprove(r.id)} className="p-1.5 rounded-lg hover:bg-white/10 transition-colors" style={{ color: '#34d399' }} title="Approve">
+            <button onClick={() => handleApprove(r.id)} className="p-1.5 rounded-lg hover:bg-white/10 transition-colors theme-text-success" title="Approve">
               <ThumbsUp className="h-4 w-4" />
             </button>
           )}
@@ -74,7 +74,7 @@ export default function ReviewsPage() {
         <ArrowLeft className="h-4 w-4" /> Customer Service
       </Link>
       <KpPageHeader title="Product Reviews" subtitle="Moderate and manage product reviews"
-        action={<div className="rounded-xl p-2.5" style={{ background: 'rgba(249,115,22,0.1)' }}><Star className="h-5 w-5" style={{ color: '#f97316' }} /></div>} />
+        action={<div className="rounded-xl p-2.5 theme-tag-orange"><Star className="h-5 w-5 theme-text-orange" /></div>} />
       <KpSearch value={search} onChange={setSearch} placeholder="Search reviews..." className="max-w-md" />
       <KpCard>
         {loading ? <KpSkeleton /> : <KpTable cols={cols} rows={filtered} rowKey={r => r.id} emptyMsg="No reviews found." />}

@@ -41,10 +41,10 @@ export default function PaymentsPage() {
     <div className="space-y-6">
       <KpPageHeader title="Payment Transactions" subtitle="View and manage payment transactions" />
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <KpStatCard label="Total Transactions" value={items.length} icon={CreditCard} color="#60a5fa" />
-        <KpStatCard label="Successful" value={items.filter(p => p.paymentStatus === 'succeeded').length} icon={CreditCard} color="#34d399" />
-        <KpStatCard label="Failed" value={items.filter(p => p.paymentStatus === 'failed').length} icon={CreditCard} color="#f87171" />
-        <KpStatCard label="Total Revenue" value={fmt(totalRevenue)} icon={DollarSign} color="var(--neon-green)" />
+        <KpStatCard label="Total Transactions" value={items.length} icon={CreditCard} variant="info" />
+        <KpStatCard label="Successful" value={items.filter(p => p.paymentStatus === 'succeeded').length} icon={CreditCard} variant="success" />
+        <KpStatCard label="Failed" value={items.filter(p => p.paymentStatus === 'failed').length} icon={CreditCard} variant="danger" />
+        <KpStatCard label="Total Revenue" value={fmt(totalRevenue)} icon={DollarSign} variant="success" />
       </div>
       <div className="flex flex-wrap gap-3">
         <KpSearch value={search} onChange={setSearch} placeholder="Search by transaction or order ID..." className="flex-1 max-w-sm" />

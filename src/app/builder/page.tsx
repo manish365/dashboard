@@ -80,8 +80,8 @@ export default function PageBuilder() {
           <div className="grid grid-cols-1 gap-2">
             {allWidgets.map(widget => (
               <button key={widget.type} onClick={() => addComponent(widget)}
-                className="theme-footer-bg theme-border flex items-center gap-3 rounded-xl border p-3 text-left transition-all hover:border-[var(--neon-green)]/30 hover:bg-white/5">
-                <div className="rounded-lg bg-blue-500/10 p-2 text-blue-500"><Plus className="h-4 w-4" /></div>
+                className="theme-footer-bg theme-border flex items-center gap-3 rounded-xl border p-3 text-left transition-all hover:bg-white/5">
+                <div className="theme-tag-info rounded-lg p-2"><Plus className="h-4 w-4" /></div>
                 <div>
                   <p className="theme-text text-sm font-bold">{widget.name}</p>
                   <p className="theme-text text-[10px] opacity-60">{widget.category}</p>
@@ -99,23 +99,22 @@ export default function PageBuilder() {
           {viewMode === 'code' && (
             <div className="h-full relative group">
               <button onClick={() => { navigator.clipboard.writeText(generateReactCode(schema)); showToast('React code copied!', 'success'); }}
-                className="absolute top-4 right-4 rounded-lg bg-blue-600 hover:bg-blue-500 px-4 py-2 text-xs font-bold text-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                className="absolute top-4 right-4 theme-tag-info rounded-lg px-4 py-2 text-xs font-bold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
                 Copy Code
               </button>
-              <pre className="h-full rounded-xl bg-[#0d1117] p-6 text-[12px] text-emerald-400 overflow-auto whitespace-pre-wrap select-all border border-white/5 font-mono leading-relaxed">{generateReactCode(schema)}</pre>
+              <pre className="h-full rounded-xl theme-footer-bg p-6 text-[12px] theme-text-success overflow-auto whitespace-pre-wrap select-all border font-mono leading-relaxed">{generateReactCode(schema)}</pre>
             </div>
           )}
           {viewMode === 'canvas' && (
             <div className={`relative min-h-full ${previewMode ? '' : 'p-4 rounded-xl border-2 border-dashed border-white/5 bg-white/[0.01]'}`}>
-              {!previewMode && schema.components.map(comp => (
                 <div key={comp.id} onClick={(e) => { e.stopPropagation(); setSelectedId(comp.id); }}
-                  className={`group relative mb-4 transition-all ${selectedId === comp.id ? 'ring-2 ring-blue-500 rounded-xl' : ''}`}>
+                  className={`group relative mb-4 transition-all ${selectedId === comp.id ? 'ring-2 ring-[var(--neon-green)] rounded-xl' : ''}`}>
                   <div className="pointer-events-none opacity-40 grayscale-[0.5] group-hover:grayscale-0 group-hover:opacity-100 transition-all">
                     <DynamicRenderer schema={{ ...schema, components: [comp] }} />
                   </div>
                   {selectedId === comp.id && (
                     <div className="absolute -right-2 -top-2 flex gap-1 z-10">
-                      <button onClick={(e) => { e.stopPropagation(); removeComponent(comp.id); }} className="rounded-lg bg-red-600 p-1.5 text-white shadow-lg hover:bg-red-500">
+                      <button onClick={(e) => { e.stopPropagation(); removeComponent(comp.id); }} className="rounded-lg theme-tag-danger p-1.5 shadow-lg border">
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </div>
@@ -150,7 +149,7 @@ export default function PageBuilder() {
                   <label className="theme-text text-xs opacity-70">Width (Grid Columns)</label>
                   <input type="range" min="1" max="12" value={selectedComponent.layout?.w || 12}
                     onChange={(e) => updateComponentLayout(selectedComponent.id, { w: parseInt(e.target.value) })}
-                    className="w-full h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+                    className="w-full h-1 theme-footer-bg rounded-lg appearance-none cursor-pointer accent-[var(--neon-green)]" />
                   <div className="flex justify-between text-[10px] opacity-40"><span>1/12</span><span>{selectedComponent.layout?.w || 12}/12</span></div>
                 </div>
               </div>
@@ -162,7 +161,7 @@ export default function PageBuilder() {
                     {prop.type === 'string' && (
                       <input type="text" value={selectedComponent.props[prop.name] ?? prop.defaultValue}
                         onChange={(e) => updateComponentProps(selectedComponent.id, { [prop.name]: e.target.value })}
-                        className="theme-input theme-border w-full rounded-xl border px-3 py-2 text-xs outline-none focus:ring-1 focus:ring-blue-500/50" />
+                        className="theme-input theme-border w-full rounded-xl border px-3 py-2 text-xs outline-none focus:ring-1 focus:ring-[var(--neon-green)]/30" />
                     )}
                     {prop.type === 'number' && (
                       <input type="number" value={selectedComponent.props[prop.name] ?? prop.defaultValue}

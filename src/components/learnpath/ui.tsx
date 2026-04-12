@@ -2,11 +2,12 @@
 import React from 'react';
 import { Loader2, Search, X } from 'lucide-react';
 
-export const LEVEL_COLORS: Record<string, { bg: string; color: string; border: string }> = {
-  BEGINNER:     { bg: 'rgba(16,185,129,0.1)',  color: '#34d399', border: 'rgba(16,185,129,0.3)' },
-  INTERMEDIATE: { bg: 'rgba(245,158,11,0.1)',  color: '#fbbf24', border: 'rgba(245,158,11,0.3)' },
-  ADVANCED:     { bg: 'rgba(239,68,68,0.1)',   color: '#f87171', border: 'rgba(239,68,68,0.3)' },
+export const LEVEL_CLASSES: Record<string, { tag: string; text: string }> = {
+  BEGINNER:     { tag: 'theme-tag-success', text: 'theme-text-success' },
+  INTERMEDIATE: { tag: 'theme-tag-warning', text: 'theme-text-warning' },
+  ADVANCED:     { tag: 'theme-tag-danger',  text: 'theme-text-danger'  },
 };
+export const LEVEL_COLORS = LEVEL_CLASSES;
 
 export const CATEGORIES = ['Engineering', 'Design', 'DevOps', 'Data Science', 'Leadership', 'Product', 'Security', 'Other'];
 export const LEVELS = ['BEGINNER', 'INTERMEDIATE', 'ADVANCED'] as const;
@@ -40,10 +41,24 @@ export function CardHeader({ title, icon, action }: { title: string; icon?: Reac
 }
 
 export function StatCard({ label, value, icon: Icon, color, loading }: { label: string; value: string | number; icon: React.ElementType; color: string; loading?: boolean }) {
+  const getCls = (c: string) => {
+    const map: Record<string, { tag: string; text: string }> = {
+      'var(--neon-green)': { tag: 'theme-tag-brand', text: 'theme-text-brand' },
+      '#60a5fa': { tag: 'theme-tag-info', text: 'theme-text-info' },
+      '#fbbf24': { tag: 'theme-tag-warning', text: 'theme-text-warning' },
+      '#f87171': { tag: 'theme-tag-danger', text: 'theme-text-danger' },
+      '#34d399': { tag: 'theme-tag-success', text: 'theme-text-success' },
+      '#818cf8': { tag: 'theme-tag-accent', text: 'theme-text-accent' },
+      '#a78bfa': { tag: 'theme-tag-purple', text: 'theme-text-purple' },
+    };
+    return map[c] || { tag: 'theme-tag-subtle', text: 'theme-text-subtle theme-border' };
+  };
+  const cls = getCls(color);
+
   return (
     <div className="dg-card p-5">
-      <div className="rounded-lg p-2.5 w-fit mb-3" style={{ background: `${color}20` }}>
-        <Icon className="h-5 w-5" style={{ color }} />
+      <div className={`rounded-lg p-2.5 w-fit mb-3 ${cls.tag}`}>
+        <Icon className={`h-5 w-5 ${cls.text}`} />
       </div>
       <p className="theme-text text-2xl font-bold">{loading ? '—' : value}</p>
       <p className="theme-text-muted text-xs mt-0.5">{label}</p>
@@ -52,22 +67,18 @@ export function StatCard({ label, value, icon: Icon, color, loading }: { label: 
 }
 
 export function LevelBadge({ level }: { level: string }) {
-  const lc = LEVEL_COLORS[level] ?? LEVEL_COLORS.BEGINNER;
+  const lc = LEVEL_CLASSES[level] ?? LEVEL_CLASSES.BEGINNER;
   return (
-    <span className="text-xs px-2 py-0.5 rounded-full font-semibold border"
-      style={{ background: lc.bg, color: lc.color, borderColor: lc.border }}>
+    <span className={`text-xs px-2 py-0.5 rounded-full font-semibold border ${lc.tag}`}>
       {level}
     </span>
   );
 }
 
 export function PublishedBadge({ published }: { published: boolean }) {
-  const styles = published
-    ? { background: 'rgba(52,211,153,0.1)', color: '#34d399', borderColor: 'rgba(52,211,153,0.2)' }
-    : { background: 'rgba(251,191,36,0.1)', color: '#fbbf24', borderColor: 'rgba(251,191,36,0.2)' };
-
+  const cls = published ? 'theme-tag-success' : 'theme-tag-warning';
   return (
-    <span className="text-xs px-2 py-0.5 rounded-full border" style={styles}>
+    <span className={`text-xs px-2 py-0.5 rounded-full border ${cls}`}>
       {published ? 'Published' : 'Draft'}
     </span>
   );
@@ -86,8 +97,8 @@ export function FieldTextarea({ label, mono, ...props }: React.TextareaHTMLAttri
   return (
     <div className="space-y-1">
       <label className="theme-text-muted block text-xs font-semibold">{label}</label>
-      <textarea className="theme-input-field theme-border w-full rounded-lg px-3 py-2.5 text-sm outline-none border resize-none"
-        style={{ fontFamily: mono ? 'monospace' : 'inherit' }} {...props} />
+      <textarea className={`theme-input-field theme-border w-full rounded-lg px-3 py-2.5 text-sm outline-none border resize-none ${mono ? 'theme-mono' : ''}`}
+        {...props} />
     </div>
   );
 }
@@ -135,7 +146,7 @@ export function GhostBtn({ children, className = '', ...props }: React.ButtonHTM
 export function DangerBtn({ children, loading, disabled, className = '', ...props }: React.ButtonHTMLAttributes<HTMLButtonElement> & { loading?: boolean }) {
   return (
     <button disabled={disabled || loading}
-      className={`theme-text-danger flex items-center gap-1.5 p-1.5 rounded-lg hover:bg-red-500/10 transition-colors disabled:opacity-40 ${className}`}
+      className={`theme-text-danger theme-tag-danger border theme-border flex items-center gap-1.5 p-1.5 rounded-lg hover:opacity-80 transition-colors disabled:opacity-40 ${className}`}
       {...props}>
       {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : children}
     </button>
@@ -178,8 +189,9 @@ export function DataTable<T>({ columns, rows, rowKey }: { columns: Column<T>[]; 
         <thead>
           <tr className="dg-table-header-row">
             {columns.map(col => (
-              <th key={col.key} className="theme-text-subtle px-4 py-3 text-xs font-semibold uppercase tracking-wider"
-                style={{ textAlign: col.align ?? 'left' }}>{col.label}</th>
+              <th key={col.key} className={`theme-text-subtle px-4 py-3 text-xs font-semibold uppercase tracking-wider ${col.align === 'right' ? 'theme-text-right' : 'theme-text-left'}`}>
+                {col.label}
+              </th>
             ))}
           </tr>
         </thead>
@@ -187,7 +199,9 @@ export function DataTable<T>({ columns, rows, rowKey }: { columns: Column<T>[]; 
           {rows.map(row => (
             <tr key={rowKey(row)} className="dg-table-row hover:bg-white/5">
               {columns.map(col => (
-                <td key={col.key} className="px-4 py-3" style={{ textAlign: col.align ?? 'left' }}>{col.render(row)}</td>
+                <td key={col.key} className={`px-4 py-3 ${col.align === 'right' ? 'theme-text-right' : 'theme-text-left'}`}>
+                  {col.render(row)}
+                </td>
               ))}
             </tr>
           ))}
@@ -234,16 +248,11 @@ export function LevelSelector({ value, onChange }: { value: string; onChange: (l
       <label className="theme-text-muted block text-xs font-semibold">Level</label>
       <div className="flex gap-2">
         {LEVELS.map(l => {
-          const lc = LEVEL_COLORS[l];
+          const lc = LEVEL_CLASSES[l];
           const active = value === l;
           return (
             <button key={l} type="button" onClick={() => onChange(l)}
-              className="flex-1 rounded-lg py-2.5 text-xs font-bold transition-all border"
-              style={{
-                background: active ? lc.bg : 'var(--foot-color)',
-                color: active ? lc.color : 'var(--circle)',
-                borderColor: active ? lc.border : 'var(--border-color)',
-              }}>
+              className={`flex-1 rounded-lg py-2.5 text-xs font-bold transition-all border ${active ? lc.tag : 'theme-footer-bg theme-text-subtle theme-border'}`}>
               {l.slice(0, 3)}
             </button>
           );

@@ -26,7 +26,7 @@ export default function CartsPage() {
     { key: 'customer', label: 'Customer', render: (c: Cart) => <span className="text-sm font-mono theme-text">{c.customerId?.slice(0, 12)}...</span> },
     { key: 'items', label: 'Items', render: (c: Cart) => <span className="text-sm theme-text-muted">{c.items?.length || 0}</span> },
     { key: 'subtotal', label: 'Subtotal', render: (c: Cart) => <span className="text-sm theme-text-muted">{fmt(c.subtotal || 0)}</span> },
-    { key: 'discount', label: 'Discount', render: (c: Cart) => <span className="text-sm" style={{ color: '#34d399' }}>{c.discountAmount ? `-${fmt(c.discountAmount)}` : '—'}</span> },
+    { key: 'discount', label: 'Discount', render: (c: Cart) => <span className="text-sm theme-text-success">{c.discountAmount ? `-${fmt(c.discountAmount)}` : '—'}</span> },
     { key: 'total', label: 'Total', render: (c: Cart) => <span className="text-sm font-semibold theme-text">{fmt(c.finalAmount || 0)}</span> },
     { key: 'updated', label: 'Last Updated', render: (c: Cart) => <span className="text-sm flex items-center gap-1 theme-text-subtle"><Calendar className="h-3.5 w-3.5" />{new Date(c.updatedAt).toLocaleDateString()}</span> },
     { key: 'status', label: 'Status', render: (c: Cart) => <KpBadge label={c.isAbandoned ? 'Abandoned' : 'Active'} variant={c.isAbandoned ? 'warning' : 'active'} /> },

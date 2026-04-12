@@ -36,7 +36,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder='Try "orders price > 100" or "customers city Delhi"'
-          className="de-card-bg de-border de-text w-full pl-11 pr-28 py-2.5 border rounded-xl focus:outline-none focus:ring-4 focus:ring-[#00e9bf]/5 focus:border-[#00e9bf] transition-all shadow-xl text-sm font-medium tracking-tight placeholder:opacity-40"
+          className="de-card-bg de-border de-text w-full pl-11 pr-28 py-2.5 border rounded-xl focus:outline-none focus:ring-4 focus:ring-[var(--neon-green)]/10 focus:border-[var(--neon-green)] transition-all shadow-xl text-sm font-medium tracking-tight placeholder:opacity-40"
         />
         <button
           type="submit"
@@ -52,12 +52,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         <div className="de-card-bg de-border mt-5 flex items-center gap-4 animate-in fade-in slide-in-from-top-3 duration-500 p-3 rounded-2xl border backdrop-blur-sm">
           <span className="de-text-muted text-[10px] font-black uppercase tracking-[0.2em] pl-2">Intent Parsed:</span>
           <div className="flex flex-wrap gap-2.5">
-            <div className="de-neon flex items-center gap-2 px-3 py-1.5 bg-[#00e9bf]/10 rounded-xl text-[10px] font-black border border-[#00e9bf]/20 uppercase tracking-widest">
+            <div className="theme-text-accent flex items-center gap-2 px-3 py-1.5 theme-tag-accent rounded-xl text-[10px] font-black border theme-border uppercase tracking-widest">
               <Database className="h-3 w-3" />
               Table: {preview.table}
             </div>
             {preview.filters?.map((f: any, i: number) => (
-              <div key={i} className="px-3 py-1.5 bg-emerald-500/10 text-emerald-400 rounded-xl text-[10px] font-black border border-emerald-500/20 uppercase tracking-widest">
+              <div key={i} className="px-3 py-1.5 theme-tag-success theme-text-success rounded-xl text-[10px] font-black border theme-border uppercase tracking-widest">
                 Condition: {f.column} {f.operator} {Array.isArray(f.value) ? f.value.join(' to ') : f.value}
               </div>
             ))}

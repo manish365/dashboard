@@ -25,7 +25,7 @@ export default function ManufacturersPage() {
 
   const cols = [
     { key: 'name', label: 'Manufacturer', render: (m: Manufacturer) => <div><p className="text-sm font-semibold theme-text">{m.manufacturer_name}</p><p className="text-xs font-mono theme-text-subtle">{m.manufacturer_slug}</p></div> },
-    { key: 'website', label: 'Website', render: (m: Manufacturer) => m.website_url ? <a href={m.website_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm hover:opacity-80" style={{ color: '#60a5fa' }}><Globe className="h-3.5 w-3.5" /> Website</a> : <span className="text-sm theme-text-subtle">—</span> },
+    { key: 'website', label: 'Website', render: (m: Manufacturer) => m.website_url ? <a href={m.website_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm hover:opacity-80 theme-text-info"><Globe className="h-3.5 w-3.5" /> Website</a> : <span className="text-sm theme-text-subtle">—</span> },
     { key: 'status', label: 'Status', render: (m: Manufacturer) => <KpBadge label={m.is_active ? 'Active' : 'Inactive'} variant={m.is_active ? 'active' : 'inactive'} /> },
     { key: 'actions', label: 'Actions', align: 'right' as const, render: (m: Manufacturer) => <div className="flex items-center justify-end gap-1"><button onClick={() => { setSelected(m); setForm({ manufacturer_name: m.manufacturer_name, manufacturer_slug: m.manufacturer_slug, website_url: m.website_url || '' }); setShowModal(true); }} className="p-1.5 rounded-lg hover:bg-white/10 theme-text-subtle"><Edit className="h-4 w-4" /></button><button onClick={() => handleDelete(m.manufacturer_id)} className="p-1.5 rounded-lg hover:bg-red-500/10 theme-text-danger"><Trash2 className="h-4 w-4" /></button></div> },
   ];
