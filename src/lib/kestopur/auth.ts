@@ -49,7 +49,7 @@ export function logout() {
 }
 
 export async function getProfile() {
-  const res = await kpFetch('/profile', { useCache: false });
+  const res = await kpFetch('/wp-admin/profile', { useCache: false });
   if (res.success) {
     return { success: true, user: res.data as KpUser };
   }

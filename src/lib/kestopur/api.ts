@@ -12,11 +12,11 @@ export function getToken(): string | undefined {
 }
 
 export function setToken(token: string) {
-  Cookies.set('kp_authToken', token, { path: '/kestopur' });
+  Cookies.set('kp_authToken', token, { path: '/' });
 }
 
 export function removeToken() {
-  Cookies.remove('kp_authToken', { path: '/kestopur' });
+  Cookies.remove('kp_authToken', { path: '/' });
 }
 
 export interface KpFetchOptions extends RequestInit {

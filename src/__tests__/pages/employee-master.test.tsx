@@ -10,7 +10,7 @@ vi.mock('@/lib/api', () => ({
   savePageData: vi.fn().mockResolvedValue({ success: true, savedAt: new Date().toISOString(), rowCount: 1 }),
 }));
 
-import EmployeeMasterPage from '@/app/data/employee-master/page';
+import EmployeeMasterPage from '@/app/(incentive)/employee-master/page';
 
 describe('Employee Master Page', () => {
   beforeEach(() => {

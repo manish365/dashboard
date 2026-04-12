@@ -10,7 +10,7 @@ vi.mock('@/lib/api', () => ({
   savePageData: vi.fn().mockResolvedValue({ success: true, savedAt: new Date().toISOString(), rowCount: 1 }),
 }));
 
-import SMMOMappingPage from '@/app/data/sm-mo-mapping/page';
+import SMMOMappingPage from '@/app/(incentive)/sm-mo-mapping/page';
 
 describe('SM MO Mapping Page', () => {
   beforeEach(() => {

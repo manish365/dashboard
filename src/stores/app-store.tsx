@@ -51,6 +51,7 @@ export interface AppState {
   uploadedFiles: UploadedFile[];
   sidebarOpen: boolean;
   theme: 'light' | 'dark';
+  loading: boolean;
 }
 
 // ─── Actions ──────────────────────────────────────────────────
@@ -68,6 +69,7 @@ type Action =
   | { type: 'SET_ROLE'; payload: UserRole }
   | { type: 'TOGGLE_THEME' }
   | { type: 'SET_THEME'; payload: 'light' | 'dark' }
+  | { type: 'SET_LOADING'; payload: boolean }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   | { type: 'CLONE_DATA'; payload: { fromKey: string; toKey: string } };
 
@@ -81,6 +83,7 @@ export const initialState: AppState = {
   uploadedFiles: [],
   sidebarOpen: true,
   theme: 'light',
+  loading: true,
 };
 
 export function reducer(state: AppState, action: Action): AppState {
@@ -126,6 +129,8 @@ export function reducer(state: AppState, action: Action): AppState {
     }
     case 'SET_THEME':
       return { ...state, theme: action.payload };
+    case 'SET_LOADING':
+      return { ...state, loading: action.payload };
     case 'CLONE_DATA': {
       const sourceData = state.datasets[action.payload.fromKey] || [];
       return {
@@ -168,25 +173,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       dispatch({ type: 'SET_THEME', payload: savedTheme });
     }
 
-    // 2. Kestopur Session
-    import('@/lib/kestopur/api').then(({ getToken }) => {
-      const token = getToken();
-      if (token) {
-        import('@/lib/kestopur/auth').then(({ getProfile }) => {
-          getProfile().then(res => {
-            if (res.success && res.user) {
-              import('@/lib/roles').then(({ assignRole }) => {
-                dispatch({ 
-                  type: 'SET_USER', 
-                  payload: { ...res.user, role: assignRole(res.user.email) } 
-                });
-                dispatch({ type: 'SET_AUTHENTICATED', payload: true });
-              });
-            }
-          });
-        });
-      }
-    });
+    // Theme initialization is enough here; session is handled by AuthWrapper
   }, []);
 
   return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;

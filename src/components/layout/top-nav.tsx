@@ -28,11 +28,6 @@ export default function TopNav() {
 
   const user = state.user;
 
-  const handleRoleSwitch = () => {
-    const newRole = user?.role === UserRole.DATA_MANAGER ? UserRole.APPROVER : UserRole.DATA_MANAGER;
-    dispatch({ type: 'SET_ROLE', payload: newRole });
-    setShowDropdown(false);
-  };
 
   return (
     <header className="theme-nav-bg sticky top-0 z-40 flex h-16 items-center justify-between theme-border border-b px-4 backdrop-blur-xl lg:px-6 shadow-sm">
@@ -76,7 +71,7 @@ export default function TopNav() {
               className="flex items-center gap-3 rounded-xl px-3 py-2 transition-colors hover:bg-white/5"
             >
               <div className="theme-neon-bg theme-text-on-neon flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold">
-                {user.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()}
+                {user.name?.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase() || '??'}
               </div>
               <div className="hidden text-left md:block">
                 <p className="theme-text text-sm font-medium leading-tight">{user.name}</p>
@@ -104,13 +99,6 @@ export default function TopNav() {
                   </div>
                 </div>
 
-                <button
-                  onClick={handleRoleSwitch}
-                  className="theme-text-link flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-white/10"
-                >
-                  <ArrowLeftRight className="h-4 w-4" />
-                  Switch to {user.role === UserRole.DATA_MANAGER ? 'Approver' : 'Data Manager'}
-                </button>
 
                 {user && (
                   <button

@@ -3,10 +3,12 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { loginUser } from "@/services/api/auth";
+import { useAppStore } from "@/stores/app-store";
+import { assignRole } from "@/lib/roles";
 
 export const useAuthForm = <T extends Record<string, any>>(initialState: T) => {
   const router = useRouter();
-  const authContext = null;
+  const { dispatch } = useAppStore();
 
   const [formData, setFormData] = useState<T>(initialState);
   const [errors, setErrors] = useState<Record<string, string | undefined>>({});
@@ -52,10 +54,19 @@ export const useAuthForm = <T extends Record<string, any>>(initialState: T) => {
       const res = await loginUser(postdata);
       if (res && res.data && res.data.access_token) {
         setAuthToken(res.data.access_token);
-
-        // If authContext were available, it would be used here
         
-        router.push("/wp-admin");
+        // Update global store
+        const userEmail = formData.email;
+        const userData = {
+          email: userEmail,
+          name: userEmail.split("@")[0],
+          role: assignRole(userEmail)
+        };
+        
+        dispatch({ type: "SET_USER", payload: userData });
+        dispatch({ type: "SET_AUTHENTICATED", payload: true });
+        
+        router.push("/dashboard");
       } else {
         setErrors((prev) => ({ ...prev, api: res?.data?.message || "Login failed", }));
       }
@@ -67,11 +78,11 @@ export const useAuthForm = <T extends Record<string, any>>(initialState: T) => {
   };
 
   const setAuthToken = (token: string) => {
-    Cookies.set("authToken", token, {
+    Cookies.set("kp_authToken", token, {
       expires: 7,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      path: "/wp-admin",
+      path: "/",
     });
   };
 

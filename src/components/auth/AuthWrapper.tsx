@@ -3,7 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { getToken, removeToken } from "@/utils/auth";
-import { refreshToken, validateToken } from "@/services/api/auth";
+import { refreshToken, validateToken, getProfile } from "@/services/api/auth";
+import { useAppStore } from "@/stores/app-store";
+import { assignRole } from "@/lib/roles";
 
 interface AuthWrapperProps {
   children: React.ReactNode;
@@ -12,19 +14,90 @@ interface AuthWrapperProps {
 export default function AuthWrapper({ children }: AuthWrapperProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const { state, dispatch } = useAppStore();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const publicPaths = ["/login", "/forgot-password", "/reset-password"];
+  const isPublicPath = publicPaths.includes(pathname);
 
   useEffect(() => {
     checkAuth();
   }, [pathname]);
 
   const checkAuth = async () => {
-    const publicPaths = ["/login", "/forgot-password", "/reset-password"];
-    const isPublicPath = publicPaths.includes(pathname);
 
-    // auth checks are intentionally minimal here; customize after merge
-    // For now, let's keep it as a placeholder as in the original file
+    if (isPublicPath) {
+      if (pathname === "/login") {
+        const token = getToken();
+        if (token) {
+          try {
+            const response = await validateToken();
+            if (response.status === 200) {
+              router.push("/");
+              return;
+            }
+          } catch (error) {
+            console.error("Auth check failed:", error);
+          }
+        }
+      } else {
+        // Clear token for forgot/reset password to avoid confusion
+        removeToken();
+      }
+
+      setIsAuthenticated(true);
+      setIsLoading(false);
+      return;
+    }
+
+    const token = getToken();
+    if (!token) {
+      router.push("/login?message=Please login to access this page");
+      return;
+    }
+    try {
+      const response = await validateToken();
+      if (response.status === 200) {
+        setIsAuthenticated(true);
+        // Sync with global store
+        const profileRes = await getProfile();
+        if (profileRes.data && profileRes.data.user) {
+          const user = profileRes.data.user;
+          dispatch({ 
+            type: "SET_USER", 
+            payload: { ...user, role: assignRole(user.email) } 
+          });
+          dispatch({ type: "SET_AUTHENTICATED", payload: true });
+        }
+      } else if (response.status === 401) {
+        const tokenRes = await refreshToken();
+        if (tokenRes.status === 200) {
+          setIsAuthenticated(true);
+          // Sync with global store
+          const profileRes = await getProfile();
+          if (profileRes.data && profileRes.data.user) {
+            const user = profileRes.data.user;
+            dispatch({ 
+              type: "SET_USER", 
+              payload: { ...user, role: assignRole(user.email) } 
+            });
+            dispatch({ type: "SET_AUTHENTICATED", payload: true });
+          }
+        } else {
+          removeToken();
+          router.push("/login?message=Session expired. Please login again");
+        }
+      } else {
+        removeToken();
+        router.push("/login?message=Authentication failed. Please login again");
+      }
+    } catch (error) {
+      removeToken();
+      router.push("/login?message=Authentication failed. Please login again");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isLoading) {
@@ -38,7 +111,7 @@ export default function AuthWrapper({ children }: AuthWrapperProps) {
     );
   }
 
-  if (isAuthenticated && pathname !== "/login") {
+  if (!isAuthenticated && !isPublicPath) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">

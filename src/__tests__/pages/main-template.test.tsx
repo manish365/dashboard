@@ -10,7 +10,7 @@ vi.mock('@/lib/api', () => ({
   savePageData: vi.fn().mockResolvedValue({ success: true, savedAt: new Date().toISOString(), rowCount: 1 }),
 }));
 
-import MainTemplatePage from '@/app/data/main-template/page';
+import MainTemplatePage from '@/app/(incentive)/main-template/page';
 
 describe('Main Template Page', () => {
   beforeEach(() => {

@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { AppProvider, useAppStore } from '@/stores/app-store';
 import MsalAppProvider from '@/providers/msal-provider';
-import AuthGuard from '@/components/auth/auth-guard';
+import AuthWrapper from '@/components/auth/AuthWrapper';
 import TopNav from '@/components/layout/top-nav';
 import Sidebar from '@/components/layout/sidebar';
 import { ToastProvider } from '@/providers/toast-context';
@@ -13,11 +13,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <AppProvider>
       <MsalAppProvider>
-        <AuthGuard>
+        <AuthWrapper>
           <ToastProvider>
             <LayoutShell>{children}</LayoutShell>
           </ToastProvider>
-        </AuthGuard>
+        </AuthWrapper>
       </MsalAppProvider>
     </AppProvider>
   );
@@ -26,6 +26,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 function LayoutShell({ children }: { children: React.ReactNode }) {
   const { state } = useAppStore();
   const pathname = usePathname();
+  const publicPaths = ["/login", "/forgot-password", "/reset-password"];
+  const isPublicPath = publicPaths.includes(pathname);
 
   useEffect(() => {
     if (state.theme === 'light') {
@@ -36,7 +38,7 @@ function LayoutShell({ children }: { children: React.ReactNode }) {
   }, [state.theme]);
 
   // Standalone pages (like Login) shouldn't show nav/sidebar
-  if (pathname === '/login') {
+  if (isPublicPath) {
     return (
       <main className="theme-main-bg min-h-screen">
         {children}

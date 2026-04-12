@@ -10,7 +10,7 @@ vi.mock('@/lib/api', () => ({
   savePageData: vi.fn().mockResolvedValue({ success: true, savedAt: new Date().toISOString(), rowCount: 1 }),
 }));
 
-import VASSKUPage from '@/app/data/vas-sku/page';
+import VASSKUPage from '@/app/(incentive)/vas-sku/page';
 
 describe('VAS SKU Page', () => {
   beforeEach(() => {

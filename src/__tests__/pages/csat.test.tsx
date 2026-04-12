@@ -13,7 +13,7 @@ vi.mock('@/lib/api', () => ({
 }));
 
 // Must import after mocks
-import CSATPage from '@/app/data/csat/page';
+import CSATPage from '@/app/(incentive)/csat/page';
 
 describe('CSAT Page', () => {
   beforeEach(() => {

@@ -15,24 +15,15 @@ export default function AuthGuard({ children }: Props) {
   const { state, dispatch } = useAppStore();
   const pathname = usePathname();
   const router = useRouter();
-  const [checking, setChecking] = useState(true);
 
-  useEffect(() => {
-    // Give some time for the AppProvider to restore the session on mount
-    const timer = setTimeout(() => {
-      setChecking(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     if (pathname === '/login' || pathname === '/forgot-password' || pathname === '/reset-password') return;
 
-    if (!checking && !isAuthenticated) {
+    if (!state.loading && !isAuthenticated) {
       router.push(`/login?redirect=${pathname}`);
     }
-  }, [isAuthenticated, checking, pathname, router]);
+  }, [isAuthenticated, state.loading, pathname, router]);
 
   // Public pages
   if (pathname === '/login') {
@@ -40,7 +31,7 @@ export default function AuthGuard({ children }: Props) {
   }
 
   // Still verifying session on mount
-  if (checking || (!isAuthenticated && pathname !== '/login')) {
+  if (state.loading || (!isAuthenticated && pathname !== '/login')) {
     return (
       <div className="flex h-screen w-full flex-col items-center justify-center theme-main-bg">
         <div className="relative">

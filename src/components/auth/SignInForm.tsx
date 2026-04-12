@@ -23,10 +23,10 @@ export default function SignInForm() {
   useEffect(() => {
     const token = getToken();
     if (token) {
-      router.push("/wp-admin");
+      router.push("/dashboard");
       return;
     }
-    Cookies.remove("authToken", { path: "/wp-admin" });
+    Cookies.remove("kp_authToken", { path: "/" });
     const message = searchParams.get('message');
     if (message) {
       setAuthMessage(decodeURIComponent(message));

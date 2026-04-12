@@ -10,7 +10,7 @@ vi.mock('@/lib/api', () => ({
   savePageData: vi.fn().mockResolvedValue({ success: true, savedAt: new Date().toISOString(), rowCount: 1 }),
 }));
 
-import VolumeBudgetPage from '@/app/data/volume-budget/page';
+import VolumeBudgetPage from '@/app/(incentive)/volume-budget/page';
 
 describe('Volume Budget Page', () => {
   beforeEach(() => {

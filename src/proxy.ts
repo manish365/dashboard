@@ -26,7 +26,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // 4. Check for Kestopur Authentication Token
+  // 4. Check for Authentication Token
   const token = request.cookies.get('kp_authToken')?.value;
 
   // 5. If no token, redirect to login

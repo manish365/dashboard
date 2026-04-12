@@ -3,25 +3,25 @@ import Cookies from 'js-cookie';
 
 export const getToken = (): string | null => {
   if (typeof window !== 'undefined') {
-    return Cookies.get('authToken') || null;
+    return Cookies.get('kp_authToken') || null;
   }
   return null;
 };
 
 export const setToken = (token: string): void => {
   if (typeof window !== 'undefined') {
-    Cookies.set('authToken', token, {
+    Cookies.set('kp_authToken', token, {
       expires: 7,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      path: '/wp-admin',
+      path: '/',
     });
   }
 };
 
 export const removeToken = (): void => {
   if (typeof window !== 'undefined') {
-    Cookies.remove('authToken', { path: '/wp-admin' });
+    Cookies.remove('kp_authToken', { path: '/' });
   }
 };
 
