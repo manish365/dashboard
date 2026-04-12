@@ -18,7 +18,7 @@ export default function InventoryPage() {
   const fetchData = async () => {
     setLoading(true);
     const params = new URLSearchParams({ ...(warehouseFilter && { warehouseId: warehouseFilter }), ...(lowStockOnly && { lowStock: 'true' }) });
-    const [inv, wh] = await Promise.all([kpFetch(`/wp-admin/inventory?${params}`), kpFetch('/wp-admin/warehouses')]);
+    const [inv, wh] = await Promise.all([kpFetch(`/inventory?${params}`), kpFetch('/warehouses')]);
     setItems(Array.isArray(inv.data) ? inv.data : []);
     setWarehouses(Array.isArray(wh.data) ? wh.data : []);
     setLoading(false);

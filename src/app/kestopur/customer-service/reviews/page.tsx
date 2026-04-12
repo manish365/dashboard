@@ -24,20 +24,20 @@ export default function ReviewsPage() {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    kpFetch('/wp-admin/customer-service/reviews')
+    kpFetch('/customer-service/reviews')
       .then(r => setItems(Array.isArray(r.data) ? r.data : []))
       .catch(() => setItems([]))
       .finally(() => setLoading(false));
   }, []);
 
   const handleApprove = async (id: string) => {
-    await kpFetch(`/wp-admin/customer-service/reviews/${id}/approve`, { method: 'PATCH' });
+    await kpFetch(`/customer-service/reviews/${id}/approve`, { method: 'PATCH' });
     setItems(prev => prev.map(r => r.id === id ? { ...r, status: 'approved' } : r));
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this review?')) return;
-    await kpFetch(`/wp-admin/customer-service/reviews/${id}`, { method: 'DELETE' });
+    await kpFetch(`/customer-service/reviews/${id}`, { method: 'DELETE' });
     setItems(prev => prev.filter(r => r.id !== id));
   };
 

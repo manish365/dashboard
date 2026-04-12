@@ -14,7 +14,7 @@ export function proxy(request: NextRequest) {
 
   // 2. Allow Next.js internals and API routes
   if (
-    pathname.startsWith('/_next') || 
+    pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
     pathname === '/favicon.ico'
   ) {
@@ -22,7 +22,7 @@ export function proxy(request: NextRequest) {
   }
 
   // 3. Allow the login page itself to prevent redirect loops
-  if (pathname === '/login') {
+  if (pathname === '/login' || pathname === '/forgot-password' || pathname === '/reset-password') {
     return NextResponse.next();
   }
 

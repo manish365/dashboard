@@ -31,7 +31,7 @@ export default function ProductStatusPage() {
 
   const fetchProducts = async () => {
     setLoading(true);
-    const r = await kpFetch('/wp-admin/products');
+    const r = await kpFetch('/products');
     if (r.success) {
       setProducts(Array.isArray(r.data) ? r.data : []);
     } else {
@@ -50,9 +50,9 @@ export default function ProductStatusPage() {
     if (!bulkStatus || selected.length === 0) return;
     setUpdating(true);
     let successCount = 0;
-    
+
     for (const id of selected) {
-      const r = await kpFetch(`/wp-admin/products/${id}`, {
+      const r = await kpFetch(`/products/${id}`, {
         method: 'PUT',
         body: JSON.stringify({ status: bulkStatus }),
       });
@@ -117,7 +117,7 @@ export default function ProductStatusPage() {
         <select
           value={p.status}
           onChange={async (e) => {
-            const r = await kpFetch(`/wp-admin/products/${p.product_id}`, {
+            const r = await kpFetch(`/products/${p.product_id}`, {
               method: 'PUT',
               body: JSON.stringify({ status: e.target.value }),
             });

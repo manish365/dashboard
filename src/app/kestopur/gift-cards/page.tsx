@@ -13,7 +13,7 @@ export default function GiftCardsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
 
-  useEffect(() => { kpFetch('/wp-admin/gift-cards').then(r => setItems(Array.isArray(r.data) ? r.data : [])).catch(() => setItems([])).finally(() => setLoading(false)); }, []);
+  useEffect(() => { kpFetch('/gift-cards').then(r => setItems(Array.isArray(r.data) ? r.data : [])).catch(() => setItems([])).finally(() => setLoading(false)); }, []);
 
   const filtered = items.filter(g => g.giftCardCode?.toLowerCase().includes(search.toLowerCase()) || g.customerId?.toLowerCase().includes(search.toLowerCase()));
 

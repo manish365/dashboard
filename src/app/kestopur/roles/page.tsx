@@ -17,7 +17,7 @@ export default function RolesPage() {
 
   const fetchRoles = async () => {
     setLoading(true);
-    const r = await kpFetch('/wp-admin/roles');
+    const r = await kpFetch('/roles');
     setRoles(Array.isArray(r.data) ? r.data : r.data?.data || []);
     setLoading(false);
   };
@@ -26,14 +26,14 @@ export default function RolesPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this role?')) return;
-    await kpFetch(`/wp-admin/roles/${id}`, { method: 'DELETE' });
+    await kpFetch(`/roles/${id}`, { method: 'DELETE' });
     fetchRoles();
   };
 
   const handleSave = async () => {
     setSaving(true);
-    if (selected) await kpFetch(`/wp-admin/roles/${selected.id}`, { method: 'PATCH', body: JSON.stringify(form) });
-    else await kpFetch('/wp-admin/roles', { method: 'POST', body: JSON.stringify(form) });
+    if (selected) await kpFetch(`/roles/${selected.id}`, { method: 'PATCH', body: JSON.stringify(form) });
+    else await kpFetch('/roles', { method: 'POST', body: JSON.stringify(form) });
     setSaving(false); setShowModal(false); fetchRoles();
   };
 

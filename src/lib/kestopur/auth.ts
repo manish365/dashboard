@@ -26,21 +26,21 @@ export async function login(username: string, password: string) {
 
   if (res.success && res.data?.token) {
     setToken(res.data.token);
-    return { 
-      success: true, 
+    return {
+      success: true,
       user: {
         id: res.data.user_email,
         name: res.data.user_display_name || res.data.user_nicename,
         email: res.data.user_email,
         nicename: res.data.user_nicename,
         displayName: res.data.user_display_name
-      } as KpUser 
+      } as KpUser
     };
   }
 
-  return { 
-    success: false, 
-    error: res.error || 'Invalid credentials' 
+  return {
+    success: false,
+    error: res.error || 'Invalid credentials'
   };
 }
 
@@ -49,7 +49,7 @@ export function logout() {
 }
 
 export async function getProfile() {
-  const res = await kpFetch('/wp-admin/profile', { useCache: false });
+  const res = await kpFetch('/profile', { useCache: false });
   if (res.success) {
     return { success: true, user: res.data as KpUser };
   }

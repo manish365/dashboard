@@ -14,7 +14,7 @@ export default function CartsPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
 
-  useEffect(() => { kpFetch('/wp-admin/carts').then(r => setCarts(Array.isArray(r.data) ? r.data : [])).catch(() => setCarts([])).finally(() => setLoading(false)); }, []);
+  useEffect(() => { kpFetch('/carts').then(r => setCarts(Array.isArray(r.data) ? r.data : [])).catch(() => setCarts([])).finally(() => setLoading(false)); }, []);
 
   const filtered = carts.filter(c => {
     const matchSearch = c.customerId?.toLowerCase().includes(search.toLowerCase());

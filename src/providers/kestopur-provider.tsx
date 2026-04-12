@@ -40,7 +40,7 @@ export function KestopurProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
-      const r = await kpFetch('/wp-admin/profile');
+      const r = await kpFetch('/profile');
       if (r.success && r.data?.user) {
         const u = r.data.user;
         const userData = { id: u.id, email: u.email, name: u.name || u.email.split('@')[0] };

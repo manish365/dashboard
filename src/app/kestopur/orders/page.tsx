@@ -22,7 +22,7 @@ export default function OrdersPage() {
   const fetchOrders = async () => {
     setLoading(true);
     const params = new URLSearchParams({ page: String(pagination.page), limit: '10', ...(statusFilter && { status: statusFilter }), ...(search && { search }) });
-    const r = await kpFetch(`/wp-admin/orders?${params}`);
+    const r = await kpFetch(`/orders?${params}`);
     if (r.success) {
       setOrders(r.data?.data || r.data || []);
       setPagination(p => ({ ...p, total: r.data?.total || 0, totalPages: r.data?.totalPages || 0 }));

@@ -11,7 +11,7 @@ export default function BusinessAccountsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
 
-  useEffect(() => { kpFetch('/wp-admin/business-accounts').then(r => setItems(Array.isArray(r.data) ? r.data : r.data?.data || [])).catch(() => setItems([])).finally(() => setLoading(false)); }, []);
+  useEffect(() => { kpFetch('/business-accounts').then(r => setItems(Array.isArray(r.data) ? r.data : r.data?.data || [])).catch(() => setItems([])).finally(() => setLoading(false)); }, []);
 
   const filtered = items.filter(a => a.account_name?.toLowerCase().includes(search.toLowerCase()) || a.account_number?.toLowerCase().includes(search.toLowerCase()));
 

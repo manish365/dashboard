@@ -13,7 +13,7 @@ export default function RefundsPage() {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    kpFetch('/wp-admin/customer-service/refunds')
+    kpFetch('/customer-service/refunds')
       .then(r => setItems(Array.isArray(r.data) ? r.data : []))
       .catch(() => setItems([]))
       .finally(() => setLoading(false));

@@ -18,7 +18,7 @@ export default function AttributesPage() {
 
   const fetch = async () => {
     setLoading(true);
-    const r = await kpFetch('/wp-admin/attributes');
+    const r = await kpFetch('/attributes');
     setItems(Array.isArray(r.data) ? r.data : []);
     setLoading(false);
   };
@@ -26,14 +26,14 @@ export default function AttributesPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this attribute?')) return;
-    await kpFetch(`/wp-admin/attributes/${id}`, { method: 'DELETE' });
+    await kpFetch(`/attributes/${id}`, { method: 'DELETE' });
     fetch();
   };
 
   const handleSave = async () => {
     setSaving(true);
-    if (selected) await kpFetch(`/wp-admin/attributes/${selected.attribute_id}`, { method: 'PUT', body: JSON.stringify(form) });
-    else await kpFetch('/wp-admin/attributes', { method: 'POST', body: JSON.stringify(form) });
+    if (selected) await kpFetch(`/attributes/${selected.attribute_id}`, { method: 'PUT', body: JSON.stringify(form) });
+    else await kpFetch('/attributes', { method: 'POST', body: JSON.stringify(form) });
     setSaving(false); setShowModal(false); fetch();
   };
 

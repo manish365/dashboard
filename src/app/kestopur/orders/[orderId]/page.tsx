@@ -13,9 +13,9 @@ export default function OrderDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    kpFetch(`/wp-admin/orders/${orderId}`)
+    kpFetch(`/orders/${orderId}`)
       .then(r => setOrder(r.data))
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoading(false));
   }, [orderId]);
 

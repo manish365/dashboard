@@ -15,7 +15,7 @@ export default function TicketsPage() {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    kpFetch('/wp-admin/customer-service/tickets')
+    kpFetch('/customer-service/tickets')
       .then(r => setItems(Array.isArray(r.data) ? r.data : []))
       .catch(() => setItems([]))
       .finally(() => setLoading(false));

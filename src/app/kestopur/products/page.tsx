@@ -20,7 +20,7 @@ export default function ProductsPage() {
 
   const fetch = async () => {
     setLoading(true);
-    const r = await kpFetch('/wp-admin/products');
+    const r = await kpFetch('/products');
     if (r.success) {
       setProducts(Array.isArray(r.data) ? r.data : []);
     } else {
@@ -37,8 +37,8 @@ export default function ProductsPage() {
   const handleSave = async () => {
     setSaving(true);
     const r = selected
-      ? await kpFetch(`/wp-admin/products/${selected.product_id}`, { method: 'PUT', body: JSON.stringify(form) })
-      : await kpFetch('/wp-admin/products', { method: 'POST', body: JSON.stringify(form) });
+      ? await kpFetch(`/products/${selected.product_id}`, { method: 'PUT', body: JSON.stringify(form) })
+      : await kpFetch('/products', { method: 'POST', body: JSON.stringify(form) });
 
     setSaving(false);
     if (r.success) {
@@ -52,7 +52,7 @@ export default function ProductsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this product?')) return;
-    const r = await kpFetch(`/wp-admin/products/${id}`, { method: 'DELETE' });
+    const r = await kpFetch(`/products/${id}`, { method: 'DELETE' });
     if (r.success) {
       showToast('Product deleted successfully', 'success');
       fetch();

@@ -15,11 +15,11 @@ export default function ManufacturersPage() {
   const [form, setForm] = useState({ manufacturer_name: '', manufacturer_slug: '', website_url: '' });
   const [saving, setSaving] = useState(false);
 
-  const fetch = async () => { setLoading(true); const r = await kpFetch('/wp-admin/manufacturers'); setItems(Array.isArray(r.data) ? r.data : r.data?.data || []); setLoading(false); };
+  const fetch = async () => { setLoading(true); const r = await kpFetch('/manufacturers'); setItems(Array.isArray(r.data) ? r.data : r.data?.data || []); setLoading(false); };
   useEffect(() => { fetch(); }, []);
 
-  const handleDelete = async (id: string) => { if (!confirm('Delete?')) return; await kpFetch(`/wp-admin/manufacturers/${id}`, { method: 'DELETE' }); fetch(); };
-  const handleSave = async () => { setSaving(true); if (selected) await kpFetch(`/wp-admin/manufacturers/${selected.manufacturer_id}`, { method: 'PUT', body: JSON.stringify(form) }); else await kpFetch('/wp-admin/manufacturers', { method: 'POST', body: JSON.stringify(form) }); setSaving(false); setShowModal(false); fetch(); };
+  const handleDelete = async (id: string) => { if (!confirm('Delete?')) return; await kpFetch(`/manufacturers/${id}`, { method: 'DELETE' }); fetch(); };
+  const handleSave = async () => { setSaving(true); if (selected) await kpFetch(`/manufacturers/${selected.manufacturer_id}`, { method: 'PUT', body: JSON.stringify(form) }); else await kpFetch('/manufacturers', { method: 'POST', body: JSON.stringify(form) }); setSaving(false); setShowModal(false); fetch(); };
 
   const filtered = items.filter(m => m.manufacturer_name?.toLowerCase().includes(search.toLowerCase()) || m.manufacturer_slug?.toLowerCase().includes(search.toLowerCase()));
 

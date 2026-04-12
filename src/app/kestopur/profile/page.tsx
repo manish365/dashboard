@@ -9,7 +9,7 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    kpFetch('/wp-admin/profile').then(r => setProfile(r.data)).catch(() => {}).finally(() => setLoading(false));
+    kpFetch('/profile').then(r => setProfile(r.data)).catch(() => { }).finally(() => setLoading(false));
   }, []);
 
   if (loading) return (

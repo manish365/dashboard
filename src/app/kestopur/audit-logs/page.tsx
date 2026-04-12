@@ -16,7 +16,7 @@ export default function AuditLogsPage() {
   const fetchLogs = async () => {
     setLoading(true);
     const params = new URLSearchParams({ page: String(page), limit: '20', ...(resource && { resource }), ...(actorId && { actorId }) });
-    const r = await kpFetch(`/wp-admin/audit-logs?${params}`);
+    const r = await kpFetch(`/audit-logs?${params}`);
     setLogs(Array.isArray(r.data) ? r.data : r.data?.data || []);
     setTotalPages(r.data?.totalPages || 1);
     setLoading(false);
@@ -24,11 +24,11 @@ export default function AuditLogsPage() {
   useEffect(() => { fetchLogs(); }, [page, resource, actorId]);
 
   const cols = [
-    { key: 'action',   label: 'Action',   render: (l: Log) => <span className="theme-text text-sm font-medium">{l.action}</span> },
+    { key: 'action', label: 'Action', render: (l: Log) => <span className="theme-text text-sm font-medium">{l.action}</span> },
     { key: 'resource', label: 'Resource', render: (l: Log) => <span className="theme-text-muted text-sm">{l.resource}</span> },
-    { key: 'actor',    label: 'Actor',    render: (l: Log) => <span className="theme-text-subtle text-xs font-mono">{l.actorId?.slice(0, 8)}...</span> },
-    { key: 'date',     label: 'Date',     render: (l: Log) => <span className="theme-text-subtle text-sm">{new Date(l.createdAt).toLocaleString()}</span> },
-    { key: 'status',   label: 'Status',   render: (l: Log) => <KpBadge label={l.status || 'success'} variant={l.status || 'active'} /> },
+    { key: 'actor', label: 'Actor', render: (l: Log) => <span className="theme-text-subtle text-xs font-mono">{l.actorId?.slice(0, 8)}...</span> },
+    { key: 'date', label: 'Date', render: (l: Log) => <span className="theme-text-subtle text-sm">{new Date(l.createdAt).toLocaleString()}</span> },
+    { key: 'status', label: 'Status', render: (l: Log) => <KpBadge label={l.status || 'success'} variant={l.status || 'active'} /> },
   ];
 
   return (

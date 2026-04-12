@@ -13,7 +13,7 @@ export default function PermissionsPage() {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    kpFetch('/wp-admin/permissions').then(r => setCategories(Array.isArray(r.data) ? r.data : [])).catch(() => setCategories([])).finally(() => setLoading(false));
+    kpFetch('/permissions').then(r => setCategories(Array.isArray(r.data) ? r.data : [])).catch(() => setCategories([])).finally(() => setLoading(false));
   }, []);
 
   const filtered = categories.map(cat => ({

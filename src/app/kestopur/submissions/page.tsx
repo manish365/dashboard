@@ -25,7 +25,7 @@ export default function SubmissionsPage() {
 
   const fetchSubmissions = async () => {
     setLoading(true);
-    const r = await kpFetch('/wp-admin/submissions');
+    const r = await kpFetch('/submissions');
     if (r.success) {
       setSubmissions(Array.isArray(r.data) ? r.data : []);
     } else {

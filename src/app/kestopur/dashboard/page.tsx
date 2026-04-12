@@ -7,12 +7,12 @@ import { useToast } from '@/providers/toast-context';
 import { KpPageHeader, KpStatCard, KpCard } from '@/components/kestopur/ui';
 
 const QUICK_ACTIONS = [
-  { href: '/kestopur/users',     label: 'Manage Users',   desc: 'View, create, edit, and delete users',    icon: Users,     tagCls: 'theme-tag-accent',  textCls: 'theme-text-accent' },
-  { href: '/kestopur/roles',     label: 'Manage Roles',   desc: 'Create roles and assign permissions',     icon: Shield,    tagCls: 'theme-tag-success', textCls: 'theme-text-success' },
-  { href: '/kestopur/orders',    label: 'View Orders',    desc: 'Track and manage customer orders',        icon: ShoppingCart, tagCls: 'theme-tag-warning', textCls: 'theme-text-warning' },
-  { href: '/kestopur/kpi-tree',  label: 'KPI Explorer',   desc: 'Explore operational drilldowns',          icon: GitBranch, tagCls: 'theme-tag-info',    textCls: 'theme-text-info' },
-  { href: '/kestopur/customers', label: 'B2B Management', desc: 'Manage corporate accounts',               icon: Building2, tagCls: 'theme-tag-purple',  textCls: 'theme-text-purple' },
-  { href: '/kestopur/products',  label: 'Products',       desc: 'Manage your product catalog',             icon: Package,   tagCls: 'theme-tag-danger',  textCls: 'theme-text-danger' },
+  { href: '/kestopur/users', label: 'Manage Users', desc: 'View, create, edit, and delete users', icon: Users, tagCls: 'theme-tag-accent', textCls: 'theme-text-accent' },
+  { href: '/kestopur/roles', label: 'Manage Roles', desc: 'Create roles and assign permissions', icon: Shield, tagCls: 'theme-tag-success', textCls: 'theme-text-success' },
+  { href: '/kestopur/orders', label: 'View Orders', desc: 'Track and manage customer orders', icon: ShoppingCart, tagCls: 'theme-tag-warning', textCls: 'theme-text-warning' },
+  { href: '/kestopur/kpi-tree', label: 'KPI Explorer', desc: 'Explore operational drilldowns', icon: GitBranch, tagCls: 'theme-tag-info', textCls: 'theme-text-info' },
+  { href: '/kestopur/customers', label: 'B2B Management', desc: 'Manage corporate accounts', icon: Building2, tagCls: 'theme-tag-purple', textCls: 'theme-text-purple' },
+  { href: '/kestopur/products', label: 'Products', desc: 'Manage your product catalog', icon: Package, tagCls: 'theme-tag-danger', textCls: 'theme-text-danger' },
 ];
 
 export default function KestopurDashboard() {
@@ -22,7 +22,7 @@ export default function KestopurDashboard() {
 
   useEffect(() => {
     setLoading(true);
-    kpFetch('/wp-admin/stats').then(r => {
+    kpFetch('/stats').then(r => {
       if (r.success && r.data) setStats(r.data);
       else if (!r.success) showToast(r.error || 'Failed to load dashboard stats', 'error');
       setLoading(false);
@@ -34,10 +34,10 @@ export default function KestopurDashboard() {
       <KpPageHeader title="Kestopur Dashboard" subtitle="Welcome to your e-commerce admin panel" />
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <KpStatCard label="Total Users"    value={stats.totalUsers}    icon={Users}        variant="accent" loading={loading} />
-        <KpStatCard label="Total Orders"   value={stats.totalOrders}   icon={ShoppingCart} variant="warning" loading={loading} />
-        <KpStatCard label="Total Products" value={stats.totalProducts} icon={Package}      variant="danger" loading={loading} />
-        <KpStatCard label="Revenue"        value={`₹${stats.totalRevenue.toLocaleString()}`} icon={DollarSign} variant="success" loading={loading} />
+        <KpStatCard label="Total Users" value={stats.totalUsers} icon={Users} variant="accent" loading={loading} />
+        <KpStatCard label="Total Orders" value={stats.totalOrders} icon={ShoppingCart} variant="warning" loading={loading} />
+        <KpStatCard label="Total Products" value={stats.totalProducts} icon={Package} variant="danger" loading={loading} />
+        <KpStatCard label="Revenue" value={`₹${stats.totalRevenue.toLocaleString()}`} icon={DollarSign} variant="success" loading={loading} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -47,10 +47,10 @@ export default function KestopurDashboard() {
           </div>
           <div className="p-5 space-y-4">
             {[
-              { label: 'New user registered',       time: '2 hours ago' },
-              { label: 'Order #1234 completed',     time: '4 hours ago' },
-              { label: 'Product updated',           time: '6 hours ago' },
-              { label: 'Role permissions changed',  time: '1 day ago' },
+              { label: 'New user registered', time: '2 hours ago' },
+              { label: 'Order #1234 completed', time: '4 hours ago' },
+              { label: 'Product updated', time: '6 hours ago' },
+              { label: 'Role permissions changed', time: '1 day ago' },
             ].map((item, i) => (
               <div key={i} className="flex items-center justify-between">
                 <span className="theme-text-muted text-sm">{item.label}</span>

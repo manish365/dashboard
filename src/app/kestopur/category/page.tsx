@@ -5,11 +5,11 @@ import { kpFetch } from '@/lib/kestopur/api';
 import { useToast } from '@/providers/toast-context';
 import { KpDataPage, KpBadge, KpBtn, KpModal, KpField } from '@/components/kestopur/ui';
 
-interface Category { 
-  category_id: string; 
-  name: string; 
-  slug: string; 
-  is_active: boolean; 
+interface Category {
+  category_id: string;
+  name: string;
+  slug: string;
+  is_active: boolean;
 }
 
 export default function CategoryPage() {
@@ -22,7 +22,7 @@ export default function CategoryPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this category?')) return;
-    const r = await kpFetch(`/wp-admin/categories/${id}`, { method: 'DELETE' });
+    const r = await kpFetch(`/categories/${id}`, { method: 'DELETE' });
     if (r.success) {
       showToast('Category deleted successfully', 'success');
       setRefreshKey(prev => prev + 1);
@@ -34,8 +34,8 @@ export default function CategoryPage() {
   const handleSave = async () => {
     setSaving(true);
     const r = selected
-      ? await kpFetch(`/wp-admin/categories/${selected.category_id}`, { method: 'PUT', body: JSON.stringify(form) })
-      : await kpFetch('/wp-admin/categories', { method: 'POST', body: JSON.stringify(form) });
+      ? await kpFetch(`/categories/${selected.category_id}`, { method: 'PUT', body: JSON.stringify(form) })
+      : await kpFetch('/categories', { method: 'POST', body: JSON.stringify(form) });
     setSaving(false);
     if (r.success) {
       showToast(selected ? 'Category updated' : 'Category created', 'success');
@@ -47,33 +47,33 @@ export default function CategoryPage() {
   };
 
   const cols = [
-    { 
-      key: 'name', 
-      label: 'Category Name', 
-      render: (c: Category) => <span className="text-sm font-medium theme-text">{c.name}</span> 
+    {
+      key: 'name',
+      label: 'Category Name',
+      render: (c: Category) => <span className="text-sm font-medium theme-text">{c.name}</span>
     },
-    { 
-      key: 'slug', 
-      label: 'Slug', 
-      render: (c: Category) => <span className="text-xs font-mono theme-text-subtle">{c.slug}</span> 
+    {
+      key: 'slug',
+      label: 'Slug',
+      render: (c: Category) => <span className="text-xs font-mono theme-text-subtle">{c.slug}</span>
     },
-    { 
-      key: 'status', 
-      label: 'Status', 
-      render: (c: Category) => <KpBadge label={c.is_active ? 'Active' : 'Inactive'} variant={c.is_active ? 'active' : 'inactive'} /> 
+    {
+      key: 'status',
+      label: 'Status',
+      render: (c: Category) => <KpBadge label={c.is_active ? 'Active' : 'Inactive'} variant={c.is_active ? 'active' : 'inactive'} />
     },
-    { 
-      key: 'actions', 
-      label: 'Actions', 
-      align: 'right' as const, 
+    {
+      key: 'actions',
+      label: 'Actions',
+      align: 'right' as const,
       render: (c: Category) => (
         <div className="flex items-center justify-end gap-1">
-          <button onClick={() => { setSelected(c); setForm({ name: c.name, slug: c.slug }); setShowModal(true); }} 
+          <button onClick={() => { setSelected(c); setForm({ name: c.name, slug: c.slug }); setShowModal(true); }}
             className="p-1.5 rounded-lg hover:bg-white/10 theme-text-subtle"><Edit className="h-4 w-4" /></button>
-          <button onClick={() => handleDelete(c.category_id)} 
+          <button onClick={() => handleDelete(c.category_id)}
             className="p-1.5 rounded-lg hover:bg-red-500/10 theme-text-danger"><Trash2 className="h-4 w-4" /></button>
         </div>
-      ) 
+      )
     },
   ];
 
@@ -83,7 +83,7 @@ export default function CategoryPage() {
         key={refreshKey}
         title="Categories"
         subtitle="Manage product categories and hierarchies"
-        fetchUrl="/wp-admin/categories"
+        fetchUrl="/categories"
         cols={cols}
         rowKey={c => c.category_id}
         searchPlaceholder="Search categories..."

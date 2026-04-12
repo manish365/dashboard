@@ -12,10 +12,10 @@ export default function CouponsPage() {
   const [search, setSearch] = useState('');
   const [activeFilter, setActiveFilter] = useState('');
 
-  const fetch = async () => { setLoading(true); const r = await kpFetch('/wp-admin/coupons'); setCoupons(Array.isArray(r.data) ? r.data : []); setLoading(false); };
+  const fetch = async () => { setLoading(true); const r = await kpFetch('/coupons'); setCoupons(Array.isArray(r.data) ? r.data : []); setLoading(false); };
   useEffect(() => { fetch(); }, []);
 
-  const handleDelete = async (id: string) => { if (!confirm('Delete?')) return; await kpFetch(`/wp-admin/coupons/${id}`, { method: 'DELETE' }); fetch(); };
+  const handleDelete = async (id: string) => { if (!confirm('Delete?')) return; await kpFetch(`/coupons/${id}`, { method: 'DELETE' }); fetch(); };
 
   const filtered = coupons.filter(c => {
     const matchSearch = c.couponCode?.toLowerCase().includes(search.toLowerCase()) || c.couponName?.toLowerCase().includes(search.toLowerCase());

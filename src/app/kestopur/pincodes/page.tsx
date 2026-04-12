@@ -16,11 +16,11 @@ export default function PincodesPage() {
   const [form, setForm] = useState({ pincode: '', city: '', state: '' });
   const [saving, setSaving] = useState(false);
 
-  const fetch = async () => { setLoading(true); const params = new URLSearchParams(activeFilter !== '' ? { isActive: activeFilter } : {}); const r = await kpFetch(`/wp-admin/pincodes?${params}`); setItems(Array.isArray(r.data) ? r.data : []); setLoading(false); };
+  const fetch = async () => { setLoading(true); const params = new URLSearchParams(activeFilter !== '' ? { isActive: activeFilter } : {}); const r = await kpFetch(`/pincodes?${params}`); setItems(Array.isArray(r.data) ? r.data : []); setLoading(false); };
   useEffect(() => { fetch(); }, [activeFilter]);
 
-  const handleDelete = async (id: string) => { if (!confirm('Delete?')) return; await kpFetch(`/wp-admin/pincodes/${id}`, { method: 'DELETE' }); fetch(); };
-  const handleSave = async () => { setSaving(true); if (selected) await kpFetch(`/wp-admin/pincodes/${selected.pincodeId}`, { method: 'PUT', body: JSON.stringify(form) }); else await kpFetch('/wp-admin/pincodes', { method: 'POST', body: JSON.stringify(form) }); setSaving(false); setShowModal(false); fetch(); };
+  const handleDelete = async (id: string) => { if (!confirm('Delete?')) return; await kpFetch(`/pincodes/${id}`, { method: 'DELETE' }); fetch(); };
+  const handleSave = async () => { setSaving(true); if (selected) await kpFetch(`/pincodes/${selected.pincodeId}`, { method: 'PUT', body: JSON.stringify(form) }); else await kpFetch('/pincodes', { method: 'POST', body: JSON.stringify(form) }); setSaving(false); setShowModal(false); fetch(); };
 
   const filtered = items.filter(p => p.pincode?.includes(search) || p.city?.toLowerCase().includes(search.toLowerCase()) || p.state?.toLowerCase().includes(search.toLowerCase()));
 

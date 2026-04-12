@@ -17,7 +17,7 @@ export default function UsersPage() {
 
   const fetchUsers = async () => {
     setLoading(true);
-    const r = await kpFetch('/wp-admin/users');
+    const r = await kpFetch('/users');
     setUsers(Array.isArray(r.data) ? r.data : r.data?.data || []);
     setLoading(false);
   };
@@ -28,14 +28,14 @@ export default function UsersPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this user?')) return;
-    await kpFetch(`/wp-admin/users/${id}`, { method: 'DELETE' });
+    await kpFetch(`/users/${id}`, { method: 'DELETE' });
     fetchUsers();
   };
 
   const handleSave = async () => {
     setSaving(true);
-    if (selected) await kpFetch(`/wp-admin/users/${selected.id}`, { method: 'PATCH', body: JSON.stringify(form) });
-    else await kpFetch('/wp-admin/users', { method: 'POST', body: JSON.stringify(form) });
+    if (selected) await kpFetch(`/users/${selected.id}`, { method: 'PATCH', body: JSON.stringify(form) });
+    else await kpFetch('/users', { method: 'POST', body: JSON.stringify(form) });
     setSaving(false); setShowModal(false); fetchUsers();
   };
 

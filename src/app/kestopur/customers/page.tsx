@@ -22,7 +22,7 @@ export default function CustomersPage() {
   const fetchCustomers = async () => {
     setLoading(true);
     const params = new URLSearchParams({ page: String(pagination.page), limit: '10', ...(statusFilter && { status: statusFilter }), ...(tierFilter && { tier: tierFilter }), ...(search && { search }) });
-    const r = await kpFetch(`/wp-admin/customers?${params}`);
+    const r = await kpFetch(`/customers?${params}`);
     setCustomers(r.data?.data || r.data || []);
     setPagination(p => ({ ...p, total: r.data?.total || 0, totalPages: r.data?.totalPages || 0 }));
     setLoading(false);
@@ -32,7 +32,7 @@ export default function CustomersPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this customer?')) return;
-    await kpFetch(`/wp-admin/customers/${id}`, { method: 'DELETE' });
+    await kpFetch(`/customers/${id}`, { method: 'DELETE' });
     fetchCustomers();
   };
 

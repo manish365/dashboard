@@ -18,7 +18,7 @@ export default function PaymentsPage() {
   const fetchPayments = async () => {
     setLoading(true);
     const params = new URLSearchParams({ ...(statusFilter && { status: statusFilter }), ...(gatewayFilter && { gateway: gatewayFilter }) });
-    const r = await kpFetch(`/wp-admin/payments?${params}`);
+    const r = await kpFetch(`/payments?${params}`);
     setItems(Array.isArray(r.data) ? r.data : []);
     setLoading(false);
   };

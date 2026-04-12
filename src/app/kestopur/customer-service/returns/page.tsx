@@ -13,7 +13,7 @@ export default function ReturnsPage() {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    kpFetch('/wp-admin/customer-service/returns')
+    kpFetch('/customer-service/returns')
       .then(r => setItems(Array.isArray(r.data) ? r.data : []))
       .catch(() => setItems([]))
       .finally(() => setLoading(false));

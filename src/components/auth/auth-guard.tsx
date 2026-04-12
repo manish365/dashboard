@@ -27,7 +27,7 @@ export default function AuthGuard({ children }: Props) {
   }, []);
 
   useEffect(() => {
-    if (pathname === '/login') return;
+    if (pathname === '/login' || pathname === '/forgot-password' || pathname === '/reset-password') return;
 
     if (!checking && !isAuthenticated) {
       router.push(`/login?redirect=${pathname}`);

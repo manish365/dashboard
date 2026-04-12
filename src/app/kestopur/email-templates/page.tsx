@@ -15,11 +15,11 @@ export default function EmailTemplatesPage() {
   const [form, setForm] = useState({ name: '', subject: '', body: '' });
   const [saving, setSaving] = useState(false);
 
-  const fetch = async () => { setLoading(true); const r = await kpFetch('/wp-admin/email-templates'); setItems(Array.isArray(r.data) ? r.data : []); setLoading(false); };
+  const fetch = async () => { setLoading(true); const r = await kpFetch('/email-templates'); setItems(Array.isArray(r.data) ? r.data : []); setLoading(false); };
   useEffect(() => { fetch(); }, []);
 
-  const handleDelete = async (id: string) => { if (!confirm('Delete?')) return; await kpFetch(`/wp-admin/email-templates/${id}`, { method: 'DELETE' }); fetch(); };
-  const handleSave = async () => { setSaving(true); if (selected) await kpFetch(`/wp-admin/email-templates/${selected.id}`, { method: 'PUT', body: JSON.stringify(form) }); else await kpFetch('/wp-admin/email-templates', { method: 'POST', body: JSON.stringify(form) }); setSaving(false); setShowModal(false); fetch(); };
+  const handleDelete = async (id: string) => { if (!confirm('Delete?')) return; await kpFetch(`/email-templates/${id}`, { method: 'DELETE' }); fetch(); };
+  const handleSave = async () => { setSaving(true); if (selected) await kpFetch(`/email-templates/${selected.id}`, { method: 'PUT', body: JSON.stringify(form) }); else await kpFetch('/email-templates', { method: 'POST', body: JSON.stringify(form) }); setSaving(false); setShowModal(false); fetch(); };
 
   const filtered = items.filter(t => t.name?.toLowerCase().includes(search.toLowerCase()) || t.subject?.toLowerCase().includes(search.toLowerCase()));
 

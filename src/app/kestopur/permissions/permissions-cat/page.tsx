@@ -23,7 +23,7 @@ export default function PermissionsCatPage() {
 
   const fetchCategories = async () => {
     setLoading(true);
-    const r = await kpFetch('/wp-admin/permissions/categories');
+    const r = await kpFetch('/permissions/categories');
     if (r.success) {
       setItems(Array.isArray(r.data) ? r.data : []);
     } else {
@@ -37,9 +37,9 @@ export default function PermissionsCatPage() {
   const handleSave = async () => {
     setSaving(true);
     const r = selected
-      ? await kpFetch(`/wp-admin/permissions/categories/${selected.id}`, { method: 'PUT', body: JSON.stringify(form) })
-      : await kpFetch('/wp-admin/permissions/categories', { method: 'POST', body: JSON.stringify(form) });
-      
+      ? await kpFetch(`/permissions/categories/${selected.id}`, { method: 'PUT', body: JSON.stringify(form) })
+      : await kpFetch('/permissions/categories', { method: 'POST', body: JSON.stringify(form) });
+
     setSaving(false);
     if (r.success) {
       showToast(selected ? 'Category updated' : 'Category created', 'success');
